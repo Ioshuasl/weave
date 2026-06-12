@@ -1,0 +1,5 @@
+{
+  "name": "FastReport JSON Web",
+  "description": "A web-based, JSON-oriented report generator inspired by FastReport. Design dynamic reports with bands, data binding, and print-ready output.",
+  "requestFramePermissions": []
+}
