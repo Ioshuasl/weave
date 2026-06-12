@@ -426,6 +426,7 @@ Sem sidebar de edição, sem arrastar componentes — só visualização e impre
 | `Ctrl+C` / `Cmd+C` | Copiar componentes |
 | `Ctrl+V` / `Cmd+V` | Colar componentes |
 | `Delete` / `Backspace` | Excluir seleção |
+| `F2` | Abrir editor de texto (componente `text` selecionado) |
 | `Ctrl+clique` | Seleção múltipla (toggle) |
 | `Shift+clique` | Adicionar à seleção |
 
@@ -520,11 +521,22 @@ src/
 - **Layout notebook (R1+R2+R3)** — rail + drawer, fit-to-width, persistência de painéis, densidade `compactMode`, preview fullscreen &lt;1024px
 - **Confirmação ao sair** — Voltar no cabeçalho da sidebar ou botão voltar do navegador com alterações não salvas
 - Duplicar (`Ctrl+D`), copiar/colar entre bandas (`Ctrl+C` / `Ctrl+V`)
+- **Editor de texto em modal** — duplo-clique, `F2` ou botão no painel; rich text, autocomplete `{`, formatação e alinhamento; painel mostra prévia read-only
 - Marcadores em lista livre; numeração em lista numerada
 - Contornos de hover/seleção customizáveis (`canvasSelectionClasses`)
 - Export/import do layout + dados em JSON
 - Preview embutido ou modal; impressão via navegador
 - Modos `design` e `preview` via prop `mode`
+
+### Componente de texto — edição
+
+| Onde | Comportamento |
+|------|----------------|
+| Canvas | Visualização (`FormattedText`); **duplo-clique** abre modal |
+| Painel **Conteúdo** | Prévia truncada + botão **Editar texto…** |
+| Modal | `RichTextEditor`, toolbar (negrito/itálico/alinhamento), chips, catálogo de campos, tamanho e cor; **Salvar** persiste no relatório |
+
+Atalho **F2** com um componente de texto selecionado abre o mesmo modal. Alterações ficam em draft até **Salvar**; fechar com mudanças pede confirmação. Enquanto o modal está aberto, o **canvas e a prévia do painel** refletem o draft em tempo real (badge *Editando* no componente).
 
 ### Roadmap Fase 2 (trecho)
 

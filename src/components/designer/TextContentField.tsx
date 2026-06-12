@@ -1,11 +1,22 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { Bold, Italic, Strikethrough, Underline, type LucideIcon } from 'lucide-react';
+import {
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  Bold,
+  Italic,
+  Strikethrough,
+  Underline,
+  type LucideIcon,
+} from 'lucide-react';
 import type { TextFormatKind } from '../../utils/richTextUtils';
 import type { DataSourceCatalog } from '../../utils/dataSourceUtils';
 import { buildExpressionFieldSuggestions } from '../../utils/expressionFieldSuggestions';
 import { PropertyHint } from './PropertyFields';
 import { RichTextEditor, type RichTextEditorHandle } from './RichTextEditor';
 import { cn } from '../../utils/cn';
+
+type TextAlign = 'left' | 'center' | 'right';
 
 interface TextContentFieldProps {
   content: string;
@@ -15,6 +26,9 @@ interface TextContentFieldProps {
   data?: Record<string, unknown[]>;
   dataSourceCatalog?: DataSourceCatalog;
   placeholder?: string;
+  textAlign?: TextAlign;
+  onTextAlignChange?: (textAlign: TextAlign) => void;
+  editorMinHeight?: string;
 }
 
 function FormatToggleButton({
@@ -55,6 +69,12 @@ const FORMAT_BUTTONS: { kind: TextFormatKind; label: string; icon: LucideIcon }[
   { kind: 'strike', label: 'Traçado', icon: Strikethrough },
 ];
 
+const ALIGN_BUTTONS: { value: TextAlign; label: string; icon: LucideIcon }[] = [
+  { value: 'left', label: 'Alinhar à esquerda', icon: AlignLeft },
+  { value: 'center', label: 'Centralizar', icon: AlignCenter },
+  { value: 'right', label: 'Alinhar à direita', icon: AlignRight },
+];
+
 const EMPTY_FORMATS: Record<TextFormatKind, boolean> = {
   bold: false,
   italic: false,
@@ -70,6 +90,9 @@ export const TextContentField: React.FC<TextContentFieldProps> = ({
   data,
   dataSourceCatalog,
   placeholder = 'Digite o texto do relatório',
+  textAlign = 'left',
+  onTextAlignChange,
+  editorMinHeight,
 }) => {
   const editorRef = useRef<RichTextEditorHandle>(null);
   const [activeFormats, setActiveFormats] =
@@ -82,7 +105,7 @@ export const TextContentField: React.FC<TextContentFieldProps> = ({
 
   return (
     <div className="space-y-3 min-w-0 max-w-full">
-      <div className="flex items-center gap-1 min-w-0">
+      <div className="flex items-center gap-1 min-w-0 flex-wrap">
         {FORMAT_BUTTONS.map(({ kind, label, icon }) => (
           <React.Fragment key={kind}>
             <FormatToggleButton
@@ -93,6 +116,25 @@ export const TextContentField: React.FC<TextContentFieldProps> = ({
             />
           </React.Fragment>
         ))}
+        {onTextAlignChange && (
+          <>
+            <div
+              className="w-px h-6 bg-neutral-200 mx-0.5 shrink-0"
+              role="separator"
+              aria-orientation="vertical"
+            />
+            {ALIGN_BUTTONS.map(({ value, label, icon }) => (
+              <React.Fragment key={value}>
+                <FormatToggleButton
+                  label={label}
+                  icon={icon}
+                  active={textAlign === value}
+                  onClick={() => onTextAlignChange(value)}
+                />
+              </React.Fragment>
+            ))}
+          </>
+        )}
       </div>
 
       <div className="min-w-0 max-w-full">
@@ -111,6 +153,7 @@ export const TextContentField: React.FC<TextContentFieldProps> = ({
           }
           onFieldInserted={onFieldInserted}
           placeholder={placeholder}
+          minHeight={editorMinHeight}
         />
         <PropertyHint className="mt-1">
           Digite {'{'} para inserir campos com auto-sugestão. Formatação visual; campos viram chips.

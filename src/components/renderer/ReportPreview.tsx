@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useDesignerStore } from '../../store/designerStore';
 import { cn } from '../../utils/cn';
+import { DESIGNER_MODAL_OVERLAY_Z } from '../../utils/designerZIndex';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { usePageZoom } from '../../hooks/usePageZoom';
 import { NARROW_VIEWPORT_MEDIA_QUERY } from '../designer/designerLayout';
@@ -114,7 +116,14 @@ export const ReportPreview = ({
   const isNarrow = useMediaQuery(NARROW_VIEWPORT_MEDIA_QUERY);
   const report = useDesignerStore((state) => state.report);
   const data = useDesignerStore((state) => state.data);
+  const setPreviewModalOpen = useDesignerStore((state) => state.setPreviewModalOpen);
   const [viewMode, setViewMode] = useState<PreviewViewMode>('single');
+
+  useEffect(() => {
+    if (variant === 'embedded') return;
+    setPreviewModalOpen(true);
+    return () => setPreviewModalOpen(false);
+  }, [setPreviewModalOpen, variant]);
 
   const sheets = useMemo(
     () => buildReportPreviewSheets(report, data),
@@ -266,16 +275,17 @@ export const ReportPreview = ({
     </div>
   );
 
-  return (
+  const overlay = (
     <div
       className={cn(
         'report-preview-overlay',
         isEmbedded
           ? 'h-full w-full flex flex-col'
           : isFullscreenModal
-            ? 'fixed inset-0 z-50 bg-white flex flex-col'
-            : 'fixed inset-0 z-50 bg-neutral-900/20 flex items-center justify-center p-8 backdrop-blur-sm'
+            ? 'fixed inset-0 bg-white flex flex-col'
+            : 'fixed inset-0 bg-neutral-900/20 flex items-center justify-center p-8 backdrop-blur-sm'
       )}
+      style={isEmbedded ? undefined : { zIndex: DESIGNER_MODAL_OVERLAY_Z }}
     >
       {panel}
 
@@ -350,4 +360,7 @@ export const ReportPreview = ({
       `}</style>
     </div>
   );
+
+  if (isEmbedded) return overlay;
+  return createPortal(overlay, document.body);
 };

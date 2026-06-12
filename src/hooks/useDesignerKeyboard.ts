@@ -7,7 +7,7 @@ function isEditableTarget(target: EventTarget | null): boolean {
   const tag = target.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return true;
   if (target.isContentEditable) return true;
-  return Boolean(target.closest('.inline-text-editor, .rich-text-editor'));
+  return Boolean(target.closest('.rich-text-editor'));
 }
 
 interface DesignerKeyboardOptions {
@@ -30,6 +30,7 @@ export function useDesignerKeyboardShortcuts(
   const pasteToTargetBand = useDesignerStore((state) => state.pasteToTargetBand);
   const undo = useDesignerStore((state) => state.undo);
   const redo = useDesignerStore((state) => state.redo);
+  const openTextEditorModal = useDesignerStore((state) => state.openTextEditorModal);
   const historyPointer = useDesignerStore((state) => state.historyPointer);
   const historyLength = useDesignerStore((state) => state.historyPast.length);
 
@@ -73,6 +74,21 @@ export function useDesignerKeyboardShortcuts(
         if (!options?.onToggleRightPanel) return;
         e.preventDefault();
         options.onToggleRightPanel();
+        return;
+      }
+
+      if (e.key === 'F2') {
+        if (targetEditable) return;
+        const componentIds = getSelectedComponentIds(
+          selectedIds,
+          useDesignerStore.getState().report
+        );
+        if (componentIds.length !== 1) return;
+        const component = useDesignerStore.getState().report.components[componentIds[0]];
+        if (component?.type !== 'text') return;
+
+        e.preventDefault();
+        openTextEditorModal(componentIds[0]);
         return;
       }
 
@@ -142,6 +158,7 @@ export function useDesignerKeyboardShortcuts(
     pasteToTargetBand,
     undo,
     redo,
+    openTextEditorModal,
     historyPointer,
     historyLength,
     options?.onOpenHistory,

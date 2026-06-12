@@ -64,6 +64,7 @@ import {
   type HistoryEntry,
   type HistoryMeta,
 } from '../utils/designerHistory';
+import { isTextEditorModalDirty } from '../utils/textEditorModalUtils';
 import type { SnapGuides } from '../utils/designerSnap';
 import { DEMO_DATA, DEMO_REPORT } from '../mocks/demoReport';
 import { buildBandDuplicate, buildComponentDuplicate } from '../utils/designerDuplicate';
@@ -92,6 +93,32 @@ export interface LiveStylePreview {
 export interface LiveChartPreview {
   componentId: string;
   chartProps: Partial<ChartProps>;
+}
+
+export type TextEditorModalTextAlign = 'left' | 'center' | 'right';
+
+export interface TextEditorModalDraft {
+  content: string;
+  fontSize: string;
+  color: string;
+  textAlign: TextEditorModalTextAlign;
+  padding: string;
+}
+
+export interface TextEditorModalState {
+  componentId: string;
+  draft: TextEditorModalDraft;
+  initialDraft: TextEditorModalDraft;
+}
+
+function buildTextEditorDraftFromComponent(component: ReportComponent): TextEditorModalDraft {
+  return {
+    content: component.content,
+    fontSize: String(component.style.fontSize || '14px'),
+    color: String(component.style.color || '#000000'),
+    textAlign: (component.style.textAlign as TextEditorModalTextAlign) || 'left',
+    padding: String(component.style.padding || ''),
+  };
 }
 
 export interface ComponentGroupDrag {
@@ -143,6 +170,10 @@ interface DesignerState {
   componentGroupDrag: ComponentGroupDrag | null;
   bandGroupDrag: BandGroupDrag | null;
   dragPreviewRects: Record<string, { x: number; y: number }> | null;
+  /** Modal de edição de texto (duplo-clique no canvas) */
+  textEditorModal: TextEditorModalState | null;
+  /** Pré-visualização modal aberta sobre o canvas */
+  previewModalOpen: boolean;
 
   // Actions
   setSelection: (id: string | null, options?: { mode?: SelectionMode }) => void;
@@ -202,6 +233,11 @@ interface DesignerState {
   setSnapEnabled: (enabled: boolean) => void;
   setActiveSnapGuides: (guides: SnapGuides | null) => void;
   clearSnapGuides: () => void;
+  openTextEditorModal: (componentId: string) => void;
+  closeTextEditorModal: () => void;
+  setPreviewModalOpen: (open: boolean) => void;
+  patchTextEditorDraft: (patch: Partial<TextEditorModalDraft>) => void;
+  commitTextEditorModal: () => void;
 }
 
 function reportsEqual(a: ReportDefinition, b: ReportDefinition): boolean {
@@ -268,6 +304,8 @@ function restoreHistoryEntry(state: DesignerState, index: number): Partial<Desig
     componentGroupDrag: null,
     bandGroupDrag: null,
     dragPreviewRects: null,
+    textEditorModal: null,
+    previewModalOpen: false,
   };
 }
 
@@ -447,6 +485,8 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
   dragPreviewRects: null,
   data: DEMO_DATA,
   pagePresetCatalog: BUILTIN_PAGE_PRESET_CATALOG,
+  textEditorModal: null,
+  previewModalOpen: false,
 
   setHostPagePresets: (presets) =>
     set({
@@ -833,6 +873,15 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
             : `Excluir componente: ${getComponentDisplayLabel(report.components[remainingCompIds[0]]?.type ?? 'text')}`
           : `Excluir ${count} itens`;
 
+      const modalComponentId = state.textEditorModal?.componentId;
+      const closeTextModal =
+        modalComponentId != null &&
+        (remainingCompIds.includes(modalComponentId) ||
+          bandIds.some((bandId) => {
+            const band = report.bands[bandId];
+            return band?.components.includes(modalComponentId);
+          }));
+
       return recordHistory(
         state,
         {
@@ -841,6 +890,7 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
           componentGroupDrag: null,
           bandGroupDrag: null,
           dragPreviewRects: null,
+          ...(closeTextModal ? { textEditorModal: null } : {}),
         },
         { kind: bandIds.length ? 'removeBand' : 'removeComponent', label }
       );
@@ -1329,7 +1379,12 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
 
     return recordHistory(
       state,
-      { report, selectedIds: filterSelection(state.selectedIds, id) },
+      {
+        report,
+        selectedIds: filterSelection(state.selectedIds, id),
+        textEditorModal:
+          state.textEditorModal?.componentId === id ? null : state.textEditorModal,
+      },
       {
         kind: 'removeComponent',
         targetId: id,
@@ -1530,6 +1585,7 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
         componentGroupDrag: null,
         bandGroupDrag: null,
         dragPreviewRects: null,
+        textEditorModal: null,
         historyPast: [entry],
         historyPointer: 0,
       };
@@ -1577,5 +1633,86 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
     set((state) => {
       if (state.activeSnapGuides === null) return state;
       return { activeSnapGuides: null };
+    }),
+
+  openTextEditorModal: (componentId) =>
+    set((state) => {
+      const component = state.report.components[componentId];
+      if (!component || component.type !== 'text') return state;
+
+      const existing = state.textEditorModal;
+      if (existing) {
+        if (existing.componentId === componentId) return state;
+        if (isTextEditorModalDirty(existing)) return state;
+      }
+
+      const draft = buildTextEditorDraftFromComponent(component);
+      return {
+        textEditorModal: {
+          componentId,
+          draft: { ...draft },
+          initialDraft: { ...draft },
+        },
+      };
+    }),
+
+  closeTextEditorModal: () =>
+    set((state) => {
+      if (state.textEditorModal === null) return state;
+      return { textEditorModal: null };
+    }),
+
+  setPreviewModalOpen: (open) =>
+    set((state) => {
+      if (state.previewModalOpen === open) return state;
+      return { previewModalOpen: open };
+    }),
+
+  patchTextEditorDraft: (patch) =>
+    set((state) => {
+      if (!state.textEditorModal) return state;
+      return {
+        textEditorModal: {
+          ...state.textEditorModal,
+          draft: { ...state.textEditorModal.draft, ...patch },
+        },
+      };
+    }),
+
+  commitTextEditorModal: () =>
+    set((state) => {
+      const modal = state.textEditorModal;
+      if (!modal) return state;
+
+      const current = state.report.components[modal.componentId];
+      if (!current) {
+        return { textEditorModal: null };
+      }
+
+      const { content, fontSize, color, textAlign, padding } = modal.draft;
+      const updates: Partial<ReportComponent> = {
+        content,
+        style: {
+          ...current.style,
+          fontSize,
+          color,
+          textAlign,
+          padding: padding || undefined,
+        },
+      };
+
+      const report = {
+        ...state.report,
+        components: {
+          ...state.report.components,
+          [modal.componentId]: { ...current, ...updates },
+        },
+      };
+
+      return recordHistory(
+        state,
+        { report, textEditorModal: null },
+        describeComponentUpdate(modal.componentId, updates, current)
+      );
     }),
 }));

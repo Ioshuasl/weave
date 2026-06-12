@@ -12,6 +12,12 @@ import {
   type FieldChipLabelResolver,
 } from '../../utils/richTextEditorUtils';
 import type { TextFormatKind } from '../../utils/richTextUtils';
+import {
+  applyInlineColorToSelection,
+  applyInlineFontSizeToSelection,
+  readRichTextSelectionStyle,
+  type RichTextSelectionStyle,
+} from '../../utils/richTextInlineStyle';
 import type { DataSourceCatalog } from '../../utils/dataSourceUtils';
 import {
   getFieldChipDisplayLabel,
@@ -40,12 +46,16 @@ export interface RichTextEditorHandle {
   toggleFormat: (kind: TextFormatKind) => void;
   insertField: (token: string) => void;
   getActiveFormats: () => Record<TextFormatKind, boolean>;
+  getSelectionStyle: () => RichTextSelectionStyle;
+  applyInlineColor: (color: string) => boolean;
+  applyInlineFontSize: (fontSize: string) => boolean;
 }
 
 interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
   onFormatsChange?: (formats: Record<TextFormatKind, boolean>) => void;
+  onSelectionStyleChange?: (style: RichTextSelectionStyle) => void;
   expressionSuggestions?: ExpressionSuggestionGroup[];
   fieldPreviewContext?: {
     data: Record<string, unknown[]>;
@@ -72,6 +82,7 @@ export const RichTextEditor = forwardRef<RichTextEditorHandle, RichTextEditorPro
       value,
       onChange,
       onFormatsChange,
+      onSelectionStyleChange,
       expressionSuggestions = [],
       fieldPreviewContext,
       onFieldInserted,
@@ -134,7 +145,11 @@ export const RichTextEditor = forwardRef<RichTextEditorHandle, RichTextEditorPro
 
     const notifyFormats = useCallback(() => {
       onFormatsChange?.(readActiveFormats());
-    }, [onFormatsChange]);
+      const el = editorRef.current;
+      if (el) {
+        onSelectionStyleChange?.(readRichTextSelectionStyle(el));
+      }
+    }, [onFormatsChange, onSelectionStyleChange]);
 
     const syncAutocomplete = useCallback(() => {
       const el = editorRef.current;
@@ -205,6 +220,32 @@ export const RichTextEditor = forwardRef<RichTextEditorHandle, RichTextEditorPro
           notifyFormats();
         },
         getActiveFormats: readActiveFormats,
+        getSelectionStyle: () =>
+          editorRef.current
+            ? readRichTextSelectionStyle(editorRef.current)
+            : { hasFocus: false, collapsed: true, color: null, fontSize: null },
+        applyInlineColor: (color) => {
+          const el = editorRef.current;
+          if (!el) return false;
+          el.focus();
+          const applied = applyInlineColorToSelection(el, color);
+          if (applied) {
+            emitChange();
+            notifyFormats();
+          }
+          return applied;
+        },
+        applyInlineFontSize: (fontSize) => {
+          const el = editorRef.current;
+          if (!el) return false;
+          el.focus();
+          const applied = applyInlineFontSizeToSelection(el, fontSize);
+          if (applied) {
+            emitChange();
+            notifyFormats();
+          }
+          return applied;
+        },
       }),
       [emitChange, getChipOptions, notifyFormats]
     );

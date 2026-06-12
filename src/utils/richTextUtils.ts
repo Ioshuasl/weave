@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { ReportComponent } from '../types/report';
+import { markdownWithInlineStylesToHtml } from './richTextInlineStyle';
 
 const HTML_ALLOWED_TAGS = new Set([
   'b',
@@ -57,26 +58,53 @@ export function escapeHtml(text: string): string {
 
 /** Converte markdown inline (subset) para HTML */
 export function markdownInlineToHtml(text: string): string {
-  let html = escapeHtml(text);
+  return markdownWithInlineStylesToHtml(text, (segment) => {
+    let html = escapeHtml(segment);
 
-  html = html.replace(/~~(.+?)~~/g, '<s>$1</s>');
-  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
-  html = html.replace(/\+\+(.+?)\+\+/g, '<u>$1</u>');
-  html = html.replace(UNDERSCORE_ITALIC, '<em>$1</em>');
-  html = html.replace(LEGACY_ASTERISK_ITALIC, '<em>$1</em>');
+    html = html.replace(/~~(.+?)~~/g, '<s>$1</s>');
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+    html = html.replace(/\+\+(.+?)\+\+/g, '<u>$1</u>');
+    html = html.replace(UNDERSCORE_ITALIC, '<em>$1</em>');
+    html = html.replace(LEGACY_ASTERISK_ITALIC, '<em>$1</em>');
 
-  return html.replace(/\n/g, '<br />');
+    return html.replace(/\n/g, '<br />');
+  });
 }
 
 export function sanitizeRichHtml(html: string): string {
-  return html.replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, (match, tag: string) => {
+  return html.replace(/<\/?([a-z][a-z0-9]*)\b([^>]*)>/gi, (match, tag: string, attrs: string) => {
     const name = tag.toLowerCase();
     if (!HTML_ALLOWED_TAGS.has(name)) return '';
     if (match.startsWith('</')) return `</${name}>`;
     if (name === 'br') return '<br />';
+    if (name === 'span') {
+      const style = attrs.match(/style="([^"]*)"/i)?.[1] ?? '';
+      const safeStyle = sanitizeSpanStyleAttr(style);
+      const dataColor = attrs.match(/data-inline-color="([^"]*)"/i)?.[1];
+      const dataSize = attrs.match(/data-inline-size="([^"]*)"/i)?.[1];
+      const dataAttrs = [
+        dataColor ? ` data-inline-color="${dataColor.replace(/"/g, '')}"` : '',
+        dataSize ? ` data-inline-size="${dataSize.replace(/"/g, '')}"` : '',
+      ].join('');
+      if (!safeStyle && !dataAttrs) return '<span>';
+      return `<span${safeStyle ? ` style="${safeStyle}"` : ''}${dataAttrs}>`;
+    }
     return `<${name}>`;
   });
+}
+
+function sanitizeSpanStyleAttr(style: string): string {
+  const parts: string[] = [];
+  const color = style.match(/(?:^|;)\s*color:\s*([^;]+)/i)?.[1]?.trim();
+  const fontSize = style.match(/(?:^|;)\s*font-size:\s*([^;]+)/i)?.[1]?.trim();
+  if (color && /^#[0-9a-fA-F]{3,8}$|^rgb/i.test(color)) {
+    parts.push(`color:${color}`);
+  }
+  if (fontSize && /^[\d.]+px$/.test(fontSize)) {
+    parts.push(`font-size:${fontSize}`);
+  }
+  return parts.join(';');
 }
 
 export function richTextToHtml(content: string): string {

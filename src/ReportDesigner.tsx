@@ -27,6 +27,7 @@ import { PropertiesPanel } from './components/designer/PropertiesPanel';
 import { ReportPreview } from './components/renderer/ReportPreview';
 import { useDesignerKeyboardShortcuts } from './hooks/useDesignerKeyboard';
 import { HistoryTimelineModal } from './components/designer/HistoryTimelineModal';
+import { TextComponentEditorModal } from './components/designer/TextComponentEditorModal';
 import { cn } from './utils/cn';
 import type { CanvasSelectionClasses } from './components/designer/canvasSelectionClasses';
 import { useReportAutoSave } from './hooks/useReportAutoSave';
@@ -211,6 +212,7 @@ export function ReportDesigner({
 }: ReportDesignerProps) {
   const loadReport = useDesignerStore((state) => state.loadReport);
   const setHostPagePresets = useDesignerStore((state) => state.setHostPagePresets);
+  const isTextEditorOpen = useDesignerStore((state) => state.textEditorModal !== null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -293,7 +295,7 @@ export function ReportDesigner({
     persistedHistoryEntryIdsRef.current = new Set();
   }, [report, data, loadReport, markSnapshotSaved]);
 
-  const shortcutsBlocked = isPreviewOpen || isHistoryOpen;
+  const shortcutsBlocked = isPreviewOpen || isHistoryOpen || isTextEditorOpen;
   const autoSaveEnabled =
     Boolean(onSave) && autoSaveIntervalMs > 0 && mode === 'design';
   const historyPersistEnabled =
@@ -462,6 +464,8 @@ export function ReportDesigner({
         )}
 
         {isHistoryOpen && <HistoryTimelineModal onClose={() => setIsHistoryOpen(false)} />}
+
+        <TextComponentEditorModal />
 
         <UnsavedChangesModal
           isOpen={isUnsavedModalOpen}

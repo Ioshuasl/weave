@@ -12,6 +12,7 @@ import { useCanvasSelectionClasses } from './designerSelectionContext';
 import { DataBandListPreview } from './DataBandListPreview';
 import { ComponentRenderer } from './ComponentRenderer';
 import { getBandRect, getBandZIndex, getReportPage } from '../../utils/reportPageUtils';
+import { shouldSuppressDesignerCanvasZBoost } from '../../utils/designerZIndex';
 import {
   DESIGNER_LIST_GHOST_ROW_LIMIT,
   getBandDisplayLabel,
@@ -67,6 +68,9 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
   const nodeRef = useRef<HTMLDivElement>(null);
   const { snapBandRect, clearSnapGuides } = useDesignerSnap();
   const selectionClasses = useCanvasSelectionClasses();
+  const textEditorModalOpen = useDesignerStore((state) =>
+    shouldSuppressDesignerCanvasZBoost(state)
+  );
 
   stylePreviewDebug.countRender(`PlacedBandOverlay:${bandId}`);
 
@@ -105,7 +109,11 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
     bandGroupDrag.leaderId !== bandId &&
     bandGroupDrag.memberIds.includes(bandId);
   const bandActive = isSelected || hasSelectedChild;
-  const zIndex = getBandZIndex(bandId, page, bandActive ? bandId : null);
+  const zIndex = getBandZIndex(
+    bandId,
+    page,
+    textEditorModalOpen ? null : bandActive ? bandId : null
+  );
   const canPaste =
     Boolean(clipboard?.items.length) && canBandAcceptPastedComponents(band);
 

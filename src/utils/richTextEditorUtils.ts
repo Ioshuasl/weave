@@ -3,6 +3,7 @@ import {
   escapeHtml,
   richTextToHtml,
 } from './richTextUtils';
+import { serializeSpanInlineStyles } from './richTextInlineStyle';
 
 const FIELD_TOKEN_RE = /\{[^}]+\}/g;
 
@@ -88,7 +89,7 @@ function serializeNode(node: Node): string {
       }
       if (textDecoration.includes('underline')) wrapped = `++${wrapped}++`;
       if (textDecoration.includes('line-through')) wrapped = `~~${wrapped}~~`;
-      return wrapped;
+      return serializeSpanInlineStyles(el, wrapped);
     }
     default:
       return inner;

@@ -8,6 +8,7 @@ import { DividerLineEditor } from './DividerLineEditor';
 import { resolveDividerLine } from '../../utils/vectorLineUtils';
 import { BandToolbar } from './BandToolbar';
 import { getBandRect, getBandZIndex, getReportPage } from '../../utils/reportPageUtils';
+import { shouldSuppressDesignerCanvasZBoost } from '../../utils/designerZIndex';
 import { getBandDisplayLabel } from '../../utils/dataBandUtils';
 import {
   attachDocumentPointerDrag,
@@ -54,6 +55,9 @@ export const DividerBandOverlay = React.memo(function DividerBandOverlay({
   const dragActivatedRef = useRef(false);
   const previewRectRef = useRef<ReturnType<typeof getBandRect> | null>(null);
   const [previewRect, setPreviewRect] = useState<ReturnType<typeof getBandRect> | null>(null);
+  const textEditorModalOpen = useDesignerStore((state) =>
+    shouldSuppressDesignerCanvasZBoost(state)
+  );
 
   stylePreviewDebug.countRender(`PlacedBandOverlay:${bandId}`);
 
@@ -68,7 +72,11 @@ export const DividerBandOverlay = React.memo(function DividerBandOverlay({
   const displayRect = storeBandPreview
     ? { ...rect, x: storeBandPreview.x, y: storeBandPreview.y }
     : previewRect ?? rect;
-  const zIndex = getBandZIndex(bandId, page, isSelected ? bandId : null);
+  const zIndex = getBandZIndex(
+    bandId,
+    page,
+    textEditorModalOpen ? null : isSelected ? bandId : null
+  );
 
   const commitBandPosition = (next: typeof rect) => {
     updateBand(bandId, {

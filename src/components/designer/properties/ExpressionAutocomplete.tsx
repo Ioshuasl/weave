@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { ExpressionSuggestionGroup } from '../../../utils/expressionFieldSuggestions';
+import { DESIGNER_MODAL_POPUP_Z } from '../../../utils/designerZIndex';
 import { cn } from '../../../utils/cn';
 
 const POPUP_WIDTH = 280;
@@ -68,8 +69,8 @@ export function ExpressionAutocomplete({
       ref={listRef}
       role="listbox"
       aria-label="Campos disponíveis"
-      className="fixed z-[250] w-[280px] max-h-64 overflow-y-auto rounded-lg border border-neutral-200 bg-white shadow-lg"
-      style={{ top: position.top, left: position.left }}
+      className="fixed w-[280px] max-h-64 overflow-y-auto rounded-lg border border-neutral-200 bg-white shadow-lg"
+      style={{ top: position.top, left: position.left, zIndex: DESIGNER_MODAL_POPUP_Z }}
     >
       {groups.length === 0 ? (
         <p className="px-3 py-2 text-[12px] text-neutral-400">

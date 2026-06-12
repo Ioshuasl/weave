@@ -7,9 +7,11 @@ import { cn } from '../../../utils/cn';
 export function PropertiesPanelBreadcrumb({
   band,
   pageName,
+  className,
 }: {
   band?: ReportBand | null;
   pageName: string;
+  className?: string;
 }) {
   const compactMode = useDesignerCompactMode();
 
@@ -19,7 +21,8 @@ export function PropertiesPanelBreadcrumb({
     <p
       className={cn(
         'text-neutral-400 truncate leading-snug',
-        compactMode ? 'text-[10px]' : 'text-[11px]'
+        compactMode ? 'text-[10px]' : 'text-[11px]',
+        className
       )}
     >
       {band && (

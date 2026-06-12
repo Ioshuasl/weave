@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useDesignerStore } from '../../store/designerStore';
 import Draggable from 'react-draggable';
 import { cn } from '../../utils/cn';
@@ -7,7 +7,6 @@ import { mergeLiveChartProps } from '../../utils/chartPropsUtils';
 import { stylePreviewDebug } from '../../utils/stylePreviewDebug';
 import { useDesignerZoom } from './designerZoomContext';
 import { getDesignerPageScale } from '../../utils/dividerBandInteraction';
-import { InlineTextEditor } from './InlineTextEditor';
 import { ResizeHandle } from './ResizeHandle';
 import { useCanvasSelectionClasses } from './designerSelectionContext';
 import { ReportChart } from '../ReportChart';
@@ -17,10 +16,10 @@ import { useSelectionClick } from '../../hooks/useSelectionClick';
 import { isIdSelected } from '../../utils/selectionUtils';
 import { DESIGNER_DRAG_START_DISTANCE_PX } from '../../utils/designerDragThreshold';
 import { useDataSourceCatalog } from './designerHostContext';
-import { buildExpressionFieldSuggestions } from '../../utils/expressionFieldSuggestions';
-import { pushRecentFieldToken } from '../../utils/fieldRecentStorage';
 import { evaluateExpression } from '../../utils/reportUtils';
 import { DESIGN_MODE_SYSTEM_VARIABLES } from '../../utils/systemVariables';
+import { mergeTextEditorDraftStyle } from '../../utils/textEditorModalUtils';
+import { shouldSuppressDesignerCanvasZBoost } from '../../utils/designerZIndex';
 
 interface ComponentRendererProps {
   componentId: string;
@@ -33,7 +32,7 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
   componentId,
 }: ComponentRendererProps) {
   const component = useDesignerStore((state) => state.report.components[componentId]);
-  const reportId = useDesignerStore((state) => state.report.id);
+  const openTextEditorModal = useDesignerStore((state) => state.openTextEditorModal);
   const componentStackIndex = useDesignerStore((state) => {
     const comp = state.report.components[componentId];
     if (!comp) return -1;
@@ -65,6 +64,15 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
       ? state.liveChartPreview.chartProps
       : null
   );
+  const textEditorDraft = useDesignerStore((state) =>
+    state.textEditorModal?.componentId === componentId
+      ? state.textEditorModal.draft
+      : null
+  );
+  const isTextEditorLivePreview = textEditorDraft != null;
+  const textEditorModalOpen = useDesignerStore((state) =>
+    shouldSuppressDesignerCanvasZBoost(state)
+  );
   const selectItem = useSelectionClick();
   const setDraggingComponentId = useDesignerStore((state) => state.setDraggingComponentId);
   const beginComponentGroupDrag = useDesignerStore((state) => state.beginComponentGroupDrag);
@@ -81,21 +89,9 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
   });
   const nodeRef = useRef<HTMLDivElement>(null);
   const zoom = useDesignerZoom();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editDraft, setEditDraft] = useState('');
   const [dragOverride, setDragOverride] = useState<{ x: number; y: number } | null>(null);
   const { snapComponentRect, clearSnapGuides } = useDesignerSnap();
   const selectionClasses = useCanvasSelectionClasses();
-  const expressionSuggestions = useMemo(
-    () => buildExpressionFieldSuggestions(previewData, dataSourceCatalog),
-    [previewData, dataSourceCatalog]
-  );
-  const trackInlineFieldInsert = useCallback(
-    (token: string) => {
-      pushRecentFieldToken(token, reportId);
-    },
-    [reportId]
-  );
 
   const styleOverlay = useMemo(() => {
     if (previewColor == null && previewBackgroundColor == null) return null;
@@ -117,21 +113,37 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
     [component?.chartProps, liveChartPatch]
   );
 
+  const isText = component?.type === 'text';
+  const textSourceContent = textEditorDraft?.content ?? component?.content ?? '';
+  const canvasTextContent = useMemo(
+    () =>
+      isText && component
+        ? evaluateExpression(textSourceContent, {
+            sys: DESIGN_MODE_SYSTEM_VARIABLES,
+            data: previewData,
+            dataSourceCatalog,
+          })
+        : component?.content ?? '',
+    [component, dataSourceCatalog, isText, previewData, textSourceContent]
+  );
+
   stylePreviewDebug.countRender(`ComponentRenderer:${componentId}`);
 
   if (!component) return null;
 
-  const isText = component.type === 'text';
-  const canvasTextContent = isText
-    ? evaluateExpression(component.content, {
-        sys: DESIGN_MODE_SYSTEM_VARIABLES,
-        data: previewData,
-        dataSourceCatalog,
-      })
-    : component.content;
-  const mergedStyle = mergeLiveStyleOverlay(component.style, styleOverlay);
-  const stackZ =
-    isSelected || isEditing ? 1000 : componentStackIndex >= 0 ? componentStackIndex + 2 : 1;
+  const mergedStyle = mergeLiveStyleOverlay(
+    mergeTextEditorDraftStyle(component.style, textEditorDraft),
+    styleOverlay
+  );
+  const stackZ = textEditorModalOpen
+    ? componentStackIndex >= 0
+      ? componentStackIndex + 2
+      : 1
+    : isSelected
+      ? 1000
+      : componentStackIndex >= 0
+        ? componentStackIndex + 2
+        : 1;
 
   const applyGroupDragPreview = (leaderX: number, leaderY: number) => {
     const drag = useDesignerStore.getState().componentGroupDrag;
@@ -223,7 +235,7 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
     cancelComponentGroupDrag();
     setDraggingComponentId(componentId);
 
-    if (!isEditing && !isSelected) {
+    if (!isSelected) {
       selectItem(componentId, e);
     }
 
@@ -235,32 +247,17 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
   const handlePointerDown = (e: React.MouseEvent) => {
     if (e.button !== 0) return;
     e.stopPropagation();
-    if (!isEditing) {
-      const hasModifier = e.ctrlKey || e.metaKey || e.shiftKey;
-      if (hasModifier || !isSelected) {
-        selectItem(componentId, e);
-      }
+    const hasModifier = e.ctrlKey || e.metaKey || e.shiftKey;
+    if (hasModifier || !isSelected) {
+      selectItem(componentId, e);
     }
   };
 
-  const startInlineEdit = (e: React.MouseEvent) => {
+  const openTextEditor = (e: React.MouseEvent) => {
     if (!isText) return;
     e.stopPropagation();
     selectItem(componentId);
-    setEditDraft(component.content);
-    setIsEditing(true);
-  };
-
-  const commitInlineEdit = () => {
-    if (isEditing) {
-      updateComponent(componentId, { content: editDraft });
-      setIsEditing(false);
-    }
-  };
-
-  const cancelInlineEdit = () => {
-    setEditDraft(component.content);
-    setIsEditing(false);
+    openTextEditorModal(componentId);
   };
 
   const handleResizeStart = (e: React.MouseEvent) => {
@@ -330,8 +327,8 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
       bounds="parent"
       scale={zoom}
       distance={DESIGNER_DRAG_START_DISTANCE_PX}
-      disabled={isEditing || isGroupFollower}
-      cancel=".no-drag,.inline-text-editor"
+      disabled={isGroupFollower}
+      cancel=".no-drag"
     >
       <div
         ref={nodeRef}
@@ -339,7 +336,7 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
         data-component-id={componentId}
         onPointerDown={handlePointerDown}
         onClick={(e) => e.stopPropagation()}
-        onDoubleClick={startInlineEdit}
+        onDoubleClick={openTextEditor}
         style={{
           width: component.rect.width,
           height: component.rect.height,
@@ -349,48 +346,33 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
         <div
           className={cn(
             'component-body w-full h-full overflow-hidden relative group',
-            isSelected || isEditing
-              ? selectionClasses.active
-              : selectionClasses.idle,
-            !isEditing && !isText && 'cursor-grab active:cursor-grabbing',
-            isText && !isEditing && (isSelected ? 'cursor-text' : 'cursor-grab active:cursor-grabbing')
+            isSelected ? selectionClasses.active : selectionClasses.idle,
+            isTextEditorLivePreview && 'ring-2 ring-indigo-400/70 ring-offset-1',
+            !isText && 'cursor-grab active:cursor-grabbing',
+            isText && (isSelected ? 'cursor-text' : 'cursor-grab active:cursor-grabbing')
           )}
         >
           <div
             className={cn(
               'w-full h-full px-1 flex',
-              (isText || isEditing) && 'hide-scrollbar items-start whitespace-normal',
-              !isText && !isEditing && 'overflow-hidden items-center whitespace-nowrap'
+              isText && 'hide-scrollbar items-start whitespace-normal',
+              !isText && 'overflow-hidden items-center whitespace-nowrap'
             )}
             style={computedStyle}
           >
-            {isText && isEditing ? (
-              <InlineTextEditor
-                value={editDraft}
-                onChange={setEditDraft}
-                onCommit={commitInlineEdit}
-                onCancel={cancelInlineEdit}
-                expressionSuggestions={expressionSuggestions}
-                onFieldInserted={trackInlineFieldInsert}
+            {isText && (
+              <FormattedText
+                content={canvasTextContent}
+                className="w-full break-words"
                 style={{
-                  fontSize: mergedStyle.fontSize,
-                  fontWeight: mergedStyle.fontWeight,
                   color: mergedStyle.color,
+                  fontSize: mergedStyle.fontSize,
                   textAlign: mergedStyle.textAlign,
                 }}
               />
-            ) : (
+            )}
+            {!isText && (
               <>
-                {isText && (
-                  <FormattedText
-                    content={canvasTextContent}
-                    className="w-full break-words"
-                    style={{
-                      color: mergedStyle.color,
-                      fontSize: mergedStyle.fontSize,
-                    }}
-                  />
-                )}
                 {component.type === 'image' && (
                   <img
                     src={component.content}
@@ -458,13 +440,19 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
             )}
           </div>
 
-          {isText && isSelected && !isEditing && (
+          {isTextEditorLivePreview && (
+            <span className="no-drag absolute top-0.5 right-0.5 z-10 px-1.5 py-px rounded text-[9px] font-medium uppercase tracking-wide bg-indigo-600/90 text-white pointer-events-none">
+              Editando
+            </span>
+          )}
+
+          {isText && isSelected && (
             <p className="no-drag absolute -bottom-4 left-0 text-[9px] text-neutral-400 whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-              Duplo-clique para editar
+              Duplo-clique para abrir editor
             </p>
           )}
 
-          {isSelected && !isEditing && selectedComponentCount <= 1 && (
+          {isSelected && selectedComponentCount <= 1 && (
             <ResizeHandle onMouseDown={handleResizeStart} />
           )}
         </div>
