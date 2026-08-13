@@ -191,9 +191,9 @@ export default function App() {
           <code className="font-mono text-neutral-500">
             {'<ReportDesigner report={...} data={...} mode="design" />'}
           </code>
-          .           Cada linha abre um template diferente (A4, multipágina, A5, cupom 80 mm). O host
-          injeta <code className="font-mono text-neutral-500">pagePresets</code> com o preset
-          &quot;Ofício cartório&quot;.
+          . Cada linha abre um template diferente (A4, multipágina, A5, cupom 80 mm, etiqueta
+          extraprotocolar). O host injeta <code className="font-mono text-neutral-500">pagePresets</code>{' '}
+          com &quot;Ofício cartório&quot; e &quot;Etiqueta extraprotocolar 9×5 cm&quot;.
         </p>
       </main>
     </div>

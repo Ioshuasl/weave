@@ -10,6 +10,7 @@ describe('Smoke — host demo', () => {
     cy.contains('Multipágina (capa + corpo)').should('be.visible');
     cy.contains('Lista compacta A5').should('be.visible');
     cy.contains('Cupom 80 mm').should('be.visible');
+    cy.contains('Etiqueta extraprotocolar (9×5 cm)').should('be.visible');
   });
 
   it('abre o designer em modo design', () => {

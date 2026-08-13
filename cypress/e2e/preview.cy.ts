@@ -82,6 +82,23 @@ describe('P0 — Preview', () => {
     cy.get('button[aria-label="Livro"]').should('be.disabled');
   });
 
+  it('V12 — etiqueta extraprotocolar 9×5 cm (autenticação + firma)', () => {
+    cy.openReport('Etiqueta extraprotocolar (9×5 cm)', 'preview');
+
+    cy.get('[data-report-id="rep_etiqueta_extraprotocolar"]').should('exist');
+    cy.contains('.report-preview-toolbar', '340×189px').should('be.visible');
+    cy.get('#report-print-root').should(($root) => {
+      const text = $root.text();
+      expect(text).to.include('AUTENTICAÇÃO');
+      expect(text).to.include('RECONHECIMENTO DE FIRMA');
+      expect(text).to.include('Darleide Teixeira Borges Alves');
+      expect(text).to.include('02242002193364024330060');
+      expect(text).to.include('extrajudicial.tjgo.jus.br/selo');
+      expect(text).not.to.include('{ato.tipo}');
+    });
+    cy.get('.preview-sheet-block').should('have.length.at.least', 2);
+  });
+
   it('V10 — Imprimir dispara onPrint do host', () => {
     cy.openReport('Lista de usuários (A4)', 'preview');
     cy.stubHostConsole();

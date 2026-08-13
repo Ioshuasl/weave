@@ -48,4 +48,13 @@ export const MOCK_HOST_REPORTS: HostReportTemplate[] = [
     updatedAt: '2026-06-10',
     status: 'ativo',
   },
+  {
+    id: 'rep_etiqueta_extraprotocolar',
+    name: 'Etiqueta extraprotocolar (9×5 cm)',
+    description:
+      'Tabelionato de notas — autenticação e reconhecimento de firma. Preset 9×5 cm sem margem.',
+    dataset: 'ato',
+    updatedAt: '2026-08-13',
+    status: 'ativo',
+  },
 ];

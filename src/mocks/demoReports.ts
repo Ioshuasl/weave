@@ -1,12 +1,14 @@
 import type { ReportDefinition } from '../types/report';
 import { marginsCmToPx, PAGE_PRESET_BY_ID, presetDimensionsToPx } from '../utils/pagePresets';
 import { DEMO_DATA, DEMO_REPORT } from './demoReport';
-import { DEMO_CARTORIO_DATA } from './demoHostData';
+import { DEMO_ATO_EXTRAPROTOCOLAR_DATA, DEMO_CARTORIO_DATA } from './demoHostData';
+import { PRESET_ETIQUETA_EXTRAPROTOCOLAR } from './demoHostPresets';
 
 export { DEMO_DATA, DEMO_REPORT };
 
 const a5 = presetDimensionsToPx(PAGE_PRESET_BY_ID['a5-portrait']);
 const receipt80 = presetDimensionsToPx(PAGE_PRESET_BY_ID['receipt-80']);
+const etiquetaExtraprotocolar = presetDimensionsToPx(PRESET_ETIQUETA_EXTRAPROTOCOLAR);
 
 /** Relatório com 2 páginas de design (capa + corpo) */
 export const DEMO_MULTIPAGE_REPORT: ReportDefinition = {
@@ -282,6 +284,68 @@ export const DEMO_RECEIPT_REPORT: ReportDefinition = {
   },
 };
 
+const etiquetaContentWidth = etiquetaExtraprotocolar.width;
+const etiquetaContentHeight = etiquetaExtraprotocolar.height;
+
+/** Etiqueta 9×5 cm — autenticação e reconhecimento de firma (tabelionato de notas) */
+export const DEMO_ETIQUETA_EXTRAPROTOCOLAR_REPORT: ReportDefinition = {
+  id: 'rep_etiqueta_extraprotocolar',
+  name: 'Etiqueta extraprotocolar',
+  pages: [
+    {
+      id: 'etiqueta_page',
+      name: 'Etiqueta',
+      presetId: PRESET_ETIQUETA_EXTRAPROTOCOLAR.id,
+      profile: 'label',
+      sizeUnit: 'cm',
+      width: etiquetaContentWidth,
+      height: etiquetaContentHeight,
+      margins: etiquetaExtraprotocolar.margins,
+      bands: ['etq_ato'],
+    },
+  ],
+  bands: {
+    etq_ato: {
+      id: 'etq_ato',
+      type: 'dataList',
+      name: 'Ato extraprotocolar',
+      height: etiquetaContentHeight,
+      bandRect: {
+        x: 0,
+        y: 0,
+        width: etiquetaContentWidth,
+        height: etiquetaContentHeight,
+      },
+      dataSource: 'ato',
+      components: ['etq_comp_texto'],
+    },
+  },
+  components: {
+    etq_comp_texto: {
+      id: 'etq_comp_texto',
+      type: 'text',
+      name: 'Texto do selo',
+      parentId: 'etq_ato',
+      rect: {
+        x: 8,
+        y: 10,
+        width: etiquetaContentWidth - 16,
+        height: etiquetaContentHeight - 20,
+      },
+      content:
+        '**{ato.tipo}**\n{ato.texto} {ato.cidade_uf}, {ato.data}. Emol.:\nR$ {ato.emolumentos};;\n{ato.numero_selo} - Consulte este selo em:\n[color=#46747d]{ato.url_consulta}[/color]\n{ato.oficial_nome}-{ato.oficial_cargo}',
+      style: {
+        fontFamily: 'Arial, Helvetica, sans-serif',
+        fontSize: '11px',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#000000',
+        lineHeight: 1.3,
+      },
+    },
+  },
+};
+
 export interface DemoReportBundle {
   report: ReportDefinition;
   data: Record<string, unknown[]>;
@@ -292,6 +356,10 @@ export const DEMO_REPORT_BUNDLES: Record<string, DemoReportBundle> = {
   rep_multipage: { report: DEMO_MULTIPAGE_REPORT, data: DEMO_DATA },
   rep_a5: { report: DEMO_A5_REPORT, data: DEMO_DATA },
   rep_receipt: { report: DEMO_RECEIPT_REPORT, data: DEMO_DATA },
+  rep_etiqueta_extraprotocolar: {
+    report: DEMO_ETIQUETA_EXTRAPROTOCOLAR_REPORT,
+    data: DEMO_ATO_EXTRAPROTOCOLAR_DATA,
+  },
 };
 
 export function resolveDemoReportBundle(reportId: string): DemoReportBundle {

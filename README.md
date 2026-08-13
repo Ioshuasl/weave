@@ -550,7 +550,7 @@ Atalho **F2** com um componente de texto selecionado abre o mesmo modal. Altera�
 | 3.3 Paginação runtime (MVP) | ✅ — quebra em bandas de dados, header/footer repetidos, preview empilhado |
 | 3.2 Semântica bandas | ✅ — once / everyPage / flow / onceLast |
 | 3.4 Contador de páginas | ✅ — `{sys.pageNumber}`, `{Page#}`, `{TotalPages#}` |
-| 3.5 Integração host | ✅ — `pagePresets`, `onPrint`, demos A5/cupom/multipágina, `@page` dinâmico |
+| 3.5 Integração host | ✅ — `pagePresets`, `onPrint`, demos A5/cupom/multipágina/etiqueta extraprotocolar, `@page` dinâmico |
 | 4.1 / 4.2 | 📋 grade etiquetas, cupom bobina |
 
 ---

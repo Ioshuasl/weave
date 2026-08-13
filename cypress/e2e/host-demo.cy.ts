@@ -8,9 +8,10 @@ describe('P0 — Host demo', () => {
     'Multipágina (capa + corpo)',
     'Lista compacta A5',
     'Cupom 80 mm',
+    'Etiqueta extraprotocolar (9×5 cm)',
   ] as const;
 
-  it('H1 — home carrega com os 4 templates', () => {
+  it('H1 — home carrega com os 5 templates', () => {
     cy.visit('/');
     cy.contains('Meu ERP — Relatórios').should('be.visible');
     cy.contains('Templates de relatório').should('be.visible');
