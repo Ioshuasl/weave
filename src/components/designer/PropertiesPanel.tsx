@@ -152,7 +152,7 @@ export const PropertiesPanel = () => {
           reportId={report.id}
           updateBand={updateBand}
           canPaste={canPasteHere}
-          onPaste={pasteToTargetBand}
+          onPaste={() => pasteToTargetBand()}
           onDuplicate={duplicateSelected}
           onRemove={removeSelected}
         />
@@ -171,7 +171,7 @@ export const PropertiesPanel = () => {
           onPatchStyle={patchSelectedComponentStyle}
           onCopy={copySelected}
           onDuplicate={duplicateSelected}
-          onPaste={pasteToTargetBand}
+          onPaste={() => pasteToTargetBand()}
           onRemove={removeSelected}
         />
       )}
