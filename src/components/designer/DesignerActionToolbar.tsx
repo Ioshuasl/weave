@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, type RefObject } from 'react';
 import {
   Archive,
+  CircleHelp,
   Download,
   History,
   MoreHorizontal,
@@ -22,6 +23,7 @@ import {
   isReportStateDirty,
 } from '../../utils/reportSaveSnapshot';
 import { useDesignerCompactMode } from './designerLayoutContext';
+import { startDesignerTour } from '../../utils/designerTour';
 
 interface DesignerActionToolbarProps {
   reportName?: string;
@@ -49,6 +51,7 @@ function ToolbarIconButton({
   emphasis,
   className,
   compact = false,
+  tourId,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
@@ -58,6 +61,7 @@ function ToolbarIconButton({
   emphasis?: boolean;
   className?: string;
   compact?: boolean;
+  tourId?: string;
 }) {
   return (
     <button
@@ -66,6 +70,7 @@ function ToolbarIconButton({
       disabled={disabled}
       title={label}
       aria-label={label}
+      data-tour={tourId}
       className={cn(
         'flex items-center justify-center rounded-md transition-colors shrink-0',
         compact ? 'w-7 h-7' : 'w-8 h-8',
@@ -189,6 +194,7 @@ export const DesignerActionToolbar: React.FC<DesignerActionToolbarProps> = ({
       )}
       <ToolbarIconButton
         icon={Download}
+        tourId="export"
         label="Exportar relatório (JSON)"
         onClick={handleExportReport}
         compact={compactMode}
@@ -204,15 +210,28 @@ export const DesignerActionToolbar: React.FC<DesignerActionToolbarProps> = ({
 
   return (
     <div
+      data-tour="toolbar"
       className={cn(
         'w-full shrink-0 bg-[#fbfbfa] flex items-center justify-end gap-0.5 z-10 border-b border-neutral-200/80',
         compactMode ? 'px-1.5 py-1' : 'px-2 py-1.5'
       )}
     >
       <div className="flex items-center gap-0.5">
+        <ToolbarIconButton
+          icon={CircleHelp}
+          label="Manual do designer"
+          onClick={() => {
+            void startDesignerTour();
+          }}
+          compact={compactMode}
+        />
+
+        <ToolbarDivider />
+
         {onSave && (
           <ToolbarIconButton
             icon={Save}
+            tourId="save"
             label={saveLabel}
             onClick={onSave}
             disabled={isSaving}
@@ -224,6 +243,7 @@ export const DesignerActionToolbar: React.FC<DesignerActionToolbarProps> = ({
 
         <ToolbarIconButton
           icon={Play}
+          tourId="preview"
           label="Pré-visualização"
           onClick={onPreview}
           compact={compactMode}
@@ -232,6 +252,7 @@ export const DesignerActionToolbar: React.FC<DesignerActionToolbarProps> = ({
         {onHistory && (
           <ToolbarIconButton
             icon={History}
+            tourId="history"
             label={`Histórico de alterações (${historyPointer + 1}/${historyCount}) · Ctrl+H`}
             onClick={onHistory}
             compact={compactMode}

@@ -1,6 +1,13 @@
-import React, { useMemo, useRef, useState } from 'react';
+import {
+  memo,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type MouseEvent as ReactMouseEvent,
+} from 'react';
 import { useDesignerStore } from '../../store/designerStore';
-import Draggable from 'react-draggable';
+import Draggable, { type DraggableData, type DraggableEvent } from 'react-draggable';
 import { cn } from '../../utils/cn';
 import { mergeLiveStyleOverlay } from '../../utils/componentStyleUtils';
 import { mergeLiveChartProps } from '../../utils/chartPropsUtils';
@@ -9,15 +16,11 @@ import { useDesignerZoom } from './designerZoomContext';
 import { getDesignerPageScale } from '../../utils/dividerBandInteraction';
 import { ResizeHandle } from './ResizeHandle';
 import { useCanvasSelectionClasses } from './designerSelectionContext';
-import { ReportChart } from '../ReportChart';
+import { DesignerChartPlaceholder } from './DesignerChartPlaceholder';
 import { FormattedText } from '../FormattedText';
 import { useDesignerSnap } from '../../hooks/useDesignerSnap';
 import { useSelectionClick } from '../../hooks/useSelectionClick';
 import { isIdSelected } from '../../utils/selectionUtils';
-import { DESIGNER_DRAG_START_DISTANCE_PX } from '../../utils/designerDragThreshold';
-import { useDataSourceCatalog } from './designerHostContext';
-import { evaluateExpression } from '../../utils/reportUtils';
-import { DESIGN_MODE_SYSTEM_VARIABLES } from '../../utils/systemVariables';
 import { mergeTextEditorDraftStyle } from '../../utils/textEditorModalUtils';
 import { shouldSuppressDesignerCanvasZBoost } from '../../utils/designerZIndex';
 
@@ -25,10 +28,7 @@ interface ComponentRendererProps {
   componentId: string;
 }
 
-/** Referência estável — evita loop infinito no useSyncExternalStore (React 19) */
-const EMPTY_CHART_DATA: never[] = [];
-
-export const ComponentRenderer = React.memo(function ComponentRenderer({
+export const ComponentRenderer = memo(function ComponentRenderer({
   componentId,
 }: ComponentRendererProps) {
   const component = useDesignerStore((state) => state.report.components[componentId]);
@@ -80,13 +80,6 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
   const commitComponentGroupDrag = useDesignerStore((state) => state.commitComponentGroupDrag);
   const cancelComponentGroupDrag = useDesignerStore((state) => state.cancelComponentGroupDrag);
   const updateComponent = useDesignerStore((state) => state.updateComponent);
-  const previewData = useDesignerStore((state) => state.data);
-  const dataSourceCatalog = useDataSourceCatalog();
-  const chartData = useDesignerStore((state) => {
-    const comp = state.report.components[componentId];
-    if (comp?.type !== 'chart' || !comp.chartProps) return EMPTY_CHART_DATA;
-    return state.data[comp.chartProps.dataset] ?? EMPTY_CHART_DATA;
-  });
   const nodeRef = useRef<HTMLDivElement>(null);
   const zoom = useDesignerZoom();
   const [dragOverride, setDragOverride] = useState<{ x: number; y: number } | null>(null);
@@ -114,18 +107,7 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
   );
 
   const isText = component?.type === 'text';
-  const textSourceContent = textEditorDraft?.content ?? component?.content ?? '';
-  const canvasTextContent = useMemo(
-    () =>
-      isText && component
-        ? evaluateExpression(textSourceContent, {
-            sys: DESIGN_MODE_SYSTEM_VARIABLES,
-            data: previewData,
-            dataSourceCatalog,
-          })
-        : component?.content ?? '',
-    [component, dataSourceCatalog, isText, previewData, textSourceContent]
-  );
+  const canvasTextContent = textEditorDraft?.content ?? component?.content ?? '';
 
   stylePreviewDebug.countRender(`ComponentRenderer:${componentId}`);
 
@@ -163,7 +145,7 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
     setDragPreviewRects(previews);
   };
 
-  const handleDragMove = (e: MouseEvent, dragData: { x: number; y: number }) => {
+  const handleDragMove = (e: DraggableEvent, dragData: DraggableData) => {
     const snapped = snapComponentRect(
       {
         x: dragData.x,
@@ -190,7 +172,7 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
     });
   };
 
-  const handleDragStop = (e: MouseEvent, dragData: { x: number; y: number }) => {
+  const handleDragStop = (e: DraggableEvent, dragData: DraggableData) => {
     const snapped = snapComponentRect(
       {
         x: dragData.x,
@@ -227,7 +209,7 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
     }
   };
 
-  const handleDragStart = (e: MouseEvent) => {
+  const handleDragStart = (e: DraggableEvent, _data: DraggableData) => {
     e.stopPropagation();
     stylePreviewDebug.countAction('dragComponent:start', { componentId });
     setDragOverride(null);
@@ -244,7 +226,7 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
     }
   };
 
-  const handlePointerDown = (e: React.MouseEvent) => {
+  const handlePointerDown = (e: ReactMouseEvent) => {
     if (e.button !== 0) return;
     e.stopPropagation();
     const hasModifier = e.ctrlKey || e.metaKey || e.shiftKey;
@@ -253,14 +235,14 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
     }
   };
 
-  const openTextEditor = (e: React.MouseEvent) => {
+  const openTextEditor = (e: ReactMouseEvent) => {
     if (!isText) return;
     e.stopPropagation();
     selectItem(componentId);
     openTextEditorModal(componentId);
   };
 
-  const handleResizeStart = (e: React.MouseEvent) => {
+  const handleResizeStart = (e: ReactMouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
     stylePreviewDebug.countAction('resizeComponent:start', { componentId });
@@ -295,7 +277,7 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
     document.addEventListener('mouseup', handleMouseUp);
   };
 
-  const getJustifyContent = (textAlign?: React.CSSProperties['textAlign']) => {
+  const getJustifyContent = (textAlign?: CSSProperties['textAlign']) => {
     switch (textAlign) {
       case 'center':
         return 'center';
@@ -306,7 +288,7 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
     }
   };
 
-  const computedStyle: React.CSSProperties = {
+  const computedStyle: CSSProperties = {
     ...mergedStyle,
     display: 'flex',
     alignItems: 'center',
@@ -326,7 +308,6 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
       onStop={handleDragStop}
       bounds="parent"
       scale={zoom}
-      distance={DESIGNER_DRAG_START_DISTANCE_PX}
       disabled={isGroupFollower}
       cancel=".no-drag"
     >
@@ -335,7 +316,7 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
         className="component-node absolute"
         data-component-id={componentId}
         onPointerDown={handlePointerDown}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e: ReactMouseEvent<HTMLDivElement>) => e.stopPropagation()}
         onDoubleClick={openTextEditor}
         style={{
           width: component.rect.width,
@@ -426,15 +407,7 @@ export const ComponentRenderer = React.memo(function ComponentRenderer({
                   </table>
                 )}
                 {component.type === 'chart' && mergedChartProps && (
-                  <ReportChart
-                    className="absolute inset-0 pointer-events-none"
-                    data={chartData}
-                    chartProps={mergedChartProps}
-                    width={component.rect.width}
-                    height={component.rect.height}
-                    reportData={previewData}
-                    dataSourceCatalog={dataSourceCatalog}
-                  />
+                  <DesignerChartPlaceholder chartProps={mergedChartProps} />
                 )}
               </>
             )}

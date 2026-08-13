@@ -144,6 +144,25 @@ export function replaceExpressionTriggerWithChip(
   selection.addRange(after);
 }
 
+export function replaceExpressionTriggerWithToken(
+  triggerRange: Range,
+  token: string
+): void {
+  const selection = window.getSelection();
+  if (!selection) return;
+
+  triggerRange.deleteContents();
+
+  const textNode = document.createTextNode(token);
+  triggerRange.insertNode(textNode);
+
+  const after = document.createRange();
+  after.setStartAfter(textNode);
+  after.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(after);
+}
+
 export function getCaretClientRect(): DOMRect | null {
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0) return null;

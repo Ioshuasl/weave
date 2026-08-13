@@ -21,6 +21,8 @@ export function TextComponentEditorModal() {
   const commitTextEditorModal = useDesignerStore((state) => state.commitTextEditorModal);
 
   const editorHandleRef = useRef<{ focus: () => void } | null>(null);
+  const pointerDownOnOverlayRef = useRef(false);
+  const pointerDownInEditorRef = useRef(false);
   const [discardConfirmOpen, setDiscardConfirmOpen] = useState(false);
 
   const componentId = textEditorModal?.componentId;
@@ -45,6 +47,42 @@ export function TextComponentEditorModal() {
     setDiscardConfirmOpen(false);
     closeTextEditorModal();
   }, [closeTextEditorModal]);
+
+  const handleOverlayPointerDown = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    pointerDownOnOverlayRef.current = event.target === event.currentTarget;
+    pointerDownInEditorRef.current = Boolean(
+      (event.target as HTMLElement | null)?.closest('[contenteditable="true"]')
+    );
+  }, []);
+
+  const restoreEditorFocusWithSelection = useCallback(() => {
+    const selection = window.getSelection();
+    const ranges =
+      selection && selection.rangeCount > 0
+        ? Array.from({ length: selection.rangeCount }, (_, i) =>
+            selection.getRangeAt(i).cloneRange()
+          )
+        : [];
+    editorHandleRef.current?.focus();
+    if (!selection || ranges.length === 0) return;
+    selection.removeAllRanges();
+    for (const range of ranges) selection.addRange(range);
+  }, []);
+
+  const handleOverlayClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (event.target !== event.currentTarget) return;
+      if (!pointerDownOnOverlayRef.current) {
+        event.preventDefault();
+        if (pointerDownInEditorRef.current) {
+          restoreEditorFocusWithSelection();
+        }
+        return;
+      }
+      requestClose();
+    },
+    [requestClose, restoreEditorFocusWithSelection]
+  );
 
   useEffect(() => {
     if (!textEditorModal) {
@@ -80,14 +118,15 @@ export function TextComponentEditorModal() {
 
   return createPortal(
     <div
-      className="fixed inset-0 bg-neutral-900/30 flex items-center justify-center p-4 sm:p-6 backdrop-blur-sm"
+      className="fixed inset-0 bg-neutral-900/30 flex items-center justify-center p-4 sm:p-6 backdrop-blur-sm select-none"
       style={{ zIndex: DESIGNER_MODAL_OVERLAY_Z }}
-      onClick={requestClose}
+      onMouseDown={handleOverlayPointerDown}
+      onClick={handleOverlayClick}
     >
       <div
         className={cn(
           'bg-white rounded-xl shadow-xl border border-neutral-200/80 w-full max-w-2xl',
-          'max-h-[min(90vh,720px)] flex flex-col overflow-hidden relative'
+          'max-h-[min(90vh,720px)] flex flex-col overflow-hidden relative select-text'
         )}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
@@ -133,8 +172,6 @@ export function TextComponentEditorModal() {
             onColorChange={(color) => patchTextEditorDraft({ color })}
             textAlign={draft.textAlign}
             onTextAlignChange={(textAlign) => patchTextEditorDraft({ textAlign })}
-            padding={draft.padding}
-            onPaddingChange={(padding) => patchTextEditorDraft({ padding })}
             data={data}
             dataSourceCatalog={dataSourceCatalog}
             reportId={report.id}

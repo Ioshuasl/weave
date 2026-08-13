@@ -102,7 +102,6 @@ export interface BandSurfaceDropContext {
   bandId: string;
   zoom: number;
   rowHeight?: number;
-  showListGhostPreview?: boolean;
   isTableLayout?: boolean;
 }
 
@@ -129,10 +128,6 @@ export function handleBandSurfaceDrop(
   const bounds = e.currentTarget.getBoundingClientRect();
   const x = (e.clientX - bounds.left) / context.zoom;
   const y = (e.clientY - bounds.top) / context.zoom;
-
-  if (context.showListGhostPreview && context.rowHeight != null && y >= context.rowHeight) {
-    return false;
-  }
 
   if (payload.type === 'field') {
     actions.addComponent(context.bandId, 'text', {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { ChevronLeft, LayoutTemplate } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import { SIDEBAR_WIDTH_CLASS } from './designerLayout';
@@ -12,6 +11,7 @@ interface SidebarProps {
 export const Sidebar = ({ reportName, onClose }: SidebarProps) => {
   return (
     <aside
+      data-tour="sidebar"
       className={cn(
         SIDEBAR_WIDTH_CLASS,
         'bg-[#fbfbfa] border-r border-neutral-200 flex flex-col h-full select-none z-10'

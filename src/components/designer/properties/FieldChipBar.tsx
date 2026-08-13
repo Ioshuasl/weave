@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
 import type { DataFieldOption } from '../../../utils/reportUtils';
-import type { DataSourceCatalog } from '../../../utils/dataSourceUtils';
 import { readRecentFieldTokens } from '../../../utils/fieldRecentStorage';
-import { resolveFieldTokenPreview } from '../../../utils/fieldTokenUtils';
 import { useDesignerCompactMode } from '../designerLayoutContext';
 import { cn } from '../../../utils/cn';
 
@@ -11,15 +9,11 @@ const PINNED_SINGLETON_COUNT = 4;
 
 export function FieldChipBar({
   singletons,
-  data,
-  dataSourceCatalog,
   reportId,
   recentVersion = 0,
   onInsert,
 }: {
   singletons: DataFieldOption[];
-  data: Record<string, unknown[]>;
-  dataSourceCatalog?: DataSourceCatalog;
   reportId?: string;
   recentVersion?: number;
   onInsert: (token: string) => void;
@@ -41,10 +35,9 @@ export function FieldChipBar({
 
     return tokens.map((token) => ({
       token,
-      preview: resolveFieldTokenPreview(token, data, dataSourceCatalog),
       label: token.slice(1, -1),
     }));
-  }, [singletons, reportId, recentVersion, data, dataSourceCatalog]);
+  }, [singletons, reportId, recentVersion]);
 
   if (chips.length === 0) return null;
 
@@ -68,7 +61,7 @@ export function FieldChipBar({
           <button
             key={chip.token}
             type="button"
-            title={chip.preview ? `${chip.token} — ${chip.preview}` : chip.token}
+            title={chip.token}
             onClick={() => onInsert(chip.token)}
             className={cn(
               'shrink-0 inline-flex items-center gap-1 rounded-full border transition-colors',
@@ -77,9 +70,6 @@ export function FieldChipBar({
             )}
           >
             <span className="font-mono opacity-80">{chip.label}</span>
-            {chip.preview && (
-              <span className="text-indigo-600/80 truncate max-w-[7rem]">{chip.preview}</span>
-            )}
           </button>
         ))}
       </div>

@@ -24,9 +24,14 @@ function renderFieldChipHtml(token: string, resolver?: FieldChipLabelResolver): 
 /** Markdown → HTML visual para contenteditable (campos viram chips) */
 export function markdownToEditorHtml(
   content: string,
-  resolveChip?: FieldChipLabelResolver
+  resolveChip?: FieldChipLabelResolver,
+  options?: { fieldAsChips?: boolean }
 ): string {
   if (!content) return '';
+
+  if (options?.fieldAsChips === false) {
+    return richTextToHtml(content);
+  }
 
   const parts: string[] = [];
   let last = 0;
@@ -137,6 +142,22 @@ export function insertFieldChipAtSelection(
   chip.after(spacer);
 
   range.setStartAfter(spacer);
+  range.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
+export function insertFieldTokenAtSelection(token: string): void {
+  const selection = window.getSelection();
+  if (!selection || selection.rangeCount === 0) return;
+
+  const range = selection.getRangeAt(0);
+  range.deleteContents();
+
+  const textNode = document.createTextNode(token);
+  range.insertNode(textNode);
+
+  range.setStartAfter(textNode);
   range.collapse(true);
   selection.removeAllRanges();
   selection.addRange(range);

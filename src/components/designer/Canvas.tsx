@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { memo, useMemo, useRef, useState, type RefObject } from 'react';
 import { ZoomIn, ZoomOut, RotateCcw, Magnet } from 'lucide-react';
 import type { ReportPage } from '../../types/report';
 import { useDesignerStore } from '../../store/designerStore';
@@ -31,14 +31,14 @@ interface CanvasDesignerPageProps {
   page: ReportPage;
   placedBandIds: string[];
   contentSize: { width: number; height: number };
-  pageWrapRef: React.RefObject<HTMLDivElement | null>;
+  pageWrapRef: RefObject<HTMLDivElement | null>;
   isPageDropTarget: boolean;
   onPageDropTargetChange: (value: boolean) => void;
   isPageSelected: boolean;
   onSelectPage: () => void;
 }
 
-const CanvasDesignerPage = React.memo(function CanvasDesignerPage({
+const CanvasDesignerPage = memo(function CanvasDesignerPage({
   zoom,
   page,
   placedBandIds,
@@ -61,6 +61,7 @@ const CanvasDesignerPage = React.memo(function CanvasDesignerPage({
       <div
         ref={pageWrapRef}
         data-designer-page
+        data-tour="page"
         className={cn(
           'bg-white shadow-sm border relative transition-[box-shadow,border-color]',
           isPageSelected
@@ -153,7 +154,7 @@ export const Canvas = ({ canvasSelectionClasses, fitLayoutKey = 0 }: CanvasProps
   const selectedPageId = useDesignerStore((state) => state.selectedPageId);
   const snapEnabled = useDesignerStore((state) => state.snapEnabled);
   const setSnapEnabled = useDesignerStore((state) => state.setSnapEnabled);
-  const pageWrapRef = React.useRef<HTMLDivElement>(null);
+  const pageWrapRef = useRef<HTMLDivElement>(null);
   const [isPageDropTarget, setIsPageDropTarget] = useState(false);
   const isNarrowViewport = useMediaQuery('(max-width: 1279px)');
 
@@ -226,6 +227,7 @@ export const Canvas = ({ canvasSelectionClasses, fitLayoutKey = 0 }: CanvasProps
         </div>
 
         <div
+          data-tour="zoom"
           className={cn(
             'absolute bottom-4 flex items-center gap-0.5 rounded-lg border border-neutral-200 bg-white/95 shadow-sm backdrop-blur-sm p-0.5 z-10',
             isNarrowViewport ? 'left-4' : 'right-4'

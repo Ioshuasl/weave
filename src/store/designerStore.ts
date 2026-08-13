@@ -24,6 +24,7 @@ import {
 } from '../utils/pagePresets';
 import {
   clampRectToPage,
+  findPageIdForBand,
   getBandRect,
   getDefaultBandRect,
   getDefaultDividerRect,
@@ -176,7 +177,10 @@ interface DesignerState {
   previewModalOpen: boolean;
 
   // Actions
-  setSelection: (id: string | null, options?: { mode?: SelectionMode }) => void;
+  setSelection: (
+    id: string | null,
+    options?: { mode?: SelectionMode; bringToFront?: boolean }
+  ) => void;
   selectPage: (pageId: string) => void;
   setActivePage: (pageId: string) => void;
   addReportPage: () => void;
@@ -569,6 +573,7 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
   setSelection: (id, options) =>
     set((state) => {
       const mode = options?.mode ?? 'replace';
+      const bringToFront = options?.bringToFront ?? true;
       const clearStylePreview = {
         liveStylePreview: null as LiveStylePreview | null,
         liveChartPreview: null as LiveChartPreview | null,
@@ -596,6 +601,20 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
       const pageId = stateActivePageId(state);
       const page = stateActivePage(state);
       const component = state.report.components[id];
+
+      if (!bringToFront) {
+        const targetBandId = component?.parentId ?? (state.report.bands[id] ? id : null);
+        const targetPageId = targetBandId
+          ? findPageIdForBand(state.report, targetBandId)
+          : null;
+        return {
+          selectedIds: nextSelectedIds,
+          selectedPageId: null,
+          ...(targetPageId ? { activePageId: targetPageId } : {}),
+          ...clearStylePreview,
+          draggingComponentId: null,
+        };
+      }
 
       if (component) {
         const parentId = component.parentId;

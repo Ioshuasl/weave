@@ -1,5 +1,5 @@
 import React from 'react';
-import type { DataTableProps, ReportBand } from '../../types/report';
+import type { DataTableColumn, ReportBand } from '../../types/report';
 import { resolveDataCellValue } from '../../utils/dataBandUtils';
 import { cn } from '../../utils/cn';
 
@@ -8,7 +8,13 @@ interface DataBandTableViewProps {
   rows: Record<string, unknown>[];
   dataSource: string;
   previewRowLimit?: number;
+  /** design = tokens/molde; preview = dados resolvidos */
+  variant?: 'design' | 'preview';
   className?: string;
+}
+
+function columnTemplateToken(column: DataTableColumn, dataSource: string): string {
+  return column.format ?? `{${dataSource}.${column.field}}`;
 }
 
 export const DataBandTableView: React.FC<DataBandTableViewProps> = ({
@@ -16,6 +22,7 @@ export const DataBandTableView: React.FC<DataBandTableViewProps> = ({
   rows,
   dataSource,
   previewRowLimit,
+  variant = 'preview',
   className,
 }) => {
   const table = band.dataTable;
@@ -27,8 +34,13 @@ export const DataBandTableView: React.FC<DataBandTableViewProps> = ({
     );
   }
 
-  const displayRows = previewRowLimit != null ? rows.slice(0, previewRowLimit) : rows;
-  const hasMore = previewRowLimit != null && rows.length > previewRowLimit;
+  const isDesign = variant === 'design';
+  const displayRows = isDesign
+    ? [{}]
+    : previewRowLimit != null
+      ? rows.slice(0, previewRowLimit)
+      : rows;
+  const hasMore = !isDesign && previewRowLimit != null && rows.length > previewRowLimit;
 
   return (
     <div className={cn('w-full h-full hide-scrollbar', className)}>
@@ -73,7 +85,9 @@ export const DataBandTableView: React.FC<DataBandTableViewProps> = ({
                   }}
                   className="border border-neutral-200/80 truncate hide-scrollbar"
                 >
-                  {resolveDataCellValue(col, row, dataSource)}
+                  {isDesign
+                    ? columnTemplateToken(col, dataSource)
+                    : resolveDataCellValue(col, row, dataSource)}
                 </td>
               ))}
             </tr>
@@ -85,7 +99,7 @@ export const DataBandTableView: React.FC<DataBandTableViewProps> = ({
           +{rows.length - previewRowLimit!} linhas na pré-visualização
         </p>
       )}
-      {rows.length === 0 && (
+      {!isDesign && rows.length === 0 && (
         <p className="text-[10px] text-neutral-400 text-center py-2">Fonte de dados vazia</p>
       )}
     </div>

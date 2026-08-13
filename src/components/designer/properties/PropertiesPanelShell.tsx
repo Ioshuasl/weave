@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactNode } from 'react';
 import { Settings, type LucideIcon } from 'lucide-react';
 import { cn } from '../../../utils/cn';
 import { useDesignerCompactMode } from '../designerLayoutContext';
@@ -14,15 +14,16 @@ export function PropertiesPanelShell({
   title: string;
   icon?: LucideIcon;
   variant?: 'selection' | 'page' | 'empty';
-  breadcrumb?: React.ReactNode;
-  trailing?: React.ReactNode;
-  children: React.ReactNode;
+  breadcrumb?: ReactNode;
+  trailing?: ReactNode;
+  children?: ReactNode;
 }) {
   const compactMode = useDesignerCompactMode();
   const isSelection = variant === 'selection';
 
   return (
     <div
+      data-tour="properties"
       className={cn(
         'flex-1 min-h-0 min-w-0 max-w-full flex flex-col w-full overflow-hidden h-full',
         isSelection ? 'bg-white shadow-sm z-10' : 'bg-[#fbfbfa]'
@@ -53,14 +54,16 @@ export function PropertiesPanelShell({
         {breadcrumb && <div className="mt-1 min-w-0 pl-6">{breadcrumb}</div>}
       </div>
 
-      <div
-        className={cn(
-          'flex-1 min-h-0 min-w-0 overflow-y-auto overflow-x-hidden overscroll-contain',
-          variant === 'empty' ? '' : compactMode ? 'p-3 space-y-4' : 'p-4 space-y-6'
-        )}
-      >
-        {children}
-      </div>
+      {children != null && (
+        <div
+          className={cn(
+            'flex-1 min-h-0 min-w-0 overflow-y-auto overflow-x-hidden overscroll-contain',
+            compactMode ? 'p-3 space-y-4' : 'p-4 space-y-6'
+          )}
+        >
+          {children}
+        </div>
+      )}
     </div>
   );
 }

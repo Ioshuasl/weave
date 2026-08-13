@@ -14,9 +14,7 @@ import { ComponentRenderer } from './ComponentRenderer';
 import { getBandRect, getBandZIndex, getReportPage } from '../../utils/reportPageUtils';
 import { shouldSuppressDesignerCanvasZBoost } from '../../utils/designerZIndex';
 import {
-  DESIGNER_LIST_GHOST_ROW_LIMIT,
   getBandDisplayLabel,
-  getDesignerListPreviewRowCount,
   isListDataBand,
   isNumberedListBand,
   isTableDataBand,
@@ -63,7 +61,6 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
   const cancelComponentGroupDrag = useDesignerStore((state) => state.cancelComponentGroupDrag);
   const [isDropTarget, setIsDropTarget] = useState(false);
   const [dragOverride, setDragOverride] = useState<{ x: number; y: number } | null>(null);
-  const previewData = useDesignerStore((state) => state.data);
   const zoom = useDesignerZoom();
   const nodeRef = useRef<HTMLDivElement>(null);
   const { snapBandRect, clearSnapGuides } = useDesignerSnap();
@@ -85,22 +82,8 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
   const isTableLayout = isTableDataBand(band);
   const isNumberedLayout = isNumberedListBand(band);
   const isListLayout = isListDataBand(band) && !isTableLayout;
-  const datasetRows =
-    band.dataSource && previewData[band.dataSource]
-      ? (previewData[band.dataSource] as Record<string, unknown>[])
-      : [];
   const showListHint = isListLayout && band.components.length === 0;
   const rowHeight = rect.height;
-  const showListGhostPreview =
-    isListLayout && band.components.length > 0 && datasetRows.length > 0;
-  const listPreviewRowCount = showListGhostPreview
-    ? getDesignerListPreviewRowCount(datasetRows.length, true)
-    : 1;
-  const hasMoreListRows =
-    showListGhostPreview && datasetRows.length > DESIGNER_LIST_GHOST_ROW_LIMIT;
-  const listDisplayHeight = showListGhostPreview
-    ? rowHeight * listPreviewRowCount + (hasMoreListRows ? 14 : 0)
-    : rowHeight;
   const minHeight = 20;
   const minWidth = 60;
   const hasSelectedChild = band.components.some((cId) => selectedIds.includes(cId));
@@ -237,7 +220,6 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
         bandId,
         zoom,
         rowHeight,
-        showListGhostPreview,
         isTableLayout,
       },
       { addBand, addComponent }
@@ -274,7 +256,7 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
         className="absolute"
         style={{
           width: rect.width,
-          height: showListGhostPreview ? listDisplayHeight : rect.height,
+          height: rect.height,
           zIndex,
         }}
         onPointerDown={(e) => {
@@ -301,14 +283,7 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
         {bandActive && (
           <BandToolbar
             label={getBandDisplayLabel(band.type)}
-            meta={
-              [
-                band.dataSource,
-                showListGhostPreview ? `${listPreviewRowCount} linhas` : null,
-              ]
-                .filter(Boolean)
-                .join(' · ') || undefined
-            }
+            meta={band.dataSource || undefined}
             showAddText={!isTableLayout}
             onAddText={() => addComponent(bandId, 'text')}
             onDuplicate={() => duplicateBand(bandId)}
@@ -326,8 +301,7 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
 
         <div
           className={cn(
-            'band-surface relative w-full transition-shadow',
-            showListGhostPreview ? 'overflow-visible' : 'h-full overflow-hidden',
+            'band-surface relative w-full h-full overflow-hidden transition-shadow',
             'bg-white border border-neutral-200/70 rounded-sm',
             bandActive
               ? selectionClasses.bandActive
@@ -336,27 +310,20 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
             !hasSelectedChild &&
               'band-drag-handle cursor-grab active:cursor-grabbing'
           )}
-          style={
-            showListGhostPreview ? { minHeight: listDisplayHeight } : undefined
-          }
         >
           {isTableLayout && band.dataSource ? (
             <DataBandTableView
               band={band}
-              rows={datasetRows}
+              rows={[]}
               dataSource={band.dataSource}
-              previewRowLimit={5}
+              variant="design"
             />
           ) : isListLayout ? (
             <>
               {showListHint && (
                 <BandContentHint variant={isNumberedLayout ? 'numbered' : 'list'} />
               )}
-              <DataBandListPreview
-                band={band}
-                rows={datasetRows}
-                rowHeight={rowHeight}
-              />
+              <DataBandListPreview band={band} rowHeight={rowHeight} />
             </>
           ) : (
             <div className="band-components-layer relative w-full h-full isolate hide-scrollbar">

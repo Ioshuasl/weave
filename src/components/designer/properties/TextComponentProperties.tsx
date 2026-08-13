@@ -62,8 +62,6 @@ export function TextComponentProperties({
           <TextComponentContentSummary
             component={component}
             componentId={componentId}
-            data={data}
-            dataSourceCatalog={dataSourceCatalog}
           />
         )}
 

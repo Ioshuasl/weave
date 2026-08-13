@@ -199,12 +199,3 @@ export function getDefaultDataSource(data: ReportData): string {
   const keys = Object.keys(data);
   return keys[0] ?? '';
 }
-
-/** Quantidade de linhas de dados exibidas no canvas (modo lista) */
-export const DESIGNER_LIST_GHOST_ROW_LIMIT = 3;
-
-export function getDesignerListPreviewRowCount(rowCount: number, hasComponents: boolean): number {
-  if (!hasComponents) return 1;
-  if (rowCount <= 0) return 1;
-  return Math.min(DESIGNER_LIST_GHOST_ROW_LIMIT, rowCount);
-}

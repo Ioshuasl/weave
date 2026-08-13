@@ -6,6 +6,7 @@ import {
   Bold,
   Italic,
   Strikethrough,
+  Type,
   Underline,
   type LucideIcon,
 } from 'lucide-react';
@@ -14,60 +15,54 @@ import {
   FONT_SIZE_PRESETS,
   normalizeInlineColor,
   normalizeInlineFontSize,
-  PADDING_PRESETS,
   type RichTextSelectionStyle,
 } from '../../utils/richTextInlineStyle';
+import { useRovingToolbarFocus } from '../../hooks/useRovingToolbarFocus';
 import type { RichTextEditorHandle } from './RichTextEditor';
 import { cn } from '../../utils/cn';
 
 type TextAlign = 'left' | 'center' | 'right';
 
-function FormatToggleButton({
-  label,
-  icon: Icon,
-  active,
-  onClick,
-}: {
+const TOOLBAR_ITEM_COUNT = 9;
+
+function isApplePlatform(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  return /Mac|iPhone|iPad|iPod/.test(navigator.platform) || /Mac OS/.test(navigator.userAgent);
+}
+
+function shortcutText(ctrl: string, meta: string): string {
+  return isApplePlatform() ? meta : ctrl;
+}
+
+const FORMAT_BUTTONS: {
+  kind: TextFormatKind;
   label: string;
   icon: LucideIcon;
-  active: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      title={label}
-      aria-label={label}
-      aria-pressed={active}
-      onMouseDown={(e) => e.preventDefault()}
-      onClick={onClick}
-      className={cn(
-        'flex items-center justify-center w-8 h-8 rounded-md border transition-colors shrink-0',
-        active
-          ? 'bg-neutral-900 text-white border-neutral-900'
-          : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50 hover:border-neutral-300 hover:text-neutral-900'
-      )}
-    >
-      <Icon className="w-3.5 h-3.5" strokeWidth={2.25} />
-    </button>
-  );
-}
-
-function ToolbarSeparator() {
-  return (
-    <div
-      className="w-px h-6 bg-neutral-200 mx-0.5 shrink-0 self-center"
-      role="separator"
-      aria-orientation="vertical"
-    />
-  );
-}
-
-const FORMAT_BUTTONS: { kind: TextFormatKind; label: string; icon: LucideIcon }[] = [
-  { kind: 'bold', label: 'Negrito', icon: Bold },
-  { kind: 'italic', label: 'Itálico', icon: Italic },
-  { kind: 'underline', label: 'Sublinhado', icon: Underline },
-  { kind: 'strike', label: 'Traçado', icon: Strikethrough },
+  shortcut?: string;
+  ariaKeyshortcuts?: string;
+}[] = [
+  {
+    kind: 'bold',
+    label: 'Negrito',
+    icon: Bold,
+    shortcut: shortcutText('Ctrl+B', '⌘B'),
+    ariaKeyshortcuts: shortcutText('Control+B', 'Meta+B'),
+  },
+  {
+    kind: 'italic',
+    label: 'Itálico',
+    icon: Italic,
+    shortcut: shortcutText('Ctrl+I', '⌘I'),
+    ariaKeyshortcuts: shortcutText('Control+I', 'Meta+I'),
+  },
+  {
+    kind: 'underline',
+    label: 'Sublinhado',
+    icon: Underline,
+    shortcut: shortcutText('Ctrl+U', '⌘U'),
+    ariaKeyshortcuts: shortcutText('Control+U', 'Meta+U'),
+  },
+  { kind: 'strike', label: 'Tachado', icon: Strikethrough },
 ];
 
 const ALIGN_BUTTONS: { value: TextAlign; label: string; icon: LucideIcon }[] = [
@@ -82,6 +77,23 @@ const EMPTY_FORMATS: Record<TextFormatKind, boolean> = {
   underline: false,
   strike: false,
 };
+
+const ICON_BUTTON_CLASS = cn(
+  'flex items-center justify-center size-9 rounded-md shrink-0',
+  'text-neutral-600 transition-colors',
+  'hover:bg-neutral-100 hover:text-neutral-900',
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/20 focus-visible:ring-offset-0'
+);
+
+function ToolbarSeparator() {
+  return (
+    <div
+      className="w-px h-5 bg-neutral-200 mx-1.5 shrink-0 self-center"
+      role="separator"
+      aria-orientation="vertical"
+    />
+  );
+}
 
 function resolveToolbarColor(
   selectionStyle: RichTextSelectionStyle,
@@ -103,6 +115,7 @@ function resolveToolbarFontSize(
 
 export function TextEditorToolbar({
   editorRef,
+  editorId,
   activeFormats,
   selectionStyle,
   onSelectionStyleChange,
@@ -112,10 +125,9 @@ export function TextEditorToolbar({
   onComponentFontSizeChange,
   textAlign,
   onTextAlignChange,
-  padding,
-  onPaddingChange,
 }: {
   editorRef: React.RefObject<RichTextEditorHandle | null>;
+  editorId?: string;
   activeFormats: Record<TextFormatKind, boolean>;
   selectionStyle: RichTextSelectionStyle;
   onSelectionStyleChange: () => void;
@@ -125,10 +137,11 @@ export function TextEditorToolbar({
   onComponentFontSizeChange: (fontSize: string) => void;
   textAlign: TextAlign;
   onTextAlignChange: (textAlign: TextAlign) => void;
-  padding: string;
-  onPaddingChange: (padding: string) => void;
 }) {
   const colorInputRef = useRef<HTMLInputElement>(null);
+  const { setActiveIndex, setItemRef, onToolbarKeyDown, getTabIndex } =
+    useRovingToolbarFocus(TOOLBAR_ITEM_COUNT);
+
   const displayColor = resolveToolbarColor(selectionStyle, componentColor);
   const displayFontSize = resolveToolbarFontSize(selectionStyle, componentFontSize);
   const colorTargetsSelection =
@@ -178,64 +191,104 @@ export function TextEditorToolbar({
     ]
   );
 
+  const colorTitle = colorTargetsSelection
+    ? 'Cor do trecho selecionado'
+    : selectionStyle.color === 'mixed'
+      ? 'Cores mistas na seleção'
+      : 'Cor padrão do componente';
+
+  const sizeTitle = sizeTargetsSelection
+    ? 'Tamanho do trecho selecionado'
+    : selectionStyle.fontSize === 'mixed'
+      ? 'Tamanhos mistos na seleção'
+      : 'Tamanho padrão do componente';
+
   return (
-    <div className="space-y-2 min-w-0">
-      <div className="flex items-center gap-1 min-w-0 flex-wrap">
-        {FORMAT_BUTTONS.map(({ kind, label, icon }) => (
-          <React.Fragment key={kind}>
-            <FormatToggleButton
-              label={label}
-              icon={icon}
-              active={activeFormats[kind]}
+    <div
+      role="toolbar"
+      aria-label="Formatação de texto"
+      aria-orientation="horizontal"
+      aria-controls={editorId}
+      onKeyDown={onToolbarKeyDown}
+      className="flex items-center gap-0.5 min-w-0 flex-wrap px-1.5 py-1 bg-neutral-50/80 border-b border-neutral-100"
+    >
+      <div role="group" aria-label="Estilo do texto" className="flex items-center gap-0.5">
+        {FORMAT_BUTTONS.map(({ kind, label, icon: Icon, shortcut, ariaKeyshortcuts }, index) => {
+          const name = shortcut ? `${label} (${shortcut})` : label;
+          return (
+            <button
+              key={kind}
+              type="button"
+              ref={setItemRef(index)}
+              tabIndex={getTabIndex(index)}
+              title={name}
+              aria-label={name}
+              aria-pressed={activeFormats[kind]}
+              aria-keyshortcuts={ariaKeyshortcuts}
+              onFocus={() => setActiveIndex(index)}
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => editorRef.current?.toggleFormat(kind)}
-            />
-          </React.Fragment>
-        ))}
+              className={cn(ICON_BUTTON_CLASS, activeFormats[kind] && 'bg-neutral-200 text-neutral-900')}
+            >
+              <Icon className="w-4 h-4" strokeWidth={2} aria-hidden />
+            </button>
+          );
+        })}
+      </div>
 
-        <ToolbarSeparator />
+      <ToolbarSeparator />
 
-        {ALIGN_BUTTONS.map(({ value, label, icon }) => (
-          <React.Fragment key={value}>
-            <FormatToggleButton
-              label={label}
-              icon={icon}
-              active={textAlign === value}
+      <div role="group" aria-label="Alinhamento" className="flex items-center gap-0.5">
+        {ALIGN_BUTTONS.map(({ value, label, icon: Icon }, offset) => {
+          const index = 4 + offset;
+          const active = textAlign === value;
+          return (
+            <button
+              key={value}
+              type="button"
+              ref={setItemRef(index)}
+              tabIndex={getTabIndex(index)}
+              title={label}
+              aria-label={label}
+              aria-pressed={active}
+              onFocus={() => setActiveIndex(index)}
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => onTextAlignChange(value)}
-            />
-          </React.Fragment>
-        ))}
+              className={cn(ICON_BUTTON_CLASS, active && 'bg-neutral-200 text-neutral-900')}
+            >
+              <Icon className="w-4 h-4" strokeWidth={2} aria-hidden />
+            </button>
+          );
+        })}
+      </div>
 
-        <ToolbarSeparator />
+      <ToolbarSeparator />
 
+      <div role="group" aria-label="Cor e tamanho" className="flex items-center gap-0.5">
         <div className="relative shrink-0">
           <button
             type="button"
-            title={
-              colorTargetsSelection
-                ? 'Cor do trecho selecionado'
-                : selectionStyle.color === 'mixed'
-                  ? 'Cores mistas na seleção'
-                  : 'Cor padrão do componente'
-            }
-            aria-label="Cor do texto"
+            ref={setItemRef(7)}
+            tabIndex={getTabIndex(7)}
+            title={colorTitle}
+            aria-label={`${colorTitle}. Abrir seletor de cor`}
+            onFocus={() => setActiveIndex(7)}
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => colorInputRef.current?.click()}
-            className={cn(
-              'flex items-center justify-center w-8 h-8 rounded-md border border-neutral-200',
-              'hover:bg-neutral-50 hover:border-neutral-300 transition-colors'
-            )}
+            className={ICON_BUTTON_CLASS}
           >
-            <span
-              className="w-4 h-4 rounded-sm border border-neutral-300/80"
-              style={{
-                backgroundColor:
-                  selectionStyle.color === 'mixed' ? 'linear-gradient(135deg, #ccc 50%, #666 50%)' : displayColor,
-                background:
-                  selectionStyle.color === 'mixed'
-                    ? 'linear-gradient(135deg, #d4d4d4 50%, #525252 50%)'
-                    : displayColor,
-              }}
-            />
+            <span className="relative flex flex-col items-center justify-center" aria-hidden>
+              <Type className="w-4 h-4" strokeWidth={2} />
+              <span
+                className="absolute -bottom-0.5 left-0.5 right-0.5 h-[3px] rounded-full"
+                style={{
+                  background:
+                    selectionStyle.color === 'mixed'
+                      ? 'linear-gradient(90deg, #d4d4d4 50%, #525252 50%)'
+                      : displayColor,
+                }}
+              />
+            </span>
           </button>
           <input
             ref={colorInputRef}
@@ -249,21 +302,19 @@ export function TextEditorToolbar({
         </div>
 
         <select
-          title={
-            sizeTargetsSelection
-              ? 'Tamanho do trecho selecionado'
-              : selectionStyle.fontSize === 'mixed'
-                ? 'Tamanhos mistos na seleção'
-                : 'Tamanho padrão do componente'
-          }
-          aria-label="Tamanho da fonte"
+          ref={setItemRef(8)}
+          tabIndex={getTabIndex(8)}
+          title={sizeTitle}
+          aria-label={sizeTitle}
           value={displayFontSize}
+          onFocus={() => setActiveIndex(8)}
           onMouseDown={(e) => e.stopPropagation()}
           onChange={(e) => handleFontSizeChange(e.target.value)}
           className={cn(
-            'h-8 min-w-[4.25rem] max-w-[5.5rem] rounded-md border border-neutral-200',
-            'bg-white px-1.5 text-[12px] text-neutral-700',
-            'hover:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-900/8'
+            'h-9 min-w-[4.75rem] max-w-[6rem] rounded-md border-0 bg-transparent',
+            'px-1.5 text-[13px] text-neutral-700 cursor-pointer',
+            'hover:bg-neutral-100',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/20'
           )}
         >
           {selectionStyle.fontSize === 'mixed' && (
@@ -273,68 +324,15 @@ export function TextEditorToolbar({
           )}
           {FONT_SIZE_PRESETS.map((size) => (
             <option key={size} value={size}>
-              {size}
+              {size.replace('px', '')}
             </option>
           ))}
           {displayFontSize &&
             !FONT_SIZE_PRESETS.includes(displayFontSize as (typeof FONT_SIZE_PRESETS)[number]) && (
-              <option value={displayFontSize}>{displayFontSize}</option>
+              <option value={displayFontSize}>{displayFontSize.replace('px', '')}</option>
             )}
         </select>
-
-        <ToolbarSeparator />
-
-        <select
-          title="Espaçamento interno do componente"
-          aria-label="Espaçamento interno"
-          value={
-            padding === ''
-              ? '0'
-              : PADDING_PRESETS.includes(padding as (typeof PADDING_PRESETS)[number])
-                ? padding
-                : '__custom__'
-          }
-          onChange={(e) => {
-            if (e.target.value !== '__custom__') {
-              onPaddingChange(e.target.value === '0' ? '' : e.target.value);
-            }
-          }}
-          className={cn(
-            'h-8 min-w-[5.5rem] max-w-[7rem] rounded-md border border-neutral-200',
-            'bg-white px-1.5 text-[12px] text-neutral-700',
-            'hover:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-900/8'
-          )}
-        >
-          <option value="0">Sem padding</option>
-          {PADDING_PRESETS.map((preset) => (
-            <option key={preset} value={preset}>
-              {preset}
-            </option>
-          ))}
-          {!PADDING_PRESETS.includes(padding as (typeof PADDING_PRESETS)[number]) && padding && (
-            <option value="__custom__">{padding}</option>
-          )}
-        </select>
-
-        <input
-          type="text"
-          title="Espaçamento interno (CSS)"
-          aria-label="Espaçamento interno personalizado"
-          value={padding}
-          onChange={(e) => onPaddingChange(e.target.value)}
-          placeholder="4px 8px"
-          className={cn(
-            'h-8 w-[5.5rem] rounded-md border border-neutral-200 px-2',
-            'text-[12px] text-neutral-700 placeholder:text-neutral-400',
-            'hover:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-900/8'
-          )}
-        />
       </div>
-
-      <p className="text-[10px] text-neutral-400 leading-snug">
-        Cor e tamanho aplicam ao trecho selecionado; sem seleção, alteram o padrão do componente.
-        Espaçamento interno vale para todo o bloco.
-      </p>
     </div>
   );
 }

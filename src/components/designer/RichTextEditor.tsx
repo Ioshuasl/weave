@@ -8,6 +8,7 @@ import React, {
 import {
   editorHtmlToMarkdown,
   insertFieldChipAtSelection,
+  insertFieldTokenAtSelection,
   markdownToEditorHtml,
   type FieldChipLabelResolver,
 } from '../../utils/richTextEditorUtils';
@@ -28,6 +29,7 @@ import {
   getCaretClientRect,
   getExpressionTriggerAtCaret,
   replaceExpressionTriggerWithChip,
+  replaceExpressionTriggerWithToken,
 } from '../../utils/expressionAutocompleteUtils';
 import { useExpressionAutocomplete } from '../../hooks/useExpressionAutocomplete';
 import { useExpressionAutocompleteDocumentKeys } from '../../hooks/useExpressionAutocompleteDocumentKeys';
@@ -61,10 +63,14 @@ interface RichTextEditorProps {
     data: Record<string, unknown[]>;
     dataSourceCatalog?: DataSourceCatalog;
   };
+  /** Quando false, tokens `{campo}` ficam como texto em vez de chips. */
+  fieldAsChips?: boolean;
   onFieldInserted?: (token: string) => void;
   placeholder?: string;
   className?: string;
   minHeight?: string;
+  id?: string;
+  'aria-labelledby'?: string;
 }
 
 function readActiveFormats(): Record<TextFormatKind, boolean> {
@@ -85,10 +91,13 @@ export const RichTextEditor = forwardRef<RichTextEditorHandle, RichTextEditorPro
       onSelectionStyleChange,
       expressionSuggestions = [],
       fieldPreviewContext,
+      fieldAsChips = true,
       onFieldInserted,
       placeholder,
       className,
       minHeight = '5rem',
+      id,
+      'aria-labelledby': ariaLabelledBy,
     },
     ref
   ) => {
@@ -129,10 +138,11 @@ export const RichTextEditor = forwardRef<RichTextEditorHandle, RichTextEditorPro
         if (!el) return;
         el.innerHTML = markdownToEditorHtml(
           markdown,
-          fieldPreviewContext ? resolveChipLabel : undefined
+          fieldAsChips && fieldPreviewContext ? resolveChipLabel : undefined,
+          { fieldAsChips }
         );
       },
-      [fieldPreviewContext, resolveChipLabel]
+      [fieldAsChips, fieldPreviewContext, resolveChipLabel]
     );
 
     const emitChange = useCallback(() => {
@@ -172,12 +182,18 @@ export const RichTextEditor = forwardRef<RichTextEditorHandle, RichTextEditorPro
 
     const applySuggestion = useCallback(
       (token: string) => {
-        const chipOptions = getChipOptions(token);
         const range = triggerRangeRef.current;
-        if (range) {
-          replaceExpressionTriggerWithChip(range, token, chipOptions);
+        if (fieldAsChips) {
+          const chipOptions = getChipOptions(token);
+          if (range) {
+            replaceExpressionTriggerWithChip(range, token, chipOptions);
+          } else {
+            insertFieldChipAtSelection(token, chipOptions);
+          }
+        } else if (range) {
+          replaceExpressionTriggerWithToken(range, token);
         } else {
-          insertFieldChipAtSelection(token, chipOptions);
+          insertFieldTokenAtSelection(token);
         }
         autocomplete.close();
         triggerRangeRef.current = null;
@@ -186,7 +202,14 @@ export const RichTextEditor = forwardRef<RichTextEditorHandle, RichTextEditorPro
         onFieldInserted?.(token);
         editorRef.current?.focus();
       },
-      [autocomplete, emitChange, getChipOptions, notifyFormats, onFieldInserted]
+      [
+        autocomplete,
+        emitChange,
+        fieldAsChips,
+        getChipOptions,
+        notifyFormats,
+        onFieldInserted,
+      ]
     );
 
     const isAutocompleteTarget = useCallback((event: KeyboardEvent) => {
@@ -215,7 +238,11 @@ export const RichTextEditor = forwardRef<RichTextEditorHandle, RichTextEditorPro
         },
         insertField: (token) => {
           editorRef.current?.focus();
-          insertFieldChipAtSelection(token, getChipOptions(token));
+          if (fieldAsChips) {
+            insertFieldChipAtSelection(token, getChipOptions(token));
+          } else {
+            insertFieldTokenAtSelection(token);
+          }
           emitChange();
           notifyFormats();
         },
@@ -247,7 +274,7 @@ export const RichTextEditor = forwardRef<RichTextEditorHandle, RichTextEditorPro
           return applied;
         },
       }),
-      [emitChange, getChipOptions, notifyFormats]
+      [emitChange, fieldAsChips, getChipOptions, notifyFormats]
     );
 
     useEffect(() => {
@@ -295,10 +322,12 @@ export const RichTextEditor = forwardRef<RichTextEditorHandle, RichTextEditorPro
       <>
         <div
           ref={editorRef}
+          id={id}
           contentEditable
           suppressContentEditableWarning
           role="textbox"
           aria-multiline="true"
+          aria-labelledby={ariaLabelledBy}
           data-placeholder={placeholder}
           onInput={handleInput}
           onPaste={handlePaste}

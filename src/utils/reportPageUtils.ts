@@ -26,6 +26,27 @@ export function getReportPage(
   return report.pages.find((page) => page.id === id) ?? null;
 }
 
+export function findPageIdForBand(
+  report: ReportDefinition,
+  bandId: string
+): string | null {
+  for (const page of report.pages) {
+    if (page.bands.includes(bandId) || (page.dividers ?? []).includes(bandId)) {
+      return page.id;
+    }
+  }
+  return null;
+}
+
+export function findPageIdForComponent(
+  report: ReportDefinition,
+  componentId: string
+): string | null {
+  const component = report.components[componentId];
+  if (!component) return null;
+  return findPageIdForBand(report, component.parentId);
+}
+
 export function replaceReportPage(
   report: ReportDefinition,
   pageId: string,

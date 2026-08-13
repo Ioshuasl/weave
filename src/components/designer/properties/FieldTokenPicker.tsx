@@ -1,8 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Braces, Search } from 'lucide-react';
 import type { DataFieldOption } from '../../../utils/reportUtils';
-import type { DataSourceCatalog } from '../../../utils/dataSourceUtils';
-import { resolveFieldTokenPreview } from '../../../utils/fieldTokenUtils';
 import {
   SYSTEM_DATE_TIME_FIELD_OPTIONS,
   SYSTEM_VARIABLE_FIELD_OPTIONS,
@@ -37,11 +35,9 @@ function filterOptions(options: FieldOption[], query: string): FieldOption[] {
 const FieldGroupList: React.FC<{
   group: FieldGroup;
   query: string;
-  data?: Record<string, unknown[]>;
-  dataSourceCatalog?: DataSourceCatalog;
   onInsert: (token: string) => void;
   reportId?: string;
-}> = ({ group, query, data, dataSourceCatalog, onInsert, reportId }) => {
+}> = ({ group, query, onInsert, reportId }) => {
   const filtered = filterOptions(group.options, query);
   if (filtered.length === 0) return null;
 
@@ -56,34 +52,24 @@ const FieldGroupList: React.FC<{
     >
       {group.hint && <PropertyHint>{group.hint}</PropertyHint>}
       <ul className="space-y-0.5 max-h-40 overflow-y-auto">
-        {filtered.map((opt) => {
-          const preview =
-            data && resolveFieldTokenPreview(opt.value, data, dataSourceCatalog);
-          return (
-            <li key={opt.value}>
-              <button
-                type="button"
-                onClick={() => onInsert(opt.value)}
-                className={cn(
-                  'w-full flex items-center gap-2 text-left px-2 py-1.5 rounded-md text-[12px]',
-                  'text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 transition-colors'
-                )}
-              >
-                <Braces className="w-3 h-3 shrink-0 text-neutral-400" aria-hidden />
-                <span className="truncate font-mono text-[11px]">{opt.value}</span>
-                {preview ? (
-                  <span className="ml-auto shrink-0 text-[10px] text-neutral-500 truncate max-w-[40%]">
-                    {preview}
-                  </span>
-                ) : (
-                  <span className="ml-auto shrink-0 text-[10px] text-neutral-400 truncate max-w-[45%]">
-                    {opt.label}
-                  </span>
-                )}
-              </button>
-            </li>
-          );
-        })}
+        {filtered.map((opt) => (
+          <li key={opt.value}>
+            <button
+              type="button"
+              onClick={() => onInsert(opt.value)}
+              className={cn(
+                'w-full flex items-center gap-2 text-left px-2 py-1.5 rounded-md text-[12px]',
+                'text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 transition-colors'
+              )}
+            >
+              <Braces className="w-3 h-3 shrink-0 text-neutral-400" aria-hidden />
+              <span className="truncate font-mono text-[11px]">{opt.value}</span>
+              <span className="ml-auto shrink-0 text-[10px] text-neutral-400 truncate max-w-[45%]">
+                {opt.label}
+              </span>
+            </button>
+          </li>
+        ))}
       </ul>
     </PropertyAccordion>
   );
@@ -96,15 +82,11 @@ const SYSTEM_PAGE_FIELD_OPTIONS = SYSTEM_VARIABLE_FIELD_OPTIONS.filter(
 export function FieldTokenPicker({
   singletons,
   lists,
-  data,
-  dataSourceCatalog,
   onInsert,
   reportId,
 }: {
   singletons: DataFieldOption[];
   lists: DataFieldOption[];
-  data?: Record<string, unknown[]>;
-  dataSourceCatalog?: DataSourceCatalog;
   onInsert: (token: string) => void;
   reportId?: string;
 }) {
@@ -194,8 +176,6 @@ export function FieldTokenPicker({
               key={group.id}
               group={group}
               query={query}
-              data={data}
-              dataSourceCatalog={dataSourceCatalog}
               onInsert={onInsert}
               reportId={reportId}
             />

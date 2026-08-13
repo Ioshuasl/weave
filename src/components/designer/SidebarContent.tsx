@@ -33,13 +33,15 @@ function SidebarSection({
   title,
   children,
   className,
+  tourId,
 }: {
   title: string;
   children: React.ReactNode;
   className?: string;
+  tourId?: string;
 }) {
   return (
-    <section className={cn('px-3 py-2', className)}>
+    <section className={cn('px-3 py-2', className)} data-tour={tourId}>
       <h2 className="px-2 mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-neutral-400">
         {title}
       </h2>
@@ -222,7 +224,7 @@ export const SidebarContent: React.FC<SidebarContentProps> = ({ dataOnly = false
   };
 
   const dataSection = (
-    <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+    <div className="flex-1 flex flex-col min-h-0 overflow-hidden" data-tour="datasets">
       <div className="px-3 pt-3 pb-1 shrink-0">
         <h2 className="px-2 text-[10px] font-semibold uppercase tracking-widest text-neutral-400 flex items-center gap-1.5">
           <Database className="w-3 h-3" />
@@ -249,7 +251,11 @@ export const SidebarContent: React.FC<SidebarContentProps> = ({ dataOnly = false
 
   return (
     <>
-      <SidebarSection title="Bandas" className="border-b border-neutral-200/80 shrink-0">
+      <SidebarSection
+        title="Bandas"
+        tourId="bands"
+        className="border-b border-neutral-200/80 shrink-0"
+      >
         {BAND_ITEMS.map((item) => (
           <React.Fragment key={item.type}>
             <SidebarButton
@@ -263,7 +269,11 @@ export const SidebarContent: React.FC<SidebarContentProps> = ({ dataOnly = false
         ))}
       </SidebarSection>
 
-      <SidebarSection title="Componentes" className="border-b border-neutral-200/80 shrink-0">
+      <SidebarSection
+        title="Componentes"
+        tourId="components"
+        className="border-b border-neutral-200/80 shrink-0"
+      >
         <p className="px-2.5 pb-2 text-[10px] text-neutral-400 leading-snug">
           Arraste para uma banda no canvas ou selecione uma banda e clique para adicionar.
         </p>

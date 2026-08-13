@@ -1,5 +1,6 @@
-import React from 'react';
+import { type CSSProperties } from 'react';
 import { Copy, Layout, Settings } from 'lucide-react';
+import type { ReportPage } from '../../types/report';
 import { useDesignerStore } from '../../store/designerStore';
 import { getBandDisplayLabel } from '../../utils/dataBandUtils';
 import { getComponentDisplayLabel } from '../../utils/uiLabels';
@@ -11,13 +12,13 @@ import {
   getSelectedComponentIds,
 } from '../../utils/selectionUtils';
 import { useDataSourceCatalog } from './designerHostContext';
-import { DesignerEmptyState } from './DesignerEmptyState';
 import { PagePropertiesSection } from './PagePropertiesSection';
 import { PropertiesPanelShell } from './properties/PropertiesPanelShell';
 import { BandProperties } from './properties/BandProperties';
 import { TextComponentProperties } from './properties/TextComponentProperties';
 import { MultiSelectionProperties } from './properties/MultiSelectionProperties';
 import { PropertiesPanelBreadcrumb } from './properties/PropertiesPanelBreadcrumb';
+import { LayersHierarchy } from './properties/LayersHierarchy';
 
 export const PropertiesPanel = () => {
   const selectedIds = useDesignerStore((state) => state.selectedIds);
@@ -59,7 +60,7 @@ export const PropertiesPanel = () => {
         : false);
   const groupedDataFields = buildGroupedDataFieldOptions(data, dataSourceCatalog);
 
-  const patchSelectedComponentStyle = (patch: React.CSSProperties) => {
+  const patchSelectedComponentStyle = (patch: CSSProperties) => {
     if (!selectedId) return;
     const current = useDesignerStore.getState().report.components[selectedId];
     if (!current) return;
@@ -83,10 +84,14 @@ export const PropertiesPanel = () => {
         <PagePropertiesSection
           page={page}
           reportId={report.id}
-          onApplyPreset={(presetId) => applyPagePreset(page.id, presetId)}
+          onApplyPreset={(presetId: string) => applyPagePreset(page.id, presetId)}
           onFlipOrientation={() => flipPageOrientation(page.id)}
-          onUpdatePage={(updates, options) => updatePage(page.id, updates, options)}
+          onUpdatePage={(
+            updates: Partial<ReportPage>,
+            options?: { scaleContent?: boolean }
+          ) => updatePage(page.id, updates, options)}
         />
+        <LayersHierarchy />
       </PropertiesPanelShell>
     );
   }
@@ -94,7 +99,10 @@ export const PropertiesPanel = () => {
   if (!hasValidSelection) {
     return (
       <PropertiesPanelShell title="Propriedades" icon={Settings} variant="empty">
-        <DesignerEmptyState variant="panel" />
+        <LayersHierarchy />
+        <p className="text-[11px] text-neutral-400 leading-snug">
+          Selecione uma camada na árvore, ou clique numa banda, componente ou na folha.
+        </p>
       </PropertiesPanelShell>
     );
   }
@@ -175,6 +183,8 @@ export const PropertiesPanel = () => {
           onRemove={removeSelected}
         />
       )}
+
+      <LayersHierarchy />
     </PropertiesPanelShell>
   );
 };

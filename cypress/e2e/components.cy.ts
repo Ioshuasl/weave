@@ -79,7 +79,7 @@ describe('P1 — Componentes', () => {
 
     cy.get('body').should(($body) => {
       const text = $body.text();
-      expect(text.includes('{users.name}') || text.includes('John Doe')).to.eq(true);
+      expect(text).to.include('{users.name}');
     });
   });
 
@@ -207,7 +207,8 @@ describe('P1 — Componentes', () => {
       .find('button[aria-haspopup="listbox"]')
       .should('contain.text', 'Usuários');
 
-    cy.get('.recharts-wrapper').should('exist');
+    cy.get('[data-designer-chart-placeholder]').should('exist');
+    cy.contains('Gráfico de pizza').should('exist');
   });
 
   it('C12 — seleção múltipla (Ctrl+clique)', () => {

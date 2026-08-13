@@ -164,7 +164,10 @@ export function CanvasPageTabs({
 
   return (
     <>
-      <div className="relative shrink-0 border-b border-neutral-200/80 bg-[#fbfbfa] min-h-[40px] z-20">
+      <div
+        data-tour="page-tabs"
+        className="relative shrink-0 border-b border-neutral-200/80 bg-[#fbfbfa] min-h-[40px] z-20"
+      >
         <div
           className="flex items-stretch overflow-x-auto hide-scrollbar"
           role="tablist"

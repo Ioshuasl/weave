@@ -1,9 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { PencilLine } from 'lucide-react';
 import type { ReportComponent } from '../../../types/report';
-import type { DataSourceCatalog } from '../../../utils/dataSourceUtils';
-import { evaluateExpression } from '../../../utils/reportUtils';
-import { DESIGN_MODE_SYSTEM_VARIABLES } from '../../../utils/systemVariables';
 import { mergeTextEditorDraftStyle } from '../../../utils/textEditorModalUtils';
 import { useDesignerStore } from '../../../store/designerStore';
 import { FormattedText } from '../../FormattedText';
@@ -12,13 +9,9 @@ import { cn } from '../../../utils/cn';
 export function TextComponentContentSummary({
   component,
   componentId,
-  data,
-  dataSourceCatalog,
 }: {
   component: ReportComponent;
   componentId: string;
-  data: Record<string, unknown[]>;
-  dataSourceCatalog?: DataSourceCatalog;
 }) {
   const openTextEditorModal = useDesignerStore((state) => state.openTextEditorModal);
   const textEditorModal = useDesignerStore((state) => state.textEditorModal);
@@ -29,16 +22,6 @@ export function TextComponentContentSummary({
   const liveDraft = isEditorOpenForThis ? textEditorModal?.draft : null;
   const displayContent = liveDraft?.content ?? component.content;
   const displayStyle = mergeTextEditorDraftStyle(component.style, liveDraft);
-
-  const previewContent = useMemo(
-    () =>
-      evaluateExpression(displayContent, {
-        sys: DESIGN_MODE_SYSTEM_VARIABLES,
-        data,
-        dataSourceCatalog,
-      }),
-    [displayContent, data, dataSourceCatalog]
-  );
 
   const hasContent = displayContent.trim().length > 0;
 
@@ -52,7 +35,7 @@ export function TextComponentContentSummary({
       >
         {hasContent ? (
           <FormattedText
-            content={previewContent}
+            content={displayContent}
             className="text-[13px] leading-relaxed line-clamp-5 break-words [overflow-wrap:anywhere]"
             style={{
               color: displayStyle.color,

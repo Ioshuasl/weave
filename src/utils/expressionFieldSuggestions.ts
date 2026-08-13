@@ -63,8 +63,10 @@ function systemPreview(token: string): string | undefined {
 
 export function buildExpressionFieldSuggestions(
   data: Record<string, unknown[]>,
-  catalog?: DataSourceCatalog
+  catalog?: DataSourceCatalog,
+  options?: { includePreview?: boolean }
 ): ExpressionSuggestionGroup[] {
+  const includePreview = options?.includePreview ?? true;
   const grouped = buildGroupedDataFieldOptions(data, catalog);
   const groups: ExpressionSuggestionGroup[] = [];
 
@@ -75,7 +77,7 @@ export function buildExpressionFieldSuggestions(
       items: grouped.singletons.map((opt) => ({
         token: opt.value,
         label: opt.label,
-        preview: singletonPreview(opt.value, data),
+        preview: includePreview ? singletonPreview(opt.value, data) : undefined,
       })),
     });
   }
@@ -87,7 +89,7 @@ export function buildExpressionFieldSuggestions(
       items: grouped.lists.map((opt) => ({
         token: opt.value,
         label: opt.label,
-        preview: singletonPreview(opt.value, data),
+        preview: includePreview ? singletonPreview(opt.value, data) : undefined,
       })),
     });
   }
@@ -95,7 +97,7 @@ export function buildExpressionFieldSuggestions(
   const dateTimeItems = SYSTEM_DATE_TIME_FIELD_OPTIONS.map((opt) => ({
     token: opt.value,
     label: opt.label,
-    preview: systemPreview(opt.value),
+    preview: includePreview ? systemPreview(opt.value) : undefined,
   }));
   if (dateTimeItems.length > 0) {
     groups.push({ id: 'datetime', label: 'Data e hora', items: dateTimeItems });
@@ -106,7 +108,7 @@ export function buildExpressionFieldSuggestions(
   ).map((opt) => ({
     token: opt.value,
     label: opt.label,
-    preview: systemPreview(opt.value),
+    preview: includePreview ? systemPreview(opt.value) : undefined,
   }));
   if (systemItems.length > 0) {
     groups.push({ id: 'system', label: 'Sistema', items: systemItems });

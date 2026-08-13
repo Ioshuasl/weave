@@ -94,6 +94,7 @@ export const SidebarRail: React.FC<SidebarRailProps> = ({
   return (
     <>
       <aside
+        data-tour="sidebar"
         className={cn(
           SIDEBAR_RAIL_CLASS,
           'bg-[#fbfbfa] border-r border-neutral-200 flex flex-col h-full select-none z-20'
@@ -112,38 +113,46 @@ export const SidebarRail: React.FC<SidebarRailProps> = ({
         </div>
 
         <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden py-2 px-1.5 flex flex-col items-center gap-1">
-          {BAND_ITEMS.map((item) => (
-            <React.Fragment key={item.type}>
-              <RailIconButton
-                icon={item.icon}
-                label={item.label}
-                onClick={() => addBand(item.type)}
-                draggablePayload={{ type: 'band', bandType: item.type }}
-              />
-            </React.Fragment>
-          ))}
+          <div className="flex flex-col items-center gap-1" data-tour="bands">
+            {BAND_ITEMS.map((item) => (
+              <React.Fragment key={item.type}>
+                <RailIconButton
+                  icon={item.icon}
+                  label={item.label}
+                  onClick={() => addBand(item.type)}
+                  draggablePayload={{ type: 'band', bandType: item.type }}
+                />
+              </React.Fragment>
+            ))}
+          </div>
 
           <div className="w-6 h-px bg-neutral-200 my-1 shrink-0" aria-hidden />
 
-          {COMPONENT_ITEMS.map((item) => (
-            <React.Fragment key={item.type}>
-              <RailIconButton
-                icon={item.icon}
-                label={item.label}
-                onClick={() => targetBandId && addComponent(targetBandId, item.type)}
-                draggablePayload={{ type: 'component', componentType: item.type }}
-              />
-            </React.Fragment>
-          ))}
+          <div className="flex flex-col items-center gap-1" data-tour="components">
+            {COMPONENT_ITEMS.map((item) => (
+              <React.Fragment key={item.type}>
+                <RailIconButton
+                  icon={item.icon}
+                  label={item.label}
+                  onClick={() => targetBandId && addComponent(targetBandId, item.type)}
+                  draggablePayload={{ type: 'component', componentType: item.type }}
+                />
+              </React.Fragment>
+            ))}
+          </div>
         </div>
 
         <div className="py-2 px-1.5 flex flex-col items-center border-t border-neutral-200 shrink-0">
-          <RailIconButton
-            icon={Database}
-            label="Fontes de dados"
-            active={flyoutOpen && flyoutMode === 'data'}
-            onClick={() => (flyoutOpen && flyoutMode === 'data' ? closeFlyout() : openFlyout('data'))}
-          />
+          <span data-tour="datasets">
+            <RailIconButton
+              icon={Database}
+              label="Fontes de dados"
+              active={flyoutOpen && flyoutMode === 'data'}
+              onClick={() =>
+                flyoutOpen && flyoutMode === 'data' ? closeFlyout() : openFlyout('data')
+              }
+            />
+          </span>
           <div
             className="w-7 h-7 rounded-lg bg-neutral-900 flex items-center justify-center mt-1"
             title="FastReport"
