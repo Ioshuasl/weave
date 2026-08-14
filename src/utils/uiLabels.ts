@@ -3,6 +3,7 @@ import type { ComponentType } from '../types/report';
 export const COMPONENT_LABELS: Record<ComponentType, string> = {
   text: 'Texto',
   image: 'Imagem',
+  qr: 'QR Code',
   shape: 'Forma',
   line: 'Linha',
   table: 'Tabela',
@@ -37,4 +38,4 @@ export const DESIGNER_STEPS = [
 ] as const;
 
 export const DESIGNER_SHORTCUTS_HINT =
-  'Delete excluir · Ctrl/Cmd+clique ou Shift+clique = seleção múltipla · Ctrl+C copiar · Ctrl+V colar · Ctrl+D duplicar · Ctrl+Z desfazer · Ctrl+Shift+Z refazer · Ctrl+H histórico · Shift arrastar = sem snap · Duplo-clique no texto para editar';
+  'Delete excluir · Alt+clique cicla sobreposições · Ctrl/Cmd+clique ou Shift+clique = seleção múltipla · Ctrl+C copiar · Ctrl+V colar · Ctrl+D duplicar · Ctrl+Z desfazer · Ctrl+Shift+Z refazer · Ctrl+H histórico · Shift arrastar = sem snap · Duplo-clique no texto para editar';

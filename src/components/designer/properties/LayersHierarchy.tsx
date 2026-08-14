@@ -7,6 +7,7 @@ import {
   Heading1,
   Heading2,
   Image as ImageIcon,
+  QrCode,
   Layers,
   List,
   ListOrdered,
@@ -48,6 +49,7 @@ const BAND_ICONS: Partial<Record<BandType, typeof Type>> = {
 const COMPONENT_ICONS: Record<ComponentType, typeof Type> = {
   text: Type,
   image: ImageIcon,
+  qr: QrCode,
   shape: Square,
   line: Minus,
   table: Table2,

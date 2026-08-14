@@ -5,7 +5,11 @@ import type { SystemVariables } from '../../utils/systemVariables';
 import { useDesignerStore } from '../../store/designerStore';
 import { ReportChart } from '../ReportChart';
 import { FormattedText } from '../FormattedText';
+import { ReportImage } from '../ReportImage';
 import { cn } from '../../utils/cn';
+import { getImageOpacity, getImageRotation, getImageSizeMode, resolveReportImageAlt, resolveReportImageHref, resolveReportImageSrc } from '../../utils/imagePropsUtils';
+import { getImageCropX, getImageCropY } from '../../utils/imageCropUtils';
+import { ReportQr } from '../ReportQr';
 
 interface RenderedComponentProps {
   componentId: string;
@@ -37,7 +41,16 @@ export const RenderedComponent = React.memo(function RenderedComponent({
       : '';
   const imageUrl =
     component.type === 'image'
-      ? evaluateExpression(component.content, expressionContext)
+      ? resolveReportImageSrc(component.content, expressionContext)
+      : '';
+  const imageSizeMode = getImageSizeMode(component.imageProps);
+  const imageAlt =
+    component.type === 'image'
+      ? resolveReportImageAlt(component.imageProps?.alt, expressionContext)
+      : '';
+  const imageHref =
+    component.type === 'image'
+      ? resolveReportImageHref(component.imageProps?.href, expressionContext)
       : '';
 
   const getJustifyContent = (textAlign?: React.CSSProperties['textAlign']) => {
@@ -57,6 +70,8 @@ export const RenderedComponent = React.memo(function RenderedComponent({
       : [];
 
   const isText = component.type === 'text';
+  const isQr = component.type === 'qr';
+  const isImage = component.type === 'image';
 
   return (
     <div
@@ -69,8 +84,8 @@ export const RenderedComponent = React.memo(function RenderedComponent({
         height: component.rect.height,
         ...component.style,
         display: 'flex',
-        alignItems: isText ? 'flex-start' : 'center',
-        justifyContent: getJustifyContent(component.style.textAlign),
+        alignItems: isText ? 'flex-start' : isImage || isQr ? 'stretch' : 'center',
+        justifyContent: isImage || isQr ? 'stretch' : getJustifyContent(component.style.textAlign),
         overflow: 'hidden',
         whiteSpace: isText ? 'normal' : 'nowrap',
         backgroundColor:
@@ -89,11 +104,24 @@ export const RenderedComponent = React.memo(function RenderedComponent({
         />
       )}
       {component.type === 'image' && (
-        <img
+        <ReportImage
           src={imageUrl}
-          alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-          referrerPolicy="no-referrer"
+          sizeMode={imageSizeMode}
+          cropX={getImageCropX(component.imageProps)}
+          cropY={getImageCropY(component.imageProps)}
+          opacity={getImageOpacity(component.imageProps)}
+          rotation={getImageRotation(component.imageProps)}
+          href={imageHref}
+          interactive
+          alt={imageAlt}
+        />
+      )}
+      {component.type === 'qr' && (
+        <ReportQr
+          value={evaluateExpression(component.content, expressionContext)}
+          width={component.rect.width}
+          height={component.rect.height}
+          qrProps={component.qrProps}
         />
       )}
       {component.type === 'table' && component.tableProps && (

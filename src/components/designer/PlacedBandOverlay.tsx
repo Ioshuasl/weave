@@ -25,7 +25,8 @@ import { stylePreviewDebug } from '../../utils/stylePreviewDebug';
 import { useDesignerSnap } from '../../hooks/useDesignerSnap';
 import { canBandAcceptPastedComponents } from '../../utils/designerClipboard';
 import { useSelectionClick } from '../../hooks/useSelectionClick';
-import { isIdSelected } from '../../utils/selectionUtils';
+import { getPrimarySelectedId, isIdSelected } from '../../utils/selectionUtils';
+import { resolveCanvasSelectionAtPointer } from '../../utils/canvasHitTest';
 import { DESIGNER_DRAG_START_DISTANCE_PX } from '../../utils/designerDragThreshold';
 
 interface PlacedBandOverlayProps {
@@ -45,6 +46,7 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
   const page = getReportPage(report, activePageId)!;
   const selectedIds = useDesignerStore((state) => state.selectedIds);
   const selectItem = useSelectionClick();
+  const setSelection = useDesignerStore((state) => state.setSelection);
   const updateBand = useDesignerStore((state) => state.updateBand);
   const removeBand = useDesignerStore((state) => state.removeBand);
   const duplicateBand = useDesignerStore((state) => state.duplicateBand);
@@ -68,6 +70,7 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
   const textEditorModalOpen = useDesignerStore((state) =>
     shouldSuppressDesignerCanvasZBoost(state)
   );
+  const isHoverTarget = useDesignerStore((state) => state.canvasHoverId === bandId);
 
   stylePreviewDebug.countRender(`PlacedBandOverlay:${bandId}`);
 
@@ -79,6 +82,7 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
 
   const rect = getBandRect(band, page);
   const isSelected = isIdSelected(selectedIds, bandId);
+  const isHovered = isHoverTarget && !isSelected;
   const isTableLayout = isTableDataBand(band);
   const isNumberedLayout = isNumberedListBand(band);
   const isListLayout = isListDataBand(band) && !isTableLayout;
@@ -104,6 +108,25 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
     const target = e.target as HTMLElement;
     if (target.closest('.component-node, .band-toolbar, .no-drag, .vector-line-handle')) return;
     stopCanvasBubble(e);
+    const state = useDesignerStore.getState();
+    const next = resolveCanvasSelectionAtPointer(
+      e.clientX,
+      e.clientY,
+      zoom,
+      state.report,
+      page,
+      state.dragPreviewRects,
+      {
+        altKey: e.altKey,
+        primarySelectedId: getPrimarySelectedId(state.selectedIds),
+        fallbackId: bandId,
+      }
+    );
+    const mode = e.ctrlKey || e.metaKey ? 'toggle' : e.shiftKey ? 'add' : 'replace';
+    if (next.id !== bandId || e.altKey) {
+      setSelection(next.id, { mode, bringToFront: next.bringToFront });
+      return;
+    }
     const hasModifier = e.ctrlKey || e.metaKey || e.shiftKey;
     if (hasModifier || !isSelected) {
       selectItem(bandId, e);
@@ -253,6 +276,7 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
       <div
         ref={nodeRef}
         data-band-overlay
+        data-band-id={bandId}
         className="absolute"
         style={{
           width: rect.width,
@@ -305,12 +329,19 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
             'bg-white border border-neutral-200/70 rounded-sm',
             bandActive
               ? selectionClasses.bandActive
-              : selectionClasses.bandIdle,
+              : isHovered
+                ? selectionClasses.bandHovered
+                : selectionClasses.bandIdle,
             isDropTarget && 'ring-2 ring-indigo-400/50 ring-inset',
             !hasSelectedChild &&
               'band-drag-handle cursor-grab active:cursor-grabbing'
           )}
         >
+          {isHovered && (
+            <span className="pointer-events-none absolute top-1 left-1 z-30 rounded bg-indigo-500 px-1 py-px text-[9px] font-medium leading-none text-white">
+              {getBandDisplayLabel(band.type)}
+            </span>
+          )}
           {isTableLayout && band.dataSource ? (
             <DataBandTableView
               band={band}

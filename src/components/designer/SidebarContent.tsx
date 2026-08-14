@@ -9,6 +9,7 @@ import {
   Minus,
   Table as TableIcon,
   BarChart,
+  QrCode,
   Square,
   List,
   ListOrdered,
@@ -114,6 +115,7 @@ export const COMPONENT_ITEMS: {
   { type: 'text', icon: Type, label: 'Texto' },
   { type: 'shape', icon: Square, label: 'Forma' },
   { type: 'image', icon: ImageIcon, label: 'Imagem' },
+  { type: 'qr', icon: QrCode, label: 'QR Code' },
   { type: 'table', icon: TableIcon, label: 'Tabela' },
   { type: 'chart', icon: BarChart, label: 'Gráfico' },
 ];

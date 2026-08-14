@@ -48,6 +48,7 @@ import {
 import type { ReportDesignerPrintPayload } from './utils/reportPrintJob';
 import type { DataSourceCatalog } from './utils/dataSourceUtils';
 import type { PagePresetDefinition } from './utils/pagePresets';
+import type { ReportImageResolver } from './utils/imageHostResolver';
 
 export type { HistoryEntry } from './utils/designerHistory';
 
@@ -77,6 +78,7 @@ export {
   REPORT_PRINT_JOB_VERSION,
 } from './utils/reportPrintJob';
 export type { DataSourceCatalog, DataSourceDefinition, DataSourceKind } from './utils/dataSourceUtils';
+export type { ReportImageResolver } from './utils/imageHostResolver';
 export type { SystemVariables } from './utils/systemVariables';
 export {
   buildSystemVariables,
@@ -166,6 +168,17 @@ export interface ReportDesignerProps {
    */
   onPrint?: (payload: ReportDesignerPrintPayload) => void | Promise<void>;
   /**
+   * Converte URLs de imagem autenticadas ou bloqueadas por CORS em `blob:` / `data:`
+   * que o navegador consegue exibir. Não é chamado para `data:` nem `blob:` já resolvidos.
+   *
+   * @example
+   * imageResolver={async (url) => {
+   *   const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+   *   return URL.createObjectURL(await res.blob());
+   * }}
+   */
+  imageResolver?: ReportImageResolver;
+  /**
    * Presets de folha adicionais do host (Fase 3.5).
    * Mesclados aos built-in; IDs iguais substituem o preset interno.
    */
@@ -203,6 +216,7 @@ export function ReportDesigner({
   historyPersistIntervalMs = REPORT_HISTORY_PERSIST_INTERVAL_MS.OFF,
   onPersistHistory,
   onPrint,
+  imageResolver,
   pagePresets,
   className,
   canvasSelectionClasses,
@@ -480,7 +494,11 @@ export function ReportDesigner({
     );
 
   return (
-    <DesignerHostProvider pagePresets={pagePresets} dataSources={dataSources}>
+    <DesignerHostProvider
+      pagePresets={pagePresets}
+      dataSources={dataSources}
+      imageResolver={imageResolver}
+    >
       {designerBody}
     </DesignerHostProvider>
   );

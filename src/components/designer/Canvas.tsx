@@ -17,6 +17,7 @@ import {
   getReportPage,
 } from '../../utils/reportPageUtils';
 import { handlePageContentDrop, hasDesignerDrag } from '../../utils/designerDragDrop';
+import { useCanvasHoverHitTest } from '../../hooks/useCanvasHoverHitTest';
 import { cn } from '../../utils/cn';
 import { stylePreviewDebug } from '../../utils/stylePreviewDebug';
 import { CANVAS_SCROLL_PADDING_CLASS } from './designerLayout';
@@ -51,6 +52,8 @@ const CanvasDesignerPage = memo(function CanvasDesignerPage({
 }: CanvasDesignerPageProps) {
   const addBand = useDesignerStore((state) => state.addBand);
   const addComponent = useDesignerStore((state) => state.addComponent);
+  const { handlePointerMove, handlePointerLeave } =
+    useCanvasHoverHitTest(zoom);
 
   stylePreviewDebug.countRender('CanvasDesignerPage');
 
@@ -99,6 +102,8 @@ const CanvasDesignerPage = memo(function CanvasDesignerPage({
             minHeight: contentSize.height,
             height: isFixedPageHeight ? contentSize.height : undefined,
           }}
+          onPointerMoveCapture={handlePointerMove}
+          onPointerLeave={handlePointerLeave}
           onDragEnter={(e) => {
             if (hasDesignerDrag(e)) onPageDropTargetChange(true);
           }}

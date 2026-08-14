@@ -3,7 +3,7 @@
  * docs/cypress-plano-de-testes.md §4.4
  */
 describe('P1 — Componentes', () => {
-  const COMPONENT_TYPES = ['Texto', 'Forma', 'Imagem', 'Tabela', 'Gráfico'] as const;
+  const COMPONENT_TYPES = ['Texto', 'Forma', 'Imagem', 'QR Code', 'Tabela', 'Gráfico'] as const;
 
   function ensureAccordionOpen(title: string) {
     cy.contains('button', title).then(($btn) => {
@@ -17,7 +17,7 @@ describe('P1 — Componentes', () => {
     cy.openReport('Lista de usuários (A4)', 'design');
   });
 
-  it('C1 — adicionar Texto/Forma/Imagem/Tabela/Gráfico com banda selecionada', () => {
+  it('C1 — adicionar Texto/Forma/Imagem/QR/Tabela/Gráfico com banda selecionada', () => {
     cy.addBand('Título');
 
     cy.get('[data-component-id]').its('length').then((initial) => {
@@ -209,6 +209,105 @@ describe('P1 — Componentes', () => {
 
     cy.get('[data-designer-chart-placeholder]').should('exist');
     cy.contains('Gráfico de pizza').should('exist');
+  });
+
+  it('C13 — imagem: ajuste, campo e estado de erro', () => {
+    cy.addBand('Título');
+    cy.addComponent('Imagem');
+
+    cy.contains('label', 'URL ou campo da imagem').should('be.visible');
+    cy.get('[data-report-image]').should('exist');
+
+    cy.contains('button', 'Cobrir').click();
+    cy.contains('button', 'Cobrir').should('have.class', 'bg-white');
+
+    cy.contains('button', /Campos disponíveis/).click({ force: true });
+    cy.contains(/Cart[oó]rio\.nome|cartorio\.nome/i).click({ force: true });
+
+    cy.get('[data-component-id] [data-report-image]').should(
+      'have.attr',
+      'data-report-image-state',
+      'error'
+    );
+  });
+
+  it('C14 — imagem: miniatura, alt, proporção, alinhamento e upload', () => {
+    cy.addBand('Título');
+    cy.addComponent('Imagem');
+
+    cy.get('[data-image-thumbnail]').should('exist');
+    cy.contains('label', 'Texto alternativo').parent().find('input').type('Logo da empresa');
+    cy.contains('label', 'Texto alternativo').parent().find('input').should('have.value', 'Logo da empresa');
+
+    ensureAccordionOpen('Dimensões');
+    cy.contains('label', 'Travar proporção').click();
+    cy.contains('label', 'Travar proporção').find('input').should('be.checked');
+
+    ensureAccordionOpen('Conteúdo');
+    cy.contains('button', 'Dir.').click();
+    cy.contains('button', 'Dir.').should('have.class', 'bg-white');
+    cy.contains('button', 'Base').click();
+    cy.contains('button', 'Base').should('have.class', 'bg-white');
+
+    const png =
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+    cy.get('[data-image-upload]').selectFile(
+      {
+        contents: Cypress.Buffer.from(png, 'base64'),
+        fileName: 'logo.png',
+        mimeType: 'image/png',
+      },
+      { force: true }
+    );
+
+    cy.contains('Imagem embutida no JSON').should('be.visible');
+    cy.get('[data-image-thumbnail] [data-report-image]').should(
+      'have.attr',
+      'data-report-image-state',
+      'ok'
+    );
+  });
+
+  it('C15 — imagem: opacidade, rotação e link', () => {
+    cy.addBand('Título');
+    cy.addComponent('Imagem');
+
+    cy.contains('label', 'Opacidade').parent().find('input').clear().type('20{enter}');
+    cy.contains('label', "Marca d'água").find('input').should('be.checked');
+
+    cy.contains('button', '90°').click();
+    cy.contains('button', '90°').should('have.class', 'bg-white');
+
+    cy.contains('label', 'Link ao clicar')
+      .parent()
+      .find('input')
+      .clear()
+      .type('https://exemplo.com{enter}');
+    cy.contains('label', 'Link ao clicar')
+      .parent()
+      .find('input')
+      .should('have.value', 'https://exemplo.com');
+  });
+
+  it('C16 — imagem recorte e QR Code', () => {
+    cy.addBand('Título');
+    cy.addComponent('Imagem');
+
+    cy.contains('button', 'Cobrir').click();
+    cy.contains('label', 'Recorte X').parent().find('input').clear().type('20{enter}');
+    cy.contains('label', 'Recorte Y').parent().find('input').clear().type('80{enter}');
+    cy.contains('button', 'Esq.').should('have.class', 'bg-white');
+    cy.contains('button', 'Base').should('have.class', 'bg-white');
+
+    cy.addComponent('QR Code');
+    cy.contains('label', 'Conteúdo do QR').should('be.visible');
+    cy.contains('button', /Campos disponíveis/).click({ force: true });
+    cy.contains(/Cart[oó]rio\.nome|cartorio\.nome/i).click({ force: true });
+    cy.get('[data-component-id] [data-report-qr]').should(
+      'have.attr',
+      'data-report-qr-state',
+      'ok'
+    );
   });
 
   it('C12 — seleção múltipla (Ctrl+clique)', () => {

@@ -84,11 +84,13 @@ export function FieldTokenPicker({
   lists,
   onInsert,
   reportId,
+  insertHint = 'Clique em um campo para inserir na posição do cursor no editor.',
 }: {
   singletons: DataFieldOption[];
   lists: DataFieldOption[];
   onInsert: (token: string) => void;
   reportId?: string;
+  insertHint?: string;
 }) {
   const [query, setQuery] = useState('');
 
@@ -183,9 +185,7 @@ export function FieldTokenPicker({
         </div>
       )}
 
-      <PropertyHint>
-        Clique em um campo para inserir na posição do cursor no editor.
-      </PropertyHint>
+      <PropertyHint>{insertHint}</PropertyHint>
     </PropertyAccordion>
   );
 }

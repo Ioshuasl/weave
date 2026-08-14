@@ -1,5 +1,6 @@
 import type { ReportDefinition, ReportComponent, ReportPage } from '../types/report';
 import { normalizeTextComponent } from './richTextUtils';
+import { squareQrRect } from './componentRectDefaults';
 import {
   cmToPx,
   DEFAULT_PAGE_PRESET_ID,
@@ -36,7 +37,10 @@ function normalizePage(page: ReportPage): ReportPage {
 export function normalizeReportDefinition(report: ReportDefinition): ReportDefinition {
   const components: Record<string, ReportComponent> = {};
   for (const [id, comp] of Object.entries(report.components)) {
-    components[id] = normalizeTextComponent(comp);
+    const normalized = normalizeTextComponent(comp);
+    components[id] = normalized.type === 'qr'
+      ? { ...normalized, rect: squareQrRect(normalized.rect) }
+      : normalized;
   }
 
   const pages = report.pages.map(normalizePage);

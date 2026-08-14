@@ -111,7 +111,7 @@ function buildStepCatalog(): TourStepDef[] {
       selectors: ['[data-tour="components"]'],
       title: 'Componentes',
       description:
-        'Texto, forma, imagem, tabela e gráfico. Selecione uma banda e clique, ou arraste o componente para cima dela. Duplo clique no texto abre o editor.',
+        'Texto, forma, imagem, QR Code, tabela e gráfico. Selecione uma banda e clique, ou arraste o componente para cima dela. Duplo clique no texto abre o editor.',
       side: 'right',
     },
     {

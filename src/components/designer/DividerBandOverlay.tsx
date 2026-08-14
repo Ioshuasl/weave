@@ -17,6 +17,7 @@ import {
   translateBandRect,
 } from '../../utils/dividerBandInteraction';
 import { useDesignerSnap } from '../../hooks/useDesignerSnap';
+import { useCanvasSelectionClasses } from './designerSelectionContext';
 import { useSelectionClick } from '../../hooks/useSelectionClick';
 import { isIdSelected } from '../../utils/selectionUtils';
 import { hasExceededScreenDragThreshold } from '../../utils/designerDragThreshold';
@@ -38,6 +39,7 @@ export const DividerBandOverlay = React.memo(function DividerBandOverlay({
   const page = getReportPage(report, activePageId)!;
   const selectedIds = useDesignerStore((state) => state.selectedIds);
   const selectItem = useSelectionClick();
+  const selectionClasses = useCanvasSelectionClasses();
   const updateBand = useDesignerStore((state) => state.updateBand);
   const removeBand = useDesignerStore((state) => state.removeBand);
   const duplicateBand = useDesignerStore((state) => state.duplicateBand);
@@ -58,6 +60,7 @@ export const DividerBandOverlay = React.memo(function DividerBandOverlay({
   const textEditorModalOpen = useDesignerStore((state) =>
     shouldSuppressDesignerCanvasZBoost(state)
   );
+  const isHoverTarget = useDesignerStore((state) => state.canvasHoverId === bandId);
 
   stylePreviewDebug.countRender(`PlacedBandOverlay:${bandId}`);
 
@@ -65,6 +68,7 @@ export const DividerBandOverlay = React.memo(function DividerBandOverlay({
 
   const rect = getBandRect(band, page);
   const isSelected = isIdSelected(selectedIds, bandId);
+  const isHovered = isHoverTarget && !isSelected;
   const isBandGroupFollower =
     bandGroupDrag !== null &&
     bandGroupDrag.leaderId !== bandId &&
@@ -224,6 +228,7 @@ export const DividerBandOverlay = React.memo(function DividerBandOverlay({
     <div
       ref={rootRef}
       data-band-overlay
+      data-band-id={bandId}
       className="absolute touch-none"
       style={{
         left: displayRect.x,
@@ -246,8 +251,13 @@ export const DividerBandOverlay = React.memo(function DividerBandOverlay({
 
       <div
         className={cn(
-          'band-surface relative h-full min-h-[8px] overflow-visible pointer-events-auto',
-          isSelected && 'cursor-move'
+          'band-surface relative h-full min-h-[8px] overflow-visible',
+          isSelected && 'cursor-move',
+          isSelected
+            ? selectionClasses.bandActive
+            : isHovered
+              ? selectionClasses.bandHovered
+              : selectionClasses.bandIdle
         )}
         onPointerDown={startBandMoveDrag}
       >

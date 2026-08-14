@@ -15,10 +15,11 @@ export const ResizeHandle: React.FC<ResizeHandleProps> = ({
 }) => (
   <div
     role="presentation"
+    data-resize-handle
     title={title}
     aria-label={title}
     className={cn(
-      'no-drag absolute bottom-0 right-0 z-20 translate-x-1/2 translate-y-1/2',
+      'no-drag absolute bottom-0 right-0 z-20 translate-x-1/2 translate-y-1/2 pointer-events-auto',
       'flex items-center justify-center w-3.5 h-3.5 rounded-full',
       'bg-white border border-neutral-300/90',
       'shadow-[0_1px_3px_rgba(0,0,0,0.06)]',

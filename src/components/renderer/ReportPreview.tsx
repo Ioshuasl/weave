@@ -15,12 +15,14 @@ import {
   buildReportPrintJob,
   type ReportDesignerPrintPayload,
 } from '../../utils/reportPrintJob';
+import { waitForElementImages } from '../../utils/printImageWait';
 import {
   canUseBookView,
   canUseMultiPageView,
   getPreviewLayoutNaturalWidth,
   type PreviewViewMode,
 } from '../../utils/previewViewMode';
+
 const PRINT_FRAME_BASE = `
   html, body, #report-print-root {
     margin: 0;
@@ -57,7 +59,7 @@ function collectDocumentStyles(pageCss: string): string {
   return `${links}${inline}<style>${pageCss}\n${PRINT_FRAME_BASE}</style>`;
 }
 
-function printReportSheets(source: HTMLElement, pageCss: string) {
+async function printReportSheets(source: HTMLElement, pageCss: string) {
   const iframe = document.createElement('iframe');
   iframe.setAttribute(
     'style',
@@ -84,7 +86,8 @@ function printReportSheets(source: HTMLElement, pageCss: string) {
     }
   };
 
-  const triggerPrint = () => {
+  const triggerPrint = async () => {
+    await waitForElementImages(frameDocument);
     frameWindow.focus();
     frameWindow.print();
     frameWindow.addEventListener('afterprint', cleanup, { once: true });
@@ -92,10 +95,16 @@ function printReportSheets(source: HTMLElement, pageCss: string) {
   };
 
   if (frameDocument.readyState === 'complete') {
-    window.setTimeout(triggerPrint, 150);
+    await triggerPrint();
   } else {
-    iframe.addEventListener('load', () => window.setTimeout(triggerPrint, 150), {
-      once: true,
+    await new Promise<void>((resolve) => {
+      iframe.addEventListener(
+        'load',
+        () => {
+          void triggerPrint().then(resolve);
+        },
+        { once: true }
+      );
     });
   }
 }
@@ -176,8 +185,9 @@ export const ReportPreview = ({
 
     const source = document.getElementById('report-print-root');
     if (source) {
+      await waitForElementImages(source);
       const pageCss = buildPrintPageCss(buildReportPrintJob(report, data).sheets);
-      printReportSheets(source, pageCss);
+      await printReportSheets(source, pageCss);
       return;
     }
     window.print();

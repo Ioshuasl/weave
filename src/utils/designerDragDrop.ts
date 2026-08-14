@@ -3,6 +3,7 @@ import type { BandType, ComponentType, ReportBand, ReportComponent, ReportPage }
 import { isTableDataBand } from './dataBandUtils';
 import { clampRectToPage, getAllPlacedBandIds, getBandRect } from './reportPageUtils';
 import { getDesignerPageScale } from './dividerBandInteraction';
+import { getDefaultComponentSize } from './componentRectDefaults';
 
 export const DESIGNER_DRAG_MIME = 'application/json';
 
@@ -139,8 +140,9 @@ export function handleBandSurfaceDrop(
   }
 
   if (payload.type === 'component') {
+    const size = getDefaultComponentSize(payload.componentType);
     actions.addComponent(context.bandId, payload.componentType, {
-      rect: { x, y, width: 100, height: 20 },
+      rect: { x, y, ...size },
     });
     return true;
   }
@@ -200,8 +202,7 @@ export function handlePageContentDrop(
       rect: {
         x: Math.max(0, point.x - bandRect.x),
         y: Math.max(0, point.y - bandRect.y),
-        width: 100,
-        height: 20,
+        ...getDefaultComponentSize(payload.componentType),
       },
     });
     return true;

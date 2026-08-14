@@ -46,6 +46,8 @@ import {
   getBandDisplayLabel,
 } from '../utils/dataBandUtils';
 import { getComponentDisplayLabel } from '../utils/uiLabels';
+import { DEFAULT_IMAGE_PLACEHOLDER_SRC } from '../utils/imagePropsUtils';
+import { getDefaultComponentSize, squareQrRect } from '../utils/componentRectDefaults';
 import {
   applyDividerAngleUpdate,
   applyDividerLineUpdate,
@@ -163,6 +165,8 @@ interface DesignerState {
   liveChartPreview: LiveChartPreview | null;
   /** Componente em arrasto — suspende fantasmas sem gravar posição no relatório */
   draggingComponentId: string | null;
+  /** Alvo de hover no canvas (hit-test; não vai para o histórico) */
+  canvasHoverId: string | null;
   historyPast: HistoryEntry[];
   historyPointer: number;
   snapEnabled: boolean;
@@ -215,6 +219,7 @@ interface DesignerState {
   setLiveChartPreview: (preview: LiveChartPreview | null) => void;
   clearLiveChartPreview: () => void;
   setDraggingComponentId: (id: string | null) => void;
+  setCanvasHoverId: (id: string | null) => void;
   addBand: (type: BandType, options?: { position?: { x: number; y: number } }) => void;
   removeBand: (id: string) => void;
   updateBand: (id: string, updates: Partial<ReportBand>) => void;
@@ -305,6 +310,7 @@ function restoreHistoryEntry(state: DesignerState, index: number): Partial<Desig
     liveStylePreview: null,
     liveChartPreview: null,
     draggingComponentId: null,
+    canvasHoverId: null,
     componentGroupDrag: null,
     bandGroupDrag: null,
     dragPreviewRects: null,
@@ -479,6 +485,7 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
   liveStylePreview: null,
   liveChartPreview: null,
   draggingComponentId: null,
+  canvasHoverId: null,
   historyPast: [INITIAL_HISTORY_ENTRY],
   historyPointer: 0,
   snapEnabled: true,
@@ -569,6 +576,9 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
       }
       return { draggingComponentId: id };
     }),
+
+  setCanvasHoverId: (id) =>
+    set((state) => (state.canvasHoverId === id ? state : { canvasHoverId: id })),
 
   setSelection: (id, options) =>
     set((state) => {
@@ -1312,25 +1322,19 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
 
   addComponent: (bandId, type, initialProps) => set((state) => {
     const newCompId = uuidv4();
-    const isLine = type === 'line';
-    const isImage = type === 'image';
-    const isTable = type === 'table';
-    const isChart = type === 'chart';
     
-    const defaultRect = { 
-      x: 10, 
-      y: 10, 
-      width: isLine ? 200 : (isImage ? 100 : (isTable ? 300 : (isChart ? 300 : 100))), 
-      height: isLine ? 2 : (isImage ? 100 : (isTable ? 100 : (isChart ? 200 : 20))) 
-    };
+    const size = getDefaultComponentSize(type);
+    const defaultRect = { x: 10, y: 10, ...size };
+    const mergedRect = initialProps?.rect ? { ...defaultRect, ...initialProps.rect } : defaultRect;
+    const rect = type === 'qr' ? squareQrRect(mergedRect) : mergedRect;
 
     const newComp: ReportComponent = {
       id: newCompId,
       type,
       name: `${type}1`,
       parentId: bandId,
-      rect: initialProps?.rect ? { ...defaultRect, ...initialProps.rect } : defaultRect,
-      content: initialProps?.content || (type === 'text' ? 'Texto' : (type === 'image' ? 'https://via.placeholder.com/150' : '')),
+      rect,
+      content: initialProps?.content ?? (type === 'text' ? 'Texto' : (type === 'image' ? DEFAULT_IMAGE_PLACEHOLDER_SRC : '')),
       style: { 
         fontSize: '14px', 
         color: '#000000',
@@ -1338,6 +1342,17 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
         border: type === 'shape' ? '1px solid #000' : undefined,
         ...initialProps?.style
       },
+      imageProps: type === 'image' ? {
+        sizeMode: 'contain',
+        ...initialProps?.imageProps,
+      } : undefined,
+      qrProps: type === 'qr' ? {
+        errorCorrection: 'M',
+        foreground: '#000000',
+        background: '#ffffff',
+        margin: 1,
+        ...initialProps?.qrProps,
+      } : undefined,
       tableProps: type === 'table' ? {
         rows: [
           ['Coluna 1', 'Coluna 2'],
@@ -1555,11 +1570,16 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
         return state;
       }
 
+      const next = { ...current, ...updates };
+      if (next.type === 'qr' && updates.rect) {
+        next.rect = squareQrRect(next.rect);
+      }
+
       const report = {
         ...state.report,
         components: {
           ...state.report.components,
-          [id]: { ...current, ...updates },
+          [id]: next,
         },
       };
       stylePreviewDebug.timeEnd(`updateComponent:${id}`);

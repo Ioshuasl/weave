@@ -26,7 +26,47 @@ export interface Rect {
   height: number;
 }
 
-export type ComponentType = 'text' | 'image' | 'shape' | 'line' | 'table' | 'chart';
+export type ComponentType = 'text' | 'image' | 'qr' | 'shape' | 'line' | 'table' | 'chart';
+
+/** Como a imagem preenche o retângulo do componente */
+export type ImageSizeMode = 'contain' | 'cover' | 'fill';
+
+export type ImageAlignX = 'left' | 'center' | 'right';
+export type ImageAlignY = 'top' | 'middle' | 'bottom';
+
+export interface ImageProps {
+  /** Padrão: `contain` — relatórios antigos sem este campo continuam iguais */
+  sizeMode?: ImageSizeMode;
+  /** Texto alternativo (acessibilidade / PDF). Aceita `{dataset.campo}` */
+  alt?: string;
+  /** Padrão: `center` — posição horizontal quando Conter/Cobrir */
+  alignX?: ImageAlignX;
+  /** Padrão: `middle` — posição vertical quando Conter/Cobrir */
+  alignY?: ImageAlignY;
+  /** Trava largura/altura no painel e no resize (Shift também trava no canvas) */
+  lockAspectRatio?: boolean;
+  /** 0–1 — padrão 1. Valores baixos servem de marca d'água */
+  opacity?: number;
+  /** Rotação em graus (sentido horário). Padrão 0 */
+  rotation?: number;
+  /** URL ao clicar (preview/impressão). Aceita `{dataset.campo}` */
+  href?: string;
+  /** Ponto de recorte horizontal 0–100 (object-position). Sobrescreve alignX quando definido */
+  cropX?: number;
+  /** Ponto de recorte vertical 0–100 (object-position). Sobrescreve alignY quando definido */
+  cropY?: number;
+}
+
+export type QrErrorCorrection = 'L' | 'M' | 'Q' | 'H';
+
+export interface QrProps {
+  /** Padrão: `M` */
+  errorCorrection?: QrErrorCorrection;
+  foreground?: string;
+  background?: string;
+  /** Margem em módulos. Padrão: 1 */
+  margin?: number;
+}
 
 /** @deprecated Legado — novos componentes usam markdown inline no content */
 export type TextContentFormat = 'plain' | 'markdown' | 'html';
@@ -36,11 +76,13 @@ export interface ReportComponent {
   type: ComponentType;
   name: string;
   rect: Rect;
-  content: string; // Texto com markdown inline ou expressão {dataset.field}
+  content: string; // Texto com markdown inline, URL de imagem ou expressão {dataset.field}
   /** @deprecated Migrado automaticamente para markdown no content */
   textFormat?: TextContentFormat;
   style: React.CSSProperties;
   parentId: string; // Band ID
+  imageProps?: ImageProps;
+  qrProps?: QrProps;
   tableProps?: {
     rows: string[][]; // Content of cells [rowIndex][colIndex]
     columnWidths?: number[]; // Optional widths

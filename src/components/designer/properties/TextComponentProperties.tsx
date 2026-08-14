@@ -4,17 +4,22 @@ import type { ReportComponent } from '../../../types/report';
 import type { DataFieldOption } from '../../../utils/reportUtils';
 import type { DataSourceCatalog } from '../../../utils/dataSourceUtils';
 import {
+  PropertyCheckbox,
   PropertyColorInput,
   PropertyFieldGrid,
+  PropertyHint,
   PropertyNumberInput,
-  PropertyTextarea,
   PropertyTextInput,
 } from '../PropertyFields';
 import { TextComponentContentSummary } from './TextComponentContentSummary';
 import { TablePropertiesSection } from '../TablePropertiesSection';
 import { PropertyAccordion } from './PropertyAccordion';
 import { ChartPropertiesSection } from './ChartPropertiesSection';
+import { ImagePropertiesSection } from './ImagePropertiesSection';
+import { QrPropertiesSection } from './QrPropertiesSection';
 import { PropertyBorderInput, PropertyBorderRadiusInput } from './PropertyBorderInput';
+import { applyRectSizeWithAspect } from '../../../utils/imagePropsUtils';
+import { QR_MIN_SIZE } from '../../../utils/componentRectDefaults';
 
 export function TextComponentProperties({
   component,
@@ -49,6 +54,9 @@ export function TextComponentProperties({
   onPaste: () => void;
   onRemove: () => void;
 }) {
+  const lockAspect =
+    (component.type === 'image' && Boolean(component.imageProps?.lockAspectRatio)) ||
+    component.type === 'qr';
   return (
     <>
       <PropertyAccordion
@@ -66,11 +74,24 @@ export function TextComponentProperties({
         )}
 
         {component.type === 'image' && (
-          <PropertyTextarea
-            label="URL da imagem"
-            value={component.content}
-            onChange={(content) => onUpdate({ content })}
-            placeholder="https://exemplo.com/imagem.png"
+          <ImagePropertiesSection
+            component={component}
+            reportId={reportId}
+            groupedDataFields={groupedDataFields}
+            data={data}
+            dataSourceCatalog={dataSourceCatalog}
+            onUpdate={onUpdate}
+          />
+        )}
+
+        {component.type === 'qr' && (
+          <QrPropertiesSection
+            component={component}
+            reportId={reportId}
+            groupedDataFields={groupedDataFields}
+            data={data}
+            dataSourceCatalog={dataSourceCatalog}
+            onUpdate={onUpdate}
           />
         )}
 
@@ -118,18 +139,53 @@ export function TextComponentProperties({
           <PropertyNumberInput
             label="Largura"
             suffix="px"
-            min={1}
+            min={component.type === 'qr' ? QR_MIN_SIZE : 1}
             value={Math.round(component.rect.width)}
-            onChange={(width) => onUpdate({ rect: { ...component.rect, width } })}
+            onChange={(width) =>
+              onUpdate({
+                rect: applyRectSizeWithAspect(
+                  component.rect,
+                  'width',
+                  width,
+                  lockAspect
+                ),
+              })
+            }
           />
           <PropertyNumberInput
             label="Altura"
             suffix="px"
-            min={1}
+            min={component.type === 'qr' ? QR_MIN_SIZE : 1}
             value={Math.round(component.rect.height)}
-            onChange={(height) => onUpdate({ rect: { ...component.rect, height } })}
+            onChange={(height) =>
+              onUpdate({
+                rect: applyRectSizeWithAspect(
+                  component.rect,
+                  'height',
+                  height,
+                  lockAspect
+                ),
+              })
+            }
           />
         </PropertyFieldGrid>
+        {component.type === 'qr' && (
+          <PropertyHint className="mt-2">O QR Code mantém a proporção quadrada.</PropertyHint>
+        )}
+        {component.type === 'image' && (
+          <div className="mt-2 space-y-1">
+            <PropertyCheckbox
+              label="Travar proporção"
+              checked={Boolean(component.imageProps?.lockAspectRatio)}
+              onChange={(lockAspectRatio) =>
+                onUpdate({
+                  imageProps: { ...component.imageProps, lockAspectRatio },
+                })
+              }
+            />
+            <PropertyHint>Shift também trava ao redimensionar no canvas.</PropertyHint>
+          </div>
+        )}
       </PropertyAccordion>
 
       <PropertyAccordion

@@ -13,6 +13,8 @@ export interface ClipboardComponentPayload {
   textFormat?: ReportComponent['textFormat'];
   tableProps?: ReportComponent['tableProps'];
   chartProps?: ReportComponent['chartProps'];
+  imageProps?: ReportComponent['imageProps'];
+  qrProps?: ReportComponent['qrProps'];
 }
 
 export interface DesignerClipboard {
@@ -37,6 +39,8 @@ export function componentToClipboardPayload(comp: ReportComponent): ClipboardCom
     textFormat: comp.textFormat,
     tableProps: comp.tableProps,
     chartProps: comp.chartProps,
+    imageProps: comp.imageProps,
+    qrProps: comp.qrProps,
   })) as ClipboardComponentPayload;
 }
 
@@ -105,6 +109,8 @@ export function buildPasteFromClipboard(
       ...(item.textFormat ? { textFormat: item.textFormat } : {}),
       ...(item.tableProps ? { tableProps: JSON.parse(JSON.stringify(item.tableProps)) } : {}),
       ...(item.chartProps ? { chartProps: JSON.parse(JSON.stringify(item.chartProps)) } : {}),
+      ...(item.imageProps ? { imageProps: JSON.parse(JSON.stringify(item.imageProps)) } : {}),
+      ...(item.qrProps ? { qrProps: JSON.parse(JSON.stringify(item.qrProps)) } : {}),
     };
   }
 
