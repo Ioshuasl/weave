@@ -1,0 +1,381 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
+import type { ReportData } from '../../data-source/domain';
+import type { ReportDefinition } from '../../report/domain';
+import { cn } from '../../../shared/ui/cn';
+import { DESIGNER_MODAL_OVERLAY_Z } from '../../../shared/ui/zIndex';
+import { useMediaQuery } from '../../../shared/hooks/useMediaQuery';
+import { usePageZoom } from '../../viewport/ui';
+import { NARROW_VIEWPORT_MEDIA_QUERY } from '../../../shared/ui/breakpoints';
+import { PreviewBottomToolbar } from './PreviewBottomToolbar';
+import { PreviewSheetsLayout } from './PreviewSheetsLayout';
+import { buildReportPreviewSheets } from '../domain/paginationEngine';
+import {
+  buildPrintPageCss,
+  buildWeavePrintPayload,
+  buildReportPrintJob,
+  type WeavePrintPayload,
+} from '../domain/reportPrintJob';
+import { waitForElementImages } from '../infrastructure/printImageWait';
+import {
+  canUseBookView,
+  canUseMultiPageView,
+  getPreviewLayoutNaturalWidth,
+  type PreviewViewMode,
+} from '../domain/previewViewMode';
+
+const PRINT_FRAME_BASE = `
+  html, body, #report-print-root {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .preview-sheet-block {
+    break-after: page;
+    page-break-after: always;
+  }
+  .preview-sheet-block:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+  @media print {
+    body,
+    #report-print-root,
+    #report-print-root * {
+      visibility: visible !important;
+    }
+  }
+`;
+
+function collectDocumentStyles(pageCss: string): string {
+  const links = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+    .map((node) => node.outerHTML)
+    .join('');
+  const inline = Array.from(document.querySelectorAll('style'))
+    .filter((node) => !node.textContent?.includes('report-preview-overlay'))
+    .map((node) => node.outerHTML)
+    .join('');
+  return `${links}${inline}<style>${pageCss}\n${PRINT_FRAME_BASE}</style>`;
+}
+
+async function printReportSheets(source: HTMLElement, pageCss: string) {
+  const iframe = document.createElement('iframe');
+  iframe.setAttribute(
+    'style',
+    'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden'
+  );
+  document.body.appendChild(iframe);
+
+  const frameWindow = iframe.contentWindow;
+  const frameDocument = frameWindow?.document;
+  if (!frameWindow || !frameDocument) {
+    document.body.removeChild(iframe);
+    return;
+  }
+
+  frameDocument.open();
+  frameDocument.write(
+    `<!DOCTYPE html><html><head><meta charset="UTF-8">${collectDocumentStyles(pageCss)}</head><body><div id="report-print-root">${source.innerHTML}</div></body></html>`
+  );
+  frameDocument.close();
+
+  const cleanup = () => {
+    if (iframe.parentNode) {
+      document.body.removeChild(iframe);
+    }
+  };
+
+  const triggerPrint = async () => {
+    await waitForElementImages(frameDocument);
+    frameWindow.focus();
+    frameWindow.print();
+    frameWindow.addEventListener('afterprint', cleanup, { once: true });
+    window.setTimeout(cleanup, 2000);
+  };
+
+  if (frameDocument.readyState === 'complete') {
+    await triggerPrint();
+  } else {
+    await new Promise<void>((resolve) => {
+      iframe.addEventListener(
+        'load',
+        () => {
+          void triggerPrint().then(resolve);
+        },
+        { once: true }
+      );
+    });
+  }
+}
+
+interface ReportPreviewProps {
+  report: ReportDefinition;
+  data: ReportData;
+  onClose?: () => void;
+  variant?: 'modal' | 'embedded';
+  reportId?: string;
+  onPrint?: (payload: WeavePrintPayload) => void | Promise<void>;
+  /** Notifica abertura/fechamento do modal (não chamado em `embedded`) */
+  onOpenChange?: (open: boolean) => void;
+}
+
+export const ReportPreview = ({
+  report,
+  data,
+  onClose,
+  variant = 'modal',
+  reportId,
+  onPrint,
+  onOpenChange,
+}: ReportPreviewProps) => {
+  const isNarrow = useMediaQuery(NARROW_VIEWPORT_MEDIA_QUERY);
+  const [viewMode, setViewMode] = useState<PreviewViewMode>('single');
+
+  useEffect(() => {
+    if (variant === 'embedded' || !onOpenChange) return;
+    onOpenChange(true);
+    return () => onOpenChange(false);
+  }, [onOpenChange, variant]);
+
+  const sheets = useMemo(
+    () => buildReportPreviewSheets(report, data),
+    [report, data]
+  );
+
+  const referencePageWidth = useMemo(
+    () => sheets.reduce((max, sheet) => Math.max(max, sheet.pageWidth), 0),
+    [sheets]
+  );
+
+  const isReceiptPreview = report.pages.some((p) => p.profile === 'continuous');
+  const multiPageEnabled = canUseMultiPageView(sheets.length, isReceiptPreview);
+  const bookEnabled = canUseBookView(sheets.length, isReceiptPreview);
+  const multiColumnCount = isNarrow ? 1 : 2;
+
+  const layoutNaturalWidth = useMemo(
+    () =>
+      getPreviewLayoutNaturalWidth(viewMode, referencePageWidth, multiColumnCount),
+    [viewMode, referencePageWidth, multiColumnCount]
+  );
+
+  const viewLayoutKey = `${sheets.length}-${viewMode}-${multiColumnCount}`;
+
+  const { scrollRef, spacerRef, contentRef, committedZoom, zoomIn, zoomOut, resetZoom } =
+    usePageZoom({
+      pageWidth: layoutNaturalWidth,
+      fitLayoutKey: viewLayoutKey,
+    });
+
+  useEffect(() => {
+    if (viewMode === 'multi' && !multiPageEnabled) {
+      setViewMode('single');
+    }
+    if (viewMode === 'book' && !bookEnabled) {
+      setViewMode('single');
+    }
+  }, [viewMode, multiPageEnabled, bookEnabled]);
+
+  const handlePrint = useCallback(async () => {
+    if (onPrint) {
+      await onPrint(
+        buildWeavePrintPayload(report, data, {
+          reportId,
+          source: 'preview',
+        })
+      );
+      return;
+    }
+
+    const source = document.getElementById('report-print-root');
+    if (source) {
+      await waitForElementImages(source);
+      const pageCss = buildPrintPageCss(buildReportPrintJob(report, data).sheets);
+      await printReportSheets(source, pageCss);
+      return;
+    }
+    window.print();
+  }, [onPrint, report, data, reportId]);
+
+  const isEmbedded = variant === 'embedded';
+  const isFullscreenModal = !isEmbedded && isNarrow;
+  const multiDesignPages = report.pages.length > 1;
+  const firstSheet = sheets[0];
+
+  const panel = (
+    <div
+      className={cn(
+        'report-preview-panel bg-white flex flex-col overflow-hidden',
+        isEmbedded || isFullscreenModal
+          ? 'h-full w-full'
+          : 'rounded-xl shadow-xl border border-neutral-200/60 w-full max-w-5xl h-full'
+      )}
+    >
+      <div className="report-preview-toolbar p-3 border-b border-neutral-100 flex justify-between items-center bg-[#fbfbfa] shrink-0">
+        <div>
+          <h2 className="text-[14px] font-semibold text-neutral-800">Pré-visualização</h2>
+          {firstSheet && (
+            <p className="text-[11px] text-neutral-400 mt-0.5">
+              {multiDesignPages ? `${report.pages.length} páginas de design · ` : ''}
+              {sheets.length} folha{sheets.length === 1 ? '' : 's'} de saída ·{' '}
+              {firstSheet.pageWidth}×{firstSheet.pageHeight}px
+            </p>
+          )}
+        </div>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={handlePrint}
+            className="px-3 py-1.5 bg-white border border-neutral-200 text-neutral-700 text-[13px] rounded-md hover:bg-neutral-50 transition-colors shadow-sm"
+          >
+            Imprimir
+          </button>
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-3 py-1.5 bg-neutral-900 text-white text-[13px] rounded-md hover:bg-neutral-800 transition-colors shadow-sm"
+            >
+              {isEmbedded ? 'Voltar' : 'Fechar'}
+            </button>
+          )}
+        </div>
+      </div>
+
+      <div className="report-preview-viewport relative flex-1 min-h-0">
+        <div
+          ref={scrollRef}
+          className={cn(
+            'report-preview-scroll absolute inset-0 overflow-auto bg-[#efefef]/50',
+            isFullscreenModal ? 'p-4' : 'p-8',
+            isReceiptPreview && 'bg-neutral-200/60'
+          )}
+          style={{
+            backgroundImage: 'radial-gradient(#d4d4d4 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
+        >
+          <div ref={spacerRef} className="preview-zoom-spacer mx-auto">
+            <div
+              ref={contentRef}
+              className="preview-zoom-stage flex flex-col items-center"
+            >
+              <div id="report-print-root" className="w-full flex flex-col items-center">
+                <PreviewSheetsLayout
+                  sheets={sheets}
+                  report={report}
+                  data={data}
+                  viewMode={viewMode}
+                  multiColumnCount={multiColumnCount}
+                  multiDesignPages={multiDesignPages}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <PreviewBottomToolbar
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+          multiPageEnabled={multiPageEnabled}
+          bookEnabled={bookEnabled}
+          zoom={committedZoom}
+          onZoomIn={zoomIn}
+          onZoomOut={zoomOut}
+          onResetZoom={resetZoom}
+          align={isNarrow ? 'left' : 'right'}
+        />
+      </div>
+    </div>
+  );
+
+  const overlay = (
+    <div
+      className={cn(
+        'report-preview-overlay',
+        isEmbedded
+          ? 'h-full w-full flex flex-col'
+          : isFullscreenModal
+            ? 'fixed inset-0 bg-white flex flex-col'
+            : 'fixed inset-0 bg-neutral-900/20 flex items-center justify-center p-8 backdrop-blur-sm'
+      )}
+      style={isEmbedded ? undefined : { zIndex: DESIGNER_MODAL_OVERLAY_Z }}
+    >
+      {panel}
+
+      <style>{`
+        @media print {
+          html,
+          body,
+          #root,
+          .report-preview-overlay,
+          .report-preview-panel,
+          .report-preview-scroll {
+            overflow: visible !important;
+            height: auto !important;
+            max-height: none !important;
+            min-height: 0 !important;
+            position: static !important;
+            inset: auto !important;
+            display: block !important;
+            background: #fff !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+          }
+
+          .report-preview-toolbar {
+            display: none !important;
+          }
+
+          body * {
+            visibility: hidden;
+          }
+
+          #report-print-root,
+          #report-print-root * {
+            visibility: visible;
+          }
+
+          #report-print-root {
+            position: absolute;
+            left: 0;
+            top: 0;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+          }
+
+          .preview-view-multi,
+          .preview-view-book,
+          .preview-book-spread {
+            display: block !important;
+          }
+
+          .preview-sheet-block {
+            break-after: page;
+            page-break-after: always;
+          }
+
+          .preview-sheet-block:last-child {
+            break-after: auto;
+            page-break-after: auto;
+          }
+
+          .preview-zoom-spacer,
+          .preview-zoom-stage {
+            width: auto !important;
+            height: auto !important;
+            transform: none !important;
+            zoom: 1 !important;
+          }
+        }
+      `}</style>
+    </div>
+  );
+
+  if (isEmbedded) return overlay;
+  return createPortal(overlay, document.body);
+};

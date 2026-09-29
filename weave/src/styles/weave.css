@@ -1,0 +1,52 @@
+@source "..";
+
+/* Oculta scrollbars (setas de altura no Windows) em superfícies compactas do designer */
+.hide-scrollbar {
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Tour do designer (driver.js) */
+.designer-tour-popover {
+  font-family: var(--font-sans);
+  max-width: 22rem;
+}
+
+.designer-tour-popover .driver-popover-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #171717;
+}
+
+.designer-tour-popover .driver-popover-description {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #404040;
+}
+
+.designer-tour-popover .driver-popover-description code {
+  font-size: 12px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+.designer-tour-popover .driver-popover-next-btn {
+  background: #171717;
+  color: #fff;
+  border: 0;
+  text-shadow: none;
+}
+
+.designer-tour-popover .driver-popover-prev-btn {
+  color: #525252;
+  border-color: #e5e5e5;
+  text-shadow: none;
+}

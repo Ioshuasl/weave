@@ -1,0 +1,1 @@
+export { embedImageFile } from './imageCompress';

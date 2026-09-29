@@ -9,19 +9,22 @@
 ## Início rápido (desenvolvimento)
 
 ```bash
-cd frontend
 npm install
 npm run dev
 ```
 
-Abre [http://localhost:3000](http://localhost:3000). A página inicial simula um **CRM com lista de relatórios**; os botões **Editar layout** e **Visualizar** montam o `<Weave />` em tela cheia.
+Abre [http://localhost:3000](http://localhost:3000). A página inicial (pacote `demo`) simula um **CRM com lista de relatórios**; os botões **Editar layout** e **Visualizar** montam o `<Weave />` em tela cheia.
+
+O repositório é um monorepo com **npm workspaces**: `weave/` (a biblioteca) e `demo/` (o host de demonstração). Os comandos abaixo rodam na raiz.
 
 | Comando | Descrição |
 |---------|-----------|
-| `npm run dev` | Dev server (porta 3000) |
-| `npm run build` | Build em `dist/` |
+| `npm run dev` | Dev server do demo (porta 3000) |
+| `npm run build` | Build do demo em `demo/dist/` |
 | `npm run preview` | Preview do build |
-| `npm run lint` | Verificação TypeScript |
+| `npm run lint` | Type-check de `weave` e `demo` + regras de arquitetura |
+| `npm run depcruise` | Somente as regras de arquitetura (dependency-cruiser) |
+| `npm run test:e2e` | Cypress (requer `npm run dev` ativo) |
 
 ---
 
@@ -41,8 +44,8 @@ import {
   type WeaveSavePayload,
   type WeaveHistoryPersistPayload,
   type CanvasSelectionClasses,
-} from './Weave';
-import type { ReportDefinition } from './types/report';
+  type ReportDefinition,
+} from 'weave';
 
 interface WeaveProps {
   reportId?: string;
@@ -143,10 +146,10 @@ O host é responsável por **carregar** o template e os datasets do seu backend 
 
 **Contrato de dados:**
 
-- `report` — objeto `ReportDefinition` (bandas, componentes, páginas). Ver [`src/types/report.ts`](src/types/report.ts).
+- `report` — objeto `ReportDefinition` (bandas, componentes, páginas). Ver [`weave/src/modules/report/domain/report.ts`](weave/src/modules/report/domain/report.ts).
 - `data` — mapa de datasets; cada chave é referenciada nas bandas (`dataSource`) e em expressões `{dataset.campo}`.
 
-Se `report` não for passado, o designer usa o estado já presente no store (útil só em dev isolado).
+Se `report` não for passado, o designer abre um relatório vazio (uma folha A4 retrato, sem bandas) — o mesmo resultado de `createEmptyReport()`, exportado pelo pacote.
 
 ### Exemplo completo (integração CRM)
 
@@ -155,7 +158,7 @@ import {
   Weave,
   REPORT_AUTO_SAVE_INTERVAL_MS,
   REPORT_HISTORY_PERSIST_INTERVAL_MS,
-} from './Weave';
+} from 'weave';
 
 function ReportSession({
   template,
@@ -446,7 +449,7 @@ interface ReportDefinition {
 }
 ```
 
-Grafo normalizado: páginas → bandas (por ID) → componentes (por ID). Detalhes em [`src/types/report.ts`](src/types/report.ts).
+Grafo normalizado: páginas → bandas (por ID) → componentes (por ID). Detalhes em [`weave/src/modules/report/domain/report.ts`](weave/src/modules/report/domain/report.ts).
 
 ### Data binding
 
@@ -465,7 +468,7 @@ Em bandas de lista (`dataList`, `dataListNumbered`, `dataTable`), o preview repe
 
 ### Export / import
 
-Payload versionado (`reportIO.ts`):
+Payload versionado (`report/domain/reportSerialization.ts`; leitura e download de arquivo em `report/infrastructure/reportJsonFile.ts`):
 
 ```json
 {
@@ -483,30 +486,60 @@ Disponível na sidebar do designer para backup; o host pode usar o mesmo formato
 ## Estrutura do código
 
 ```
-src/
-├── App.tsx                 # Demo do CRM hospedeiro (lista + sessão Weave)
-├── Weave.tsx               # ★ Componente de integração
-├── mocks/
-│   ├── demoReport.ts       # DEMO_REPORT + DEMO_DATA (único template do MVP)
-│   └── hostReports.ts      # Metadados mockados da listagem
-├── types/report.ts         # ReportDefinition, bandas, componentes
-├── store/designerStore.ts  # Estado global (Zustand) — MVP singleton
-├── hooks/
-│   ├── useDesignerKeyboard.ts      # Atalhos globais
-│   ├── useReportAutoSave.ts
-│   ├── useReportHistoryPersist.ts
-│   └── useUnsavedChangesGuard.ts   # Voltar / navegador com dirty check
-├── utils/
-│   ├── reportIO.ts              # Export/import JSON
-│   ├── reportSaveSnapshot.ts    # Dirty check do auto-save
-│   ├── reportHistoryPersist.ts  # Flush do timeline
-│   ├── selectionUtils.ts        # Seleção múltipla
-│   ├── designerDragThreshold.ts # Clique vs arrasto (5px)
-│   ├── reportUtils.ts           # Expressões {dataset.campo}
-│   └── designerSnap.ts          # Guias e snap no canvas
-└── components/
-    ├── designer/           # Sidebar, Canvas, DesignerActionToolbar, PropertiesPanel, …
-    └── renderer/           # ReportPreview, ReportPageSheet
+weave/                         # Biblioteca (pacote "weave")
+├── package.json               # exports: "." → src/index.ts, "./styles.css"
+└── src/
+    ├── index.ts               # ★ API pública do pacote
+    ├── Weave.tsx              # ★ Composition root: monta o designer ou o preview
+    ├── WeaveHostProvider.tsx  # Compõe os contextos do host (presets, fontes, imagens)
+    ├── styles/weave.css       # @source do Tailwind + classes próprias
+    ├── shared/                # Kernel sem regra de negócio (não importa módulos)
+    │   ├── domain/            # geometry, style (StyleDeclaration), id (createId), borderUtils
+    │   ├── ui/                # cn, zIndex, breakpoints
+    │   └── hooks/
+    └── modules/
+        ├── report/            # Agregado ReportDefinition, CRUD de páginas, migração, serialização
+        ├── page/              # ReportPage, presets de folha, geometria da página
+        ├── band/              # ReportBand, posicionamento, escopo de saída, listas/tabelas
+        ├── components/        # Componentes do relatório, um submódulo por tipo
+        │   ├── common/        # ReportComponent (todos os tipos), rótulos, estilos
+        │   └── text/ image/ qr/ chart/ table/
+        ├── data-source/       # ReportData, catálogo de fontes
+        ├── expression/        # {dataset.campo}, variáveis de sistema
+        ├── history/           # Timeline de undo/redo
+        ├── viewport/          # Zoom e fit-to-width
+        ├── rendering/         # Paginação, preview e impressão (sem estado global)
+        └── designer/          # Editor: store (Zustand), canvas, painéis, atalhos, tour
+
+demo/                          # Host de demonstração (pacote "weave-demo")
+├── index.html, vite.config.ts, cypress.config.ts
+├── cypress/                   # Testes E2E
+└── src/
+    ├── App.tsx                # CRM fictício (lista + sessão Weave)
+    ├── lib/cn.ts
+    └── mocks/                 # Templates, dados, presets e catálogo do host
+```
+
+Cada módulo se divide em camadas: `domain` (regras puras, sem React/DOM/estado), `application` (casos de uso e estado), `infrastructure` (browser, arquivos, `localStorage`) e `ui` (React). Cada camada consumida por outro módulo tem um `index.ts` que é sua **API pública**.
+
+Regras verificadas por `npm run depcruise` (`.dependency-cruiser.cjs`):
+
+- sem ciclos de dependência;
+- `domain` não importa React, DOM, Zustand nem outras camadas;
+- `application` não importa `ui`; `infrastructure` não importa `application` nem `ui`;
+- entre módulos, somente via `<módulo>/<camada>/index.ts`;
+- apenas `Weave.tsx` conhece o módulo `designer`; `shared` não conhece módulos;
+- `uuid` só em `shared/domain/id.ts`;
+- `demo` importa apenas `weave` (entry point e `styles.css`);
+- aviso (a resolver na Fase 2): `ui` importando `infrastructure` diretamente.
+
+### Estilos no host
+
+O Weave usa classes Tailwind 4. No CSS de entrada do host, importe os estilos do pacote **depois** do Tailwind para que as classes do Weave sejam geradas:
+
+```css
+@import "tailwindcss";
+@import "weave/styles.css";
 ```
 
 ---
@@ -573,7 +606,7 @@ Atalho **F2** com um componente de texto selecionado abre o mesmo modal. Altera�
 import {
   Weave,
   DEFAULT_CANVAS_SELECTION_CLASSES,
-} from './Weave';
+} from 'weave';
 
 <Weave
   canvasSelectionClasses={{
