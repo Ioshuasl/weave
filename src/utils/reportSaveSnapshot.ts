@@ -16,7 +16,7 @@ export function isReportStateDirty(
   return createReportSaveSnapshot(report, data) !== lastSavedSnapshot;
 }
 
-/** Presets de intervalo para `autoSaveIntervalMs` no ReportDesigner */
+/** Presets de intervalo para `autoSaveIntervalMs` no Weave */
 export const REPORT_AUTO_SAVE_INTERVAL_MS = {
   OFF: 0,
   SEC_10: 10_000,

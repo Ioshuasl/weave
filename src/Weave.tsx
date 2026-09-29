@@ -45,14 +45,14 @@ import {
   type ReportAutoSaveIntervalMs,
   REPORT_AUTO_SAVE_INTERVAL_MS,
 } from './utils/reportSaveSnapshot';
-import type { ReportDesignerPrintPayload } from './utils/reportPrintJob';
+import type { WeavePrintPayload } from './utils/reportPrintJob';
 import type { DataSourceCatalog } from './utils/dataSourceUtils';
 import type { PagePresetDefinition } from './utils/pagePresets';
 import type { ReportImageResolver } from './utils/imageHostResolver';
 
 export type { HistoryEntry } from './utils/designerHistory';
 
-export type ReportDesignerMode = 'design' | 'preview';
+export type WeaveMode = 'design' | 'preview';
 export type { DesignerPanelLayoutPreset } from './hooks/useDesignerPanels';
 export type { CanvasSelectionClasses } from './components/designer/canvasSelectionClasses';
 export { DEFAULT_CANVAS_SELECTION_CLASSES } from './components/designer/canvasSelectionClasses';
@@ -66,14 +66,14 @@ export {
 } from './utils/reportHistoryPersist';
 
 export type {
-  ReportDesignerPrintPayload,
+  WeavePrintPayload,
   ReportPrintJob,
   ReportPrintSheet,
   ReportPrintSheetSize,
 } from './utils/reportPrintJob';
 export {
   buildPrintPageCss,
-  buildReportDesignerPrintPayload,
+  buildWeavePrintPayload,
   buildReportPrintJob,
   REPORT_PRINT_JOB_VERSION,
 } from './utils/reportPrintJob';
@@ -96,7 +96,7 @@ export {
 } from './utils/pagePresets';
 
 /** Payload entregue ao host em `onSave` (Ctrl+S, botão Salvar ou auto-save) */
-export interface ReportDesignerSavePayload {
+export interface WeaveSavePayload {
   reportId?: string;
   report: ReportDefinition;
   data: Record<string, unknown[]>;
@@ -105,7 +105,7 @@ export interface ReportDesignerSavePayload {
 }
 
 /** Versões do layout enviadas ao host para recuperação futura */
-export interface ReportDesignerHistoryPersistPayload {
+export interface WeaveHistoryPersistPayload {
   reportId?: string;
   /** Entradas novas do timeline desde o último envio */
   entries: HistoryEntry[];
@@ -118,7 +118,7 @@ export interface ReportDesignerHistoryPersistPayload {
   source?: 'auto' | 'manual';
 }
 
-export interface ReportDesignerProps {
+export interface WeaveProps {
   /** ID do relatório no sistema hospedeiro (metadado de integração) */
   reportId?: string;
   /** Nome exibido no contexto do host — futuro: título da janela / breadcrumb */
@@ -127,7 +127,7 @@ export interface ReportDesignerProps {
    * design = editor (sidebar + canvas + propriedades)
    * preview = somente renderização do relatório (sem edição)
    */
-  mode?: ReportDesignerMode;
+  mode?: WeaveMode;
   /** Template do relatório injetado pelo host */
   report?: ReportDefinition;
   /** Datasets de preview injetados pelo host */
@@ -143,7 +143,7 @@ export interface ReportDesignerProps {
    * Persistência no sistema hospedeiro — acionado por Ctrl+S / Cmd+S ou botão Salvar.
    * Sem este callback, o atalho e o botão não são exibidos.
    */
-  onSave?: (payload: ReportDesignerSavePayload) => void | Promise<void>;
+  onSave?: (payload: WeaveSavePayload) => void | Promise<void>;
   /**
    * Intervalo de auto-save em milissegundos. Requer `onSave`.
    * Use `REPORT_AUTO_SAVE_INTERVAL_MS` ou omita / `0` para desligar.
@@ -159,14 +159,14 @@ export interface ReportDesignerProps {
    * Cada entrada em `entries` contém `report` + `data` recuperáveis.
    */
   onPersistHistory?: (
-    payload: ReportDesignerHistoryPersistPayload
+    payload: WeaveHistoryPersistPayload
   ) => void | Promise<void>;
   /**
    * Impressão delegada ao host — acionado pelo botão Imprimir no preview.
    * Recebe o relatório paginado (`printJob.sheets`) pronto para PDF, API ou agente local.
    * Sem este callback, o preview usa impressão do navegador (`window.print`).
    */
-  onPrint?: (payload: ReportDesignerPrintPayload) => void | Promise<void>;
+  onPrint?: (payload: WeavePrintPayload) => void | Promise<void>;
   /**
    * Converte URLs de imagem autenticadas ou bloqueadas por CORS em `blob:` / `data:`
    * que o navegador consegue exibir. Não é chamado para `data:` nem `blob:` já resolvidos.
@@ -203,7 +203,7 @@ export interface ReportDesignerProps {
   compactMode?: boolean;
 }
 
-export function ReportDesigner({
+export function Weave({
   reportId,
   reportName,
   mode = 'design',
@@ -223,7 +223,7 @@ export function ReportDesigner({
   defaultPanelLayout = 'canvas-first',
   persistPanelState,
   compactMode,
-}: ReportDesignerProps) {
+}: WeaveProps) {
   const loadReport = useDesignerStore((state) => state.loadReport);
   const setHostPagePresets = useDesignerStore((state) => state.setHostPagePresets);
   const isTextEditorOpen = useDesignerStore((state) => state.textEditorModal !== null);

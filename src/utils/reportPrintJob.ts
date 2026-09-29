@@ -45,7 +45,7 @@ export interface ReportPrintJob {
 }
 
 /** Payload entregue ao host em `onPrint` (botão Imprimir no preview) */
-export interface ReportDesignerPrintPayload {
+export interface WeavePrintPayload {
   reportId?: string;
   report: ReportDefinition;
   data: Record<string, unknown[]>;
@@ -140,11 +140,11 @@ export function buildPrintPageCss(sheets: ReportPrintSheet[]): string {
   return `${pageRules}\n${assignRules}`;
 }
 
-export function buildReportDesignerPrintPayload(
+export function buildWeavePrintPayload(
   report: ReportDefinition,
   data: Record<string, unknown[]>,
   options?: { reportId?: string; source?: 'preview' }
-): ReportDesignerPrintPayload {
+): WeavePrintPayload {
   return {
     reportId: options?.reportId,
     report,

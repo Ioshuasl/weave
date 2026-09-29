@@ -35,5 +35,5 @@ export const ResizeHandle: React.FC<ResizeHandleProps> = ({
   </div>
 );
 
-/** @deprecated Use DEFAULT_CANVAS_SELECTION_CLASSES ou prop canvasSelectionClasses no ReportDesigner */
+/** @deprecated Use DEFAULT_CANVAS_SELECTION_CLASSES ou prop canvasSelectionClasses no Weave */
 export { DEFAULT_CANVAS_SELECTION_CLASSES as canvasSelectionClasses } from './canvasSelectionClasses';

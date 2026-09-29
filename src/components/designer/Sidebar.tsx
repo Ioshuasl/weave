@@ -33,7 +33,7 @@ export const Sidebar = ({ reportName, onClose }: SidebarProps) => {
           <LayoutTemplate className="w-4 h-4 text-white" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="font-semibold text-sm tracking-tight text-neutral-800 truncate">FastReport</p>
+          <p className="font-semibold text-sm tracking-tight text-neutral-800 truncate">Weave</p>
           <p className="text-[10px] text-neutral-400 truncate" title={reportName}>
             {reportName ?? 'Designer'}
           </p>

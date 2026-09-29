@@ -155,7 +155,7 @@ export const SidebarRail: React.FC<SidebarRailProps> = ({
           </span>
           <div
             className="w-7 h-7 rounded-lg bg-neutral-900 flex items-center justify-center mt-1"
-            title="FastReport"
+            title="Weave"
           >
             <LayoutTemplate className="w-3.5 h-3.5 text-white" />
           </div>

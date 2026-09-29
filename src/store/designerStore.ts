@@ -446,7 +446,7 @@ const INITIAL_REPORT: ReportDefinition = {
       name: 'Footer Text',
       parentId: 'band_footer',
       rect: { x: 10, y: 5, width: 300, height: 20 },
-      content: 'Página {sys.pageNumber} de {sys.pageCount} · _Gerado pelo FastReport Web_',
+      content: 'Página {sys.pageNumber} de {sys.pageCount} · _Gerado pelo Weave_',
       style: { fontSize: '10px', color: '#999' }
     },
     'comp_chart': {

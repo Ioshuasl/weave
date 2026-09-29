@@ -3,16 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  *
  * Página de demonstração do "sistema hospedeiro".
- * Lista relatórios mockados e abre o ReportDesigner em modo design ou preview.
+ * Lista relatórios mockados e abre o Weave em modo design ou preview.
  */
 
 import React, { useState } from 'react';
 import {
-  ReportDesigner,
+  Weave,
   REPORT_AUTO_SAVE_INTERVAL_MS,
   REPORT_HISTORY_PERSIST_INTERVAL_MS,
-  type ReportDesignerMode,
-} from './ReportDesigner';
+  type WeaveMode,
+} from './Weave';
 import { DEMO_DATA_SOURCE_CATALOG } from './mocks/demoHostData';
 import { DEMO_HOST_PAGE_PRESETS } from './mocks/demoHostPresets';
 import { resolveDemoReportBundle } from './mocks/demoReports';
@@ -37,7 +37,7 @@ function StatusBadge({ status }: { status: HostReportTemplate['status'] }) {
 
 interface ActiveReportSession {
   report: HostReportTemplate;
-  mode: ReportDesignerMode;
+  mode: WeaveMode;
 }
 
 export default function App() {
@@ -49,7 +49,7 @@ export default function App() {
 
     return (
       <div className="fixed inset-0 z-50 bg-neutral-50">
-        <ReportDesigner
+        <Weave
           reportId={hostReport.id}
           reportName={hostReport.name}
           mode={mode}
@@ -104,7 +104,7 @@ export default function App() {
                 Exemplo de integração: o host escolhe{' '}
                 <code className="text-neutral-600 font-mono text-xs">mode=&quot;design&quot;</code> ou{' '}
                 <code className="text-neutral-600 font-mono text-xs">mode=&quot;preview&quot;</code> no{' '}
-                <code className="text-neutral-600 font-mono text-xs">&lt;ReportDesigner /&gt;</code>.
+                <code className="text-neutral-600 font-mono text-xs">&lt;Weave /&gt;</code>.
               </p>
             </div>
           </div>
@@ -122,7 +122,7 @@ export default function App() {
           <div className="flex items-center gap-2 text-xs text-neutral-400 bg-white border border-neutral-200 rounded-lg px-3 py-2">
             <LayoutTemplate className="w-3.5 h-3.5" />
             <span>
-              Integração: <code className="text-neutral-600 font-mono">&lt;ReportDesigner mode /&gt;</code>
+              Integração: <code className="text-neutral-600 font-mono">&lt;Weave mode /&gt;</code>
             </span>
           </div>
         </div>
@@ -189,7 +189,7 @@ export default function App() {
         <p className="mt-6 text-xs text-neutral-400 text-center max-w-2xl mx-auto leading-relaxed">
           O host injeta template e dados reais:{' '}
           <code className="font-mono text-neutral-500">
-            {'<ReportDesigner report={...} data={...} mode="design" />'}
+            {'<Weave report={...} data={...} mode="design" />'}
           </code>
           . Cada linha abre um template diferente (A4, multipágina, A5, cupom 80 mm, etiqueta
           extraprotocolar). O host injeta <code className="font-mono text-neutral-500">pagePresets</code>{' '}

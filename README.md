@@ -1,6 +1,6 @@
-# FastReport JSON Web
+# Weave
 
-Gerador de relatórios **web**, orientado a **JSON**, inspirado no [FastReport](https://www.fast-report.com/). O produto é pensado para ser **embutido** em sistemas existentes (CRM, ERP, portal SaaS) como um componente React — não como uma aplicação isolada.
+**Weave** é um gerador de relatórios **web**, orientado a **JSON**, inspirado no [FastReport](https://www.fast-report.com/). O produto é pensado para ser **embutido** em sistemas existentes (CRM, ERP, portal SaaS) como um componente React — não como uma aplicação isolada.
 
 > **Roadmap de publicação npm/container:** [`docs/plano-antes-de-publicar.md`](../docs/plano-antes-de-publicar.md)
 
@@ -14,7 +14,7 @@ npm install
 npm run dev
 ```
 
-Abre [http://localhost:3000](http://localhost:3000). A página inicial simula um **CRM com lista de relatórios**; os botões **Editar layout** e **Visualizar** montam o `<ReportDesigner />` em tela cheia.
+Abre [http://localhost:3000](http://localhost:3000). A página inicial simula um **CRM com lista de relatórios**; os botões **Editar layout** e **Visualizar** montam o `<Weave />` em tela cheia.
 
 | Comando | Descrição |
 |---------|-----------|
@@ -25,7 +25,7 @@ Abre [http://localhost:3000](http://localhost:3000). A página inicial simula um
 
 ---
 
-## Componente `<ReportDesigner />`
+## Componente `<Weave />`
 
 Ponto de entrada da integração. O **sistema hospedeiro** (seu CRM) monta este componente quando o usuário edita ou visualiza um relatório.
 
@@ -33,32 +33,32 @@ Ponto de entrada da integração. O **sistema hospedeiro** (seu CRM) monta este 
 
 ```tsx
 import {
-  ReportDesigner,
+  Weave,
   REPORT_AUTO_SAVE_INTERVAL_MS,
   REPORT_HISTORY_PERSIST_INTERVAL_MS,
   DEFAULT_CANVAS_SELECTION_CLASSES,
-  type ReportDesignerMode,
-  type ReportDesignerSavePayload,
-  type ReportDesignerHistoryPersistPayload,
+  type WeaveMode,
+  type WeaveSavePayload,
+  type WeaveHistoryPersistPayload,
   type CanvasSelectionClasses,
-} from './ReportDesigner';
+} from './Weave';
 import type { ReportDefinition } from './types/report';
 
-interface ReportDesignerProps {
+interface WeaveProps {
   reportId?: string;
   reportName?: string;
-  mode?: ReportDesignerMode; // default: 'design'
+  mode?: WeaveMode; // default: 'design'
   report?: ReportDefinition;
   data?: Record<string, unknown[]>;
   onClose?: () => void;
 
   /** Persiste o layout atual no host (Ctrl+S + botão Salvar). Sem callback = sem UI de save */
-  onSave?: (payload: ReportDesignerSavePayload) => void | Promise<void>;
+  onSave?: (payload: WeaveSavePayload) => void | Promise<void>;
   /** Auto-save do layout. Requer `onSave`. Use `REPORT_AUTO_SAVE_INTERVAL_MS` ou ms customizado */
   autoSaveIntervalMs?: number; // 0 = desligado (padrão)
 
   /** Envia versões do timeline (undo/redo) para backup remoto no host */
-  onPersistHistory?: (payload: ReportDesignerHistoryPersistPayload) => void | Promise<void>;
+  onPersistHistory?: (payload: WeaveHistoryPersistPayload) => void | Promise<void>;
   /** Auto-backup do histórico. Requer `onPersistHistory` */
   historyPersistIntervalMs?: number; // 0 = desligado (padrão)
 
@@ -81,7 +81,7 @@ interface ReportDesignerProps {
 **`onSave`** — layout **atual** (estado oficial do relatório):
 
 ```ts
-interface ReportDesignerSavePayload {
+interface WeaveSavePayload {
   reportId?: string;
   report: ReportDefinition;  // ← gravar no banco (ex.: coluna layout_json)
   data: Record<string, unknown[]>; // datasets de preview (opcional persistir)
@@ -92,7 +92,7 @@ interface ReportDesignerSavePayload {
 **`onPersistHistory`** — **versões anteriores** do timeline (recuperação sem export manual):
 
 ```ts
-interface ReportDesignerHistoryPersistPayload {
+interface WeaveHistoryPersistPayload {
   reportId?: string;
   entries: HistoryEntry[];     // novas desde o último envio; cada uma tem report + data
   historyPast: HistoryEntry[];
@@ -130,7 +130,7 @@ No modo `design`, o usuário ainda pode abrir um preview interno pelo botão **P
 O host é responsável por **carregar** o template e os datasets do seu backend e passá-los como props. Ao montar (ou remontar) o componente com `report`, o designer chama `loadReport` internamente:
 
 ```tsx
-<ReportDesigner
+<Weave
   reportId={template.id}
   reportName={template.name}
   mode="design"
@@ -152,10 +152,10 @@ Se `report` não for passado, o designer usa o estado já presente no store (út
 
 ```tsx
 import {
-  ReportDesigner,
+  Weave,
   REPORT_AUTO_SAVE_INTERVAL_MS,
   REPORT_HISTORY_PERSIST_INTERVAL_MS,
-} from './ReportDesigner';
+} from './Weave';
 
 function ReportSession({
   template,
@@ -168,7 +168,7 @@ function ReportSession({
 }) {
   return (
     <div className="fixed inset-0 z-50">
-      <ReportDesigner
+      <Weave
         reportId={template.id}
         reportName={template.name}
         mode={mode}
@@ -211,7 +211,7 @@ O designer adapta o layout conforme a largura do **container** (não da janela i
 ```tsx
 // Recomendado: overlay fullscreen no CRM
 <div className="fixed inset-0 z-50">
-  <ReportDesigner className="h-screen w-screen" /* ... */ />
+  <Weave className="h-screen w-screen" /* ... */ />
 </div>
 ```
 
@@ -239,7 +239,7 @@ O designer adapta o layout conforme a largura do **container** (não da janela i
 | `compactMode` | derivado | Força padding e tipografia menores na toolbar e no painel de propriedades |
 
 ```tsx
-<ReportDesigner
+<Weave
   reportId={id}
   defaultPanelLayout="canvas-first"
   persistPanelState
@@ -281,12 +281,12 @@ O designer adapta o layout conforme a largura do **container** (não da janela i
                             │ props: report, data, mode, onClose
                             ▼
                    ┌─────────────────┐
-                   │ ReportDesigner  │
-                   │ (este pacote)   │
+                   │      Weave      │
+                   │  (este pacote)  │
                    └─────────────────┘
 ```
 
-| Responsabilidade | Host (CRM) | ReportDesigner |
+| Responsabilidade | Host (CRM) | Weave |
 |------------------|------------|----------------|
 | Autenticação / permissões | ✅ | — |
 | Salvar template no banco | ✅ via `onSave` | dispara Ctrl+S / auto-save |
@@ -323,7 +323,7 @@ async function openSession(template: ReportTemplate, mode: 'design' | 'preview')
 }
 
 {session && (
-  <ReportDesigner
+  <Weave
     reportId={session.template.id}
     reportName={session.template.name}
     mode={session.mode}
@@ -359,7 +359,7 @@ onSave={async ({ reportId, report }) => {
 
 O campo `data` no save é o dataset de **preview** do designer — em produção o host costuma persistir só o `report` e injetar dados reais no `mode="preview"`.
 
-**Restaurar versão antiga:** o host carrega `entry.report` de uma entrada salva via `onPersistHistory` e remonta `<ReportDesigner report={...} />`.
+**Restaurar versão antiga:** o host carrega `entry.report` de uma entrada salva via `onPersistHistory` e remonta `<Weave report={...} />`.
 
 **Sair com alterações pendentes:** no modo `design`, ao clicar **Voltar** (`ChevronLeft` no cabeçalho da sidebar) ou usar o botão voltar do navegador (`Alt+←`, gesto, etc.) com layout modificado, o designer exibe um modal:
 
@@ -389,7 +389,7 @@ No layout, use `{contacts.name}`, configure `dataSource: "contacts"` nas bandas 
 Usuários sem permissão de edição recebem apenas:
 
 ```tsx
-<ReportDesigner
+<Weave
   mode="preview"
   report={layout}
   data={liveData}
@@ -484,8 +484,8 @@ Disponível na sidebar do designer para backup; o host pode usar o mesmo formato
 
 ```
 src/
-├── App.tsx                 # Demo do CRM hospedeiro (lista + sessão ReportDesigner)
-├── ReportDesigner.tsx      # ★ Componente de integração
+├── App.tsx                 # Demo do CRM hospedeiro (lista + sessão Weave)
+├── Weave.tsx               # ★ Componente de integração
 ├── mocks/
 │   ├── demoReport.ts       # DEMO_REPORT + DEMO_DATA (único template do MVP)
 │   └── hostReports.ts      # Metadados mockados da listagem
@@ -557,13 +557,13 @@ Atalho **F2** com um componente de texto selecionado abre o mesmo modal. Altera�
 
 ## Limitações conhecidas (MVP)
 
-- **Store singleton** — duas instâncias `<ReportDesigner />` na mesma página compartilham estado (correção prevista na Fase 4)
+- **Store singleton** — duas instâncias `<Weave />` na mesma página compartilham estado (correção prevista na Fase 4)
 - **`onReportChange`** em tempo real — não exposto; use `onSave` / auto-save
 - **`detailData`** — tipo existe; suporte parcial na UI e no preview
 - **Uma página** na prática (`pages[0]`) — multipágina de design na Fase 3.1
 - **Presets de folha** — A4/A3/A5/Letter, etiqueta, cupom 58/80, personalizado (cm/px); clique na folha para editar
 - **Preview** — sem paginação A4 real nem header/footer repetidos por página impressa
-- Pacote ainda não publicado no npm (`react-example` no `package.json`)
+- Pacote ainda não publicado no npm (`"private": true` no `package.json`)
 
 ---
 
@@ -571,11 +571,11 @@ Atalho **F2** com um componente de texto selecionado abre o mesmo modal. Altera�
 
 ```tsx
 import {
-  ReportDesigner,
+  Weave,
   DEFAULT_CANVAS_SELECTION_CLASSES,
-} from './ReportDesigner';
+} from './Weave';
 
-<ReportDesigner
+<Weave
   canvasSelectionClasses={{
     idle: 'ring-1 ring-transparent hover:ring-2 hover:ring-emerald-400',
     active: 'ring-2 ring-emerald-600',

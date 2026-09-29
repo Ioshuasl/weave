@@ -11,9 +11,9 @@ import { PreviewSheetsLayout } from './PreviewSheetsLayout';
 import { buildReportPreviewSheets } from '../../utils/paginationEngine';
 import {
   buildPrintPageCss,
-  buildReportDesignerPrintPayload,
+  buildWeavePrintPayload,
   buildReportPrintJob,
-  type ReportDesignerPrintPayload,
+  type WeavePrintPayload,
 } from '../../utils/reportPrintJob';
 import { waitForElementImages } from '../../utils/printImageWait';
 import {
@@ -113,7 +113,7 @@ interface ReportPreviewProps {
   onClose?: () => void;
   variant?: 'modal' | 'embedded';
   reportId?: string;
-  onPrint?: (payload: ReportDesignerPrintPayload) => void | Promise<void>;
+  onPrint?: (payload: WeavePrintPayload) => void | Promise<void>;
 }
 
 export const ReportPreview = ({
@@ -175,7 +175,7 @@ export const ReportPreview = ({
   const handlePrint = useCallback(async () => {
     if (onPrint) {
       await onPrint(
-        buildReportDesignerPrintPayload(report, data, {
+        buildWeavePrintPayload(report, data, {
           reportId,
           source: 'preview',
         })

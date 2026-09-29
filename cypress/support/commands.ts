@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 /**
- * Comandos customizados do FastReport JSON Web.
+ * Comandos customizados do Weave.
  * Preferir seletores por aria-label / role / texto estável.
  */
 
