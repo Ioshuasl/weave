@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { stylePreviewDebug } from '../../../infrastructure/stylePreviewDebug';
+import { stylePreviewDebug } from '../../../../../shared/diagnostics/stylePreviewDebug';
 import { useDesignerStore } from '../../../application/store/designerStore';
 import { cn } from '../../../../../shared/ui/cn';
 import { useDesignerZoom } from '../designerZoomContext';

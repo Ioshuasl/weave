@@ -3,3 +3,9 @@ export type { ReportAutoSaveIntervalMs, ReportHistoryPersistIntervalMs } from '.
 export { useReportAutoSave } from './persistence/useReportAutoSave';
 export { useReportHistoryPersist } from './persistence/useReportHistoryPersist';
 export { useDesignerStore } from './store/designerStore';
+export type {
+  DesignerServices,
+  DesignerTourLauncher,
+  PanelStateStorage,
+  RecentFieldStorage,
+} from './ports';

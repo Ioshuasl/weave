@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from 'react';
 import type { QrErrorCorrection, ReportComponent } from '../../../../components/common/domain';
 import { type DataFieldOption, evaluateExpression } from '../../../../expression/domain';
 import type { DataSourceCatalog } from '../../../../data-source/domain';
-import { pushRecentFieldToken } from '../../../infrastructure/fieldRecentStorage';
 import { useDesignerStore } from '../../../application/store/designerStore';
 import { getQrBackground, getQrErrorCorrection, getQrForeground, getQrMargin } from '../../../../components/qr/domain';
 import {
@@ -15,6 +14,7 @@ import {
 import { FieldChipBar } from '../../field-picker/FieldChipBar';
 import { FieldTokenPicker } from '../../field-picker/FieldTokenPicker';
 import { ReportQr } from '../../../../components/qr/ui';
+import { useDesignerServices } from '../../services/DesignerServicesContext';
 
 const ECC_OPTIONS: { value: QrErrorCorrection; label: string }[] = [
   { value: 'L', label: 'L' },
@@ -58,6 +58,8 @@ export function QrPropertiesSection({
     return evaluateExpression(component.content, { data, dataSourceCatalog, row });
   }, [component.content, data, dataSourceCatalog, parentDataSource]);
 
+  const { recentFields } = useDesignerServices();
+
   const patchQrProps = useCallback(
     (patch: Partial<NonNullable<ReportComponent['qrProps']>>) => {
       onUpdate({ qrProps: { ...component.qrProps, ...patch } });
@@ -68,10 +70,10 @@ export function QrPropertiesSection({
   const insertField = useCallback(
     (token: string) => {
       onUpdate({ content: token });
-      pushRecentFieldToken(token, reportId);
+      recentFields.push(token, reportId);
       setRecentVersion((n) => n + 1);
     },
-    [onUpdate, reportId]
+    [onUpdate, recentFields, reportId]
   );
 
   return (

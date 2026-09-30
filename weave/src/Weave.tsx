@@ -39,6 +39,7 @@ import {
   UnsavedChangesModal,
 } from './modules/designer/ui';
 import { DesignerHostProvider } from './WeaveHostProvider';
+import { WeaveServicesProvider } from './WeaveServicesProvider';
 import { cn } from './shared/ui/cn';
 import { type HistoryEntry, getHistoryEntriesToPersist } from './modules/history/domain';
 import type { WeavePrintPayload } from './modules/rendering/domain';
@@ -156,7 +157,7 @@ export interface WeaveProps {
   compactMode?: boolean;
 }
 
-export function Weave({
+function WeaveWorkspace({
   reportId,
   reportName,
   mode = 'design',
@@ -454,5 +455,13 @@ export function Weave({
     >
       {designerBody}
     </DesignerHostProvider>
+  );
+}
+
+export function Weave(props: WeaveProps) {
+  return (
+    <WeaveServicesProvider>
+      <WeaveWorkspace {...props} />
+    </WeaveServicesProvider>
   );
 }

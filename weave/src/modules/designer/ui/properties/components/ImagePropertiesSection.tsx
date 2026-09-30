@@ -23,8 +23,6 @@ import {
   getImageCropX,
   getImageCropY,
 } from '../../../../components/image/domain';
-import { embedImageFile } from '../../../../components/image/infrastructure';
-import { pushRecentFieldToken } from '../../../infrastructure/fieldRecentStorage';
 import { useDesignerStore } from '../../../application/store/designerStore';
 import {
   PropertyCheckbox,
@@ -38,6 +36,7 @@ import {
 import { FieldChipBar } from '../../field-picker/FieldChipBar';
 import { FieldTokenPicker } from '../../field-picker/FieldTokenPicker';
 import { ReportImage } from '../../../../components/image/ui';
+import { useDesignerServices } from '../../services/DesignerServicesContext';
 
 const SIZE_MODE_OPTIONS: { value: ImageSizeMode; label: string }[] = [
   { value: 'contain', label: 'Conter' },
@@ -109,6 +108,8 @@ export function ImagePropertiesSection({
     : 0;
   const sourceEditorMasked = isImageSourceEditorMasked(component.content);
 
+  const { recentFields, imageEmbedder } = useDesignerServices();
+
   const patchImageProps = useCallback(
     (patch: Partial<NonNullable<ReportComponent['imageProps']>>) => {
       onUpdate({ imageProps: { ...component.imageProps, ...patch } });
@@ -120,10 +121,10 @@ export function ImagePropertiesSection({
     (token: string) => {
       setUploadError(null);
       onUpdate({ content: token });
-      pushRecentFieldToken(token, reportId);
+      recentFields.push(token, reportId);
       setRecentVersion((n) => n + 1);
     },
-    [onUpdate, reportId]
+    [onUpdate, recentFields, reportId]
   );
 
   const onPickFile = async (file: File | undefined) => {
@@ -131,7 +132,7 @@ export function ImagePropertiesSection({
     setUploadError(null);
     setCompressHint(null);
     try {
-      const result = await embedImageFile(file);
+      const result = await imageEmbedder(file);
       onUpdate({ content: result.dataUrl });
       if (result.compressed) {
         setCompressHint(

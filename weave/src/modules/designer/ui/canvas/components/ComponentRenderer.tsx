@@ -12,7 +12,7 @@ import Draggable, { type DraggableData, type DraggableEvent } from 'react-dragga
 import { cn } from '../../../../../shared/ui/cn';
 import { mergeLiveStyleOverlay, QR_MIN_SIZE, getComponentDisplayLabel } from '../../../../components/common/domain';
 import { mergeLiveChartProps } from '../../../../components/chart/domain';
-import { stylePreviewDebug } from '../../../infrastructure/stylePreviewDebug';
+import { stylePreviewDebug } from '../../../../../shared/diagnostics/stylePreviewDebug';
 import { useDesignerZoom } from '../designerZoomContext';
 import { getDesignerPageScale } from '../bands/dividerBandInteraction';
 import { ResizeHandle } from '../ResizeHandle';

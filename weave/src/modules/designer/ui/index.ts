@@ -17,3 +17,4 @@ export { Sidebar } from './sidebar/Sidebar';
 export { SidebarRail } from './sidebar/SidebarRail';
 export { TextComponentEditorModal } from './text-editor/TextComponentEditorModal';
 export { DesignerActionToolbar } from './toolbar/DesignerActionToolbar';
+export { DesignerServicesProvider, useDesignerServices } from './services/DesignerServicesContext';

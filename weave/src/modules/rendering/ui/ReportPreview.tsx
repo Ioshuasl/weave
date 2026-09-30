@@ -16,13 +16,14 @@ import {
   buildReportPrintJob,
   type WeavePrintPayload,
 } from '../domain/reportPrintJob';
-import { waitForElementImages } from '../infrastructure/printImageWait';
 import {
   canUseBookView,
   canUseMultiPageView,
   getPreviewLayoutNaturalWidth,
   type PreviewViewMode,
 } from '../domain/previewViewMode';
+import type { ElementImagesWaiter } from '../application';
+import { useRenderingServices } from './RenderingServicesContext';
 
 const PRINT_FRAME_BASE = `
   html, body, #report-print-root {
@@ -60,7 +61,11 @@ function collectDocumentStyles(pageCss: string): string {
   return `${links}${inline}<style>${pageCss}\n${PRINT_FRAME_BASE}</style>`;
 }
 
-async function printReportSheets(source: HTMLElement, pageCss: string) {
+async function printReportSheets(
+  source: HTMLElement,
+  pageCss: string,
+  waitForImages: ElementImagesWaiter
+) {
   const iframe = document.createElement('iframe');
   iframe.setAttribute(
     'style',
@@ -88,7 +93,7 @@ async function printReportSheets(source: HTMLElement, pageCss: string) {
   };
 
   const triggerPrint = async () => {
-    await waitForElementImages(frameDocument);
+    await waitForImages(frameDocument);
     frameWindow.focus();
     frameWindow.print();
     frameWindow.addEventListener('afterprint', cleanup, { once: true });
@@ -177,6 +182,8 @@ export const ReportPreview = ({
     }
   }, [viewMode, multiPageEnabled, bookEnabled]);
 
+  const { waitForImages } = useRenderingServices();
+
   const handlePrint = useCallback(async () => {
     if (onPrint) {
       await onPrint(
@@ -190,13 +197,13 @@ export const ReportPreview = ({
 
     const source = document.getElementById('report-print-root');
     if (source) {
-      await waitForElementImages(source);
+      await waitForImages(source);
       const pageCss = buildPrintPageCss(buildReportPrintJob(report, data).sheets);
-      await printReportSheets(source, pageCss);
+      await printReportSheets(source, pageCss, waitForImages);
       return;
     }
     window.print();
-  }, [onPrint, report, data, reportId]);
+  }, [onPrint, report, data, reportId, waitForImages]);
 
   const isEmbedded = variant === 'embedded';
   const isFullscreenModal = !isEmbedded && isNarrow;

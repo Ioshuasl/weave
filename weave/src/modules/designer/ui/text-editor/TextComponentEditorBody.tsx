@@ -1,7 +1,6 @@
 import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import { type DataFieldOption, buildExpressionFieldSuggestions } from '../../../expression/domain';
 import type { DataSourceCatalog } from '../../../data-source/domain';
-import { pushRecentFieldToken } from '../../infrastructure/fieldRecentStorage';
 import type { RichTextSelectionStyle } from './richTextSelectionStyle';
 import { PropertyHint } from '../properties/controls/PropertyFields';
 import { RichTextEditor, type RichTextEditorHandle } from './RichTextEditor';
@@ -9,6 +8,7 @@ import { TextEditorToolbar, EMPTY_FORMATS } from './TextEditorToolbar';
 import { FieldChipBar } from '../field-picker/FieldChipBar';
 import { FieldTokenPicker } from '../field-picker/FieldTokenPicker';
 import { cn } from '../../../../shared/ui/cn';
+import { useDesignerServices } from '../services/DesignerServicesContext';
 
 type TextAlign = 'left' | 'center' | 'right';
 
@@ -74,12 +74,14 @@ export function TextComponentEditorBody({
     [data, dataSourceCatalog]
   );
 
+  const { recentFields } = useDesignerServices();
+
   const trackFieldInsert = useCallback(
     (token: string) => {
-      pushRecentFieldToken(token, reportId);
+      recentFields.push(token, reportId);
       setRecentVersion((version) => version + 1);
     },
-    [reportId]
+    [recentFields, reportId]
   );
 
   const insertFieldAtCursor = useCallback(

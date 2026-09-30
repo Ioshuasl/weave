@@ -56,8 +56,8 @@ module.exports = {
     },
     {
       name: 'ui-not-to-infrastructure',
-      severity: 'warn',
-      comment: 'Fase 2: ui deve depender de portas em application, não de infrastructure.',
+      severity: 'error',
+      comment: 'ui depende de portas em application (injetadas pelo composition root), não de infrastructure.',
       from: { path: '/ui/' },
       to: { path: '/infrastructure/' },
     },

@@ -16,7 +16,7 @@ import { getReportPage } from '../../../report/domain';
 import { handlePageContentDrop, hasDesignerDrag } from './designerDragDrop';
 import { useCanvasHoverHitTest } from './useCanvasHoverHitTest';
 import { cn } from '../../../../shared/ui/cn';
-import { stylePreviewDebug } from '../../infrastructure/stylePreviewDebug';
+import { stylePreviewDebug } from '../../../../shared/diagnostics/stylePreviewDebug';
 import { CANVAS_SCROLL_PADDING_CLASS } from '../layout/designerLayout';
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery';
 import { usePageZoom } from '../../../viewport/ui';

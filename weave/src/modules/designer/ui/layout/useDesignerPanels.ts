@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { COMPACT_LAYOUT_MEDIA_QUERY } from '../../../../shared/ui/breakpoints';
-import {
-  loadDesignerPanelState,
-  saveDesignerPanelState,
-} from '../../infrastructure/designerPanelPersist';
 import { useMediaQuery } from '../../../../shared/hooks/useMediaQuery';
+import { useDesignerServices } from '../services/DesignerServicesContext';
 
 export type DesignerPanelLayoutPreset = 'full' | 'compact' | 'canvas-first';
 
@@ -38,6 +35,7 @@ export function useDesignerPanels(options: UseDesignerPanelsOptions = {}) {
   } = options;
 
   const isCompact = useMediaQuery(COMPACT_LAYOUT_MEDIA_QUERY);
+  const { panelStorage } = useDesignerServices();
   const [leftOpen, setLeftOpen] = useState(false);
   const [rightOpen, setRightOpen] = useState(false);
   const [layoutRevision, setLayoutRevision] = useState(0);
@@ -65,7 +63,7 @@ export function useDesignerPanels(options: UseDesignerPanelsOptions = {}) {
     if (hydratedRef.current) return;
 
     const persisted =
-      persistPanelState && reportId ? loadDesignerPanelState(reportId) : null;
+      persistPanelState && reportId ? panelStorage.load(reportId) : null;
     const defaults = getDefaultPanelState(defaultPanelLayout);
 
     setLeftOpen(persisted?.leftOpen ?? defaults.leftOpen);
@@ -78,12 +76,13 @@ export function useDesignerPanels(options: UseDesignerPanelsOptions = {}) {
     persistPanelState,
     defaultPanelLayout,
     bumpLayout,
+    panelStorage,
   ]);
 
   useEffect(() => {
     if (!isCompact || !hydratedRef.current || !persistPanelState || !reportId) return;
-    saveDesignerPanelState(reportId, { leftOpen, rightOpen });
-  }, [leftOpen, rightOpen, isCompact, persistPanelState, reportId]);
+    panelStorage.save(reportId, { leftOpen, rightOpen });
+  }, [leftOpen, rightOpen, isCompact, persistPanelState, reportId, panelStorage]);
 
   const toggleLeft = useCallback(() => {
     setLeftOpen((open) => !open);

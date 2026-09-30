@@ -1,3 +1,5 @@
+import type { DesignerPanelState } from '../domain/designerPanelState';
+
 const STORAGE_VERSION = 1;
 const STORAGE_PREFIX = 'fastreport-designer-panels:';
 
@@ -13,7 +15,7 @@ export function getDesignerPanelStorageKey(reportId: string): string {
 
 export function loadDesignerPanelState(
   reportId: string
-): Pick<DesignerPanelPersistState, 'leftOpen' | 'rightOpen'> | null {
+): DesignerPanelState | null {
   if (typeof window === 'undefined') return null;
 
   try {
@@ -34,7 +36,7 @@ export function loadDesignerPanelState(
 
 export function saveDesignerPanelState(
   reportId: string,
-  state: Pick<DesignerPanelPersistState, 'leftOpen' | 'rightOpen'>
+  state: DesignerPanelState
 ): void {
   if (typeof window === 'undefined') return;
 

@@ -11,11 +11,10 @@ import {
 } from 'lucide-react';
 import { useDesignerStore } from '../../application/store/designerStore';
 import { cn } from '../../../../shared/ui/cn';
-import { downloadReportJson, pickReportJsonFile, readReportJsonFile } from '../../../report/infrastructure';
 import { parseReportImportFile, ReportImportError, isReportStateDirty } from '../../../report/domain';
 import { formatAutoSaveInterval } from '../../application/persistence/persistIntervals';
 import { useDesignerCompactMode } from '../layout/designerLayoutContext';
-import { startDesignerTour } from '../../infrastructure/designerTour';
+import { useDesignerServices } from '../services/DesignerServicesContext';
 
 interface DesignerActionToolbarProps {
   reportName?: string;
@@ -103,6 +102,7 @@ export const DesignerActionToolbar: React.FC<DesignerActionToolbarProps> = ({
   const [overflowOpen, setOverflowOpen] = useState(false);
   const overflowRef = useRef<HTMLDivElement>(null);
   const compactMode = useDesignerCompactMode();
+  const { reportFiles, tour } = useDesignerServices();
 
   const isDirty = isReportStateDirty(report, data, lastSavedSnapshotRef.current);
 
@@ -126,16 +126,16 @@ export const DesignerActionToolbar: React.FC<DesignerActionToolbarProps> = ({
 
   const handleExportReport = () => {
     const { report: currentReport, data: previewData } = useDesignerStore.getState();
-    downloadReportJson(currentReport, previewData, currentReport.name || reportName);
+    reportFiles.download(currentReport, previewData, currentReport.name || reportName);
     setOverflowOpen(false);
   };
 
   const handleImportReport = async () => {
-    const file = await pickReportJsonFile();
+    const file = await reportFiles.pick();
     if (!file) return;
 
     try {
-      const raw = await readReportJsonFile(file);
+      const raw = await reportFiles.read(file);
       const { report: importedReport, data: importedData } = parseReportImportFile(raw);
       const replace = window.confirm(
         'Importar este relatório? O layout atual será substituído.' +
@@ -213,7 +213,7 @@ export const DesignerActionToolbar: React.FC<DesignerActionToolbarProps> = ({
           icon={CircleHelp}
           label="Manual do designer"
           onClick={() => {
-            void startDesignerTour();
+            void tour.start();
           }}
           compact={compactMode}
         />

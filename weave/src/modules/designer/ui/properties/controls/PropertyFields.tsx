@@ -1,7 +1,7 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
 import { Braces, ChevronDown, Minus, Plus } from 'lucide-react';
 import { useDesignerStore } from '../../../application/store/designerStore';
-import { stylePreviewDebug } from '../../../infrastructure/stylePreviewDebug';
+import { stylePreviewDebug } from '../../../../../shared/diagnostics/stylePreviewDebug';
 import { cn } from '../../../../../shared/ui/cn';
 
 const inputClass = cn(

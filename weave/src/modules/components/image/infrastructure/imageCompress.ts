@@ -3,16 +3,10 @@ import {
   formatImageBytes,
   MAX_EMBEDDED_IMAGE_BYTES,
 } from '../domain/imagePropsUtils';
+import type { EmbeddedImageResult } from '../domain/embeddedImage';
 
 export const MAX_UPLOAD_SOURCE_BYTES = 8 * 1024 * 1024;
 const COMPRESS_MAX_EDGE = 1600;
-
-export interface EmbeddedImageResult {
-  dataUrl: string;
-  originalBytes: number;
-  finalBytes: number;
-  compressed: boolean;
-}
 
 function readFileAsDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {

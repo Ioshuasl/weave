@@ -23,7 +23,7 @@ import { getReportPage } from '../../../../report/domain';
 import { shouldSuppressDesignerCanvasZBoost } from '../canvasZBoost';
 import { handleBandSurfaceDrop, hasDesignerDrag } from '../designerDragDrop';
 import { getDesignerPageScale } from './dividerBandInteraction';
-import { stylePreviewDebug } from '../../../infrastructure/stylePreviewDebug';
+import { stylePreviewDebug } from '../../../../../shared/diagnostics/stylePreviewDebug';
 import { useDesignerSnap } from '../useDesignerSnap';
 import { canBandAcceptPastedComponents } from '../../../domain/designerClipboard';
 import { useSelectionClick } from '../useSelectionClick';

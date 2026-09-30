@@ -18,3 +18,4 @@ export {
   resolveReportImageHref,
   resolveReportImageSrc,
 } from './imagePropsUtils';
+export type { EmbeddedImageResult } from './embeddedImage';

@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import type { DataFieldOption } from '../../../expression/domain';
-import { readRecentFieldTokens } from '../../infrastructure/fieldRecentStorage';
 import { useDesignerCompactMode } from '../layout/designerLayoutContext';
 import { cn } from '../../../../shared/ui/cn';
+import { useDesignerServices } from '../services/DesignerServicesContext';
 
 const MAX_CHIPS = 8;
 const PINNED_SINGLETON_COUNT = 4;
@@ -19,9 +19,10 @@ export function FieldChipBar({
   onInsert: (token: string) => void;
 }) {
   const compactMode = useDesignerCompactMode();
+  const { recentFields } = useDesignerServices();
 
   const chips = useMemo(() => {
-    const recent = readRecentFieldTokens(reportId);
+    const recent = recentFields.read(reportId);
     const pinned = singletons.slice(0, PINNED_SINGLETON_COUNT).map((opt) => opt.value);
     const seen = new Set<string>();
     const tokens: string[] = [];
@@ -37,7 +38,7 @@ export function FieldChipBar({
       token,
       label: token.slice(1, -1),
     }));
-  }, [singletons, reportId, recentVersion]);
+  }, [recentFields, singletons, reportId, recentVersion]);
 
   if (chips.length === 0) return null;
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { type ReportBand, getListRowContentInset } from '../../../../band/domain';
-import { stylePreviewDebug } from '../../../infrastructure/stylePreviewDebug';
+import { stylePreviewDebug } from '../../../../../shared/diagnostics/stylePreviewDebug';
 import { ListRowMarker } from '../../../../band/ui';
 import { ComponentRenderer } from '../components/ComponentRenderer';
 

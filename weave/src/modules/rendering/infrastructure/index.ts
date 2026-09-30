@@ -1,0 +1,1 @@
+export { waitForElementImages } from './printImageWait';
