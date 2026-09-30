@@ -16,7 +16,7 @@ import {
   Undo2,
   X,
 } from 'lucide-react';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore } from '../../application/store/DesignerStoreContext';
 import { type HistoryActionKind, type HistoryEntry, formatHistoryRelative, formatHistoryTime } from '../../../history/domain';
 import { cn } from '../../../../shared/ui/cn';
 

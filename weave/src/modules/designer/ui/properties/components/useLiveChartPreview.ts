@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import type { ChartProps } from '../../../../components/common/domain';
-import { useDesignerStore } from '../../../application/store/designerStore';
+import { useDesignerStore } from '../../../application/store/DesignerStoreContext';
 
 /**
  * Preview de chartProps no canvas sem gravar histórico a cada frame.

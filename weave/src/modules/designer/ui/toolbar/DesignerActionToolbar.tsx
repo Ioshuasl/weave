@@ -9,7 +9,7 @@ import {
   Save,
   Upload,
 } from 'lucide-react';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../../application/store/DesignerStoreContext';
 import { cn } from '../../../../shared/ui/cn';
 import { parseReportImportFile, ReportImportError, isReportStateDirty } from '../../../report/domain';
 import { formatAutoSaveInterval } from '../../application/persistence/persistIntervals';
@@ -94,6 +94,7 @@ export const DesignerActionToolbar: React.FC<DesignerActionToolbarProps> = ({
   isPersistingHistory = false,
   historyPersistIntervalMs,
 }) => {
+  const designerStore = useDesignerStoreApi();
   const report = useDesignerStore((state) => state.report);
   const data = useDesignerStore((state) => state.data);
   const loadReport = useDesignerStore((state) => state.loadReport);
@@ -125,7 +126,7 @@ export const DesignerActionToolbar: React.FC<DesignerActionToolbarProps> = ({
   })();
 
   const handleExportReport = () => {
-    const { report: currentReport, data: previewData } = useDesignerStore.getState();
+    const { report: currentReport, data: previewData } = designerStore.getState();
     reportFiles.download(currentReport, previewData, currentReport.name || reportName);
     setOverflowOpen(false);
   };

@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import Draggable from 'react-draggable';
-import { useDesignerStore } from '../../../application/store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../../../application/store/DesignerStoreContext';
 import { cn } from '../../../../../shared/ui/cn';
 import { useDesignerZoom } from '../designerZoomContext';
 import { DividerBandOverlay } from './DividerBandOverlay';
@@ -42,6 +42,7 @@ function stopCanvasBubble(e: React.SyntheticEvent) {
 export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
   bandId,
 }: PlacedBandOverlayProps) {
+  const designerStore = useDesignerStoreApi();
   const band = useDesignerStore((state) => state.report.bands[bandId]);
   const report = useDesignerStore((state) => state.report);
   const activePageId = useDesignerStore((state) => state.activePageId);
@@ -110,7 +111,7 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
     const target = e.target as HTMLElement;
     if (target.closest('.component-node, .band-toolbar, .no-drag, .vector-line-handle')) return;
     stopCanvasBubble(e);
-    const state = useDesignerStore.getState();
+    const state = designerStore.getState();
     const next = resolveCanvasSelectionAtPointer(
       e.clientX,
       e.clientY,
@@ -151,7 +152,7 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
   const position = storeBandPreview ?? dragOverride ?? dragPosition;
 
   const applyBandGroupDragPreview = (leaderX: number, leaderY: number) => {
-    const drag = useDesignerStore.getState().bandGroupDrag;
+    const drag = designerStore.getState().bandGroupDrag;
     if (!drag || drag.leaderId !== bandId) return;
 
     const leaderStart = drag.startRects[bandId];
@@ -175,7 +176,7 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
       e.shiftKey
     );
 
-    const activeGroup = useDesignerStore.getState().bandGroupDrag;
+    const activeGroup = designerStore.getState().bandGroupDrag;
     if (activeGroup?.leaderId === bandId && activeGroup.memberIds.length > 1) {
       applyBandGroupDragPreview(snapped.x, snapped.y);
     } else {
@@ -195,7 +196,7 @@ export const PlacedBandOverlay = React.memo(function PlacedBandOverlay({
     clearSnapGuides();
     stylePreviewDebug.countAction('dragBand:stop', { bandId, x: snapped.x, y: snapped.y });
 
-    const activeGroup = useDesignerStore.getState().bandGroupDrag;
+    const activeGroup = designerStore.getState().bandGroupDrag;
     if (activeGroup?.leaderId === bandId && activeGroup.memberIds.length > 1) {
       commitBandGroupDrag(bandId, { x: snapped.x, y: snapped.y });
     } else if (snapped.x !== rect.x || snapped.y !== rect.y) {

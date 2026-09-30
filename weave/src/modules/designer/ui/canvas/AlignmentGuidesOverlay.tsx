@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore } from '../../application/store/DesignerStoreContext';
 import { getPageContentSize } from '../../../page/domain';
 import { getReportPage } from '../../../report/domain';
 

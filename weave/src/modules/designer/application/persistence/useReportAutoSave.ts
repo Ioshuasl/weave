@@ -1,5 +1,5 @@
 import { useEffect, useRef, type MutableRefObject } from 'react';
-import { useDesignerStore } from '../store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../store/DesignerStoreContext';
 import { isReportStateDirty } from '../../../report/domain';
 
 interface UseReportAutoSaveOptions {
@@ -20,6 +20,7 @@ export function useReportAutoSave({
   onAutoSave,
   isSavingRef,
 }: UseReportAutoSaveOptions) {
+  const designerStore = useDesignerStoreApi();
   const isBlockedRef = useRef(isBlocked);
   isBlockedRef.current = isBlocked;
 
@@ -29,7 +30,7 @@ export function useReportAutoSave({
     const tick = () => {
       if (isBlockedRef.current || isSavingRef.current) return;
 
-      const { report, data } = useDesignerStore.getState();
+      const { report, data } = designerStore.getState();
       if (!isReportStateDirty(report, data, lastSavedSnapshotRef.current)) return;
 
       void onAutoSave();

@@ -1,7 +1,7 @@
 import { type CSSProperties } from 'react';
 import { Copy, Layout, Settings } from 'lucide-react';
 import type { ReportPage } from '../../../page/domain';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../../application/store/DesignerStoreContext';
 import { getBandDisplayLabel } from '../../../band/domain';
 import { getComponentDisplayLabel } from '../../../components/common/domain';
 import { canBandAcceptPastedComponents } from '../../domain/designerClipboard';
@@ -21,6 +21,7 @@ import { PropertiesPanelBreadcrumb } from './PropertiesPanelBreadcrumb';
 import { LayersHierarchy } from './LayersHierarchy';
 
 export const PropertiesPanel = () => {
+  const designerStore = useDesignerStoreApi();
   const selectedIds = useDesignerStore((state) => state.selectedIds);
   const selectedPageId = useDesignerStore((state) => state.selectedPageId);
   const activePageId = useDesignerStore((state) => state.activePageId);
@@ -55,14 +56,14 @@ export const PropertiesPanel = () => {
       ? canBandAcceptPastedComponents(selectedBand)
       : selectedComponent
         ? canBandAcceptPastedComponents(
-            useDesignerStore.getState().report.bands[selectedComponent.parentId]
+            designerStore.getState().report.bands[selectedComponent.parentId]
           )
         : false);
   const groupedDataFields = buildGroupedDataFieldOptions(data, dataSourceCatalog);
 
   const patchSelectedComponentStyle = (patch: CSSProperties) => {
     if (!selectedId) return;
-    const current = useDesignerStore.getState().report.components[selectedId];
+    const current = designerStore.getState().report.components[selectedId];
     if (!current) return;
     updateComponent(selectedId, { style: { ...current.style, ...patch } });
   };

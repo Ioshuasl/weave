@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AlertTriangle, Type, X } from 'lucide-react';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore } from '../../application/store/DesignerStoreContext';
 import { buildGroupedDataFieldOptions } from '../../../expression/domain';
 import { DESIGNER_MODAL_OVERLAY_Z } from '../../../../shared/ui/zIndex';
 import { isTextEditorModalDirty } from '../../domain/textEditorModal';

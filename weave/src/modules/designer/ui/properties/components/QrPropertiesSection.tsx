@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import type { QrErrorCorrection, ReportComponent } from '../../../../components/common/domain';
 import { type DataFieldOption, evaluateExpression } from '../../../../expression/domain';
 import type { DataSourceCatalog } from '../../../../data-source/domain';
-import { useDesignerStore } from '../../../application/store/designerStore';
+import { useDesignerStore } from '../../../application/store/DesignerStoreContext';
 import { getQrBackground, getQrErrorCorrection, getQrForeground, getQrMargin } from '../../../../components/qr/domain';
 import {
   PropertyColorInput,

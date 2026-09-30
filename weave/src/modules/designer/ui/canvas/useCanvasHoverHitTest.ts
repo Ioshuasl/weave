@@ -1,16 +1,17 @@
 import { useCallback, type PointerEvent as ReactPointerEvent } from 'react';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../../application/store/DesignerStoreContext';
 import { clientToPageContentPoint } from './designerDragDrop';
 import { collectCanvasHits, pickCanvasHit } from './canvasHitTest';
 import { getReportPage } from '../../../report/domain';
 
 /** Hover no canvas via hit-test geométrico (não altera pointer-events). */
 export function useCanvasHoverHitTest(zoom: number) {
+  const designerStore = useDesignerStoreApi();
   const setCanvasHoverId = useDesignerStore((state) => state.setCanvasHoverId);
 
   const handlePointerMove = useCallback(
     (event: ReactPointerEvent) => {
-      const state = useDesignerStore.getState();
+      const state = designerStore.getState();
       if (
         event.buttons !== 0 ||
         state.draggingComponentId ||
@@ -40,7 +41,7 @@ export function useCanvasHoverHitTest(zoom: number) {
   const handlePointerLeave = useCallback(
     (event: ReactPointerEvent) => {
       if (event.currentTarget.contains(event.relatedTarget as Node | null)) return;
-      if (useDesignerStore.getState().draggingComponentId) return;
+      if (designerStore.getState().draggingComponentId) return;
       setCanvasHoverId(null);
     },
     [setCanvasHoverId]

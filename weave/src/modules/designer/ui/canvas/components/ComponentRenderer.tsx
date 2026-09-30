@@ -6,7 +6,7 @@ import {
   type CSSProperties,
   type MouseEvent as ReactMouseEvent,
 } from 'react';
-import { useDesignerStore } from '../../../application/store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../../../application/store/DesignerStoreContext';
 import { useDataSourceCatalog } from '../../../../data-source/ui';
 import Draggable, { type DraggableData, type DraggableEvent } from 'react-draggable';
 import { cn } from '../../../../../shared/ui/cn';
@@ -47,6 +47,7 @@ interface ComponentRendererProps {
 export const ComponentRenderer = memo(function ComponentRenderer({
   componentId,
 }: ComponentRendererProps) {
+  const designerStore = useDesignerStoreApi();
   const component = useDesignerStore((state) => state.report.components[componentId]);
   const openTextEditorModal = useDesignerStore((state) => state.openTextEditorModal);
   const componentStackIndex = useDesignerStore((state) => {
@@ -201,7 +202,7 @@ export const ComponentRenderer = memo(function ComponentRenderer({
         : 1;
 
   const applyGroupDragPreview = (leaderX: number, leaderY: number) => {
-    const drag = useDesignerStore.getState().componentGroupDrag;
+    const drag = designerStore.getState().componentGroupDrag;
     if (!drag || drag.leaderId !== componentId) return;
 
     const leaderStart = drag.startRects[componentId];
@@ -231,7 +232,7 @@ export const ComponentRenderer = memo(function ComponentRenderer({
       e.shiftKey
     );
 
-    const activeGroup = useDesignerStore.getState().componentGroupDrag;
+    const activeGroup = designerStore.getState().componentGroupDrag;
     if (activeGroup?.leaderId === componentId && activeGroup.memberIds.length > 1) {
       applyGroupDragPreview(snapped.x, snapped.y);
     } else {
@@ -271,7 +272,7 @@ export const ComponentRenderer = memo(function ComponentRenderer({
       return;
     }
 
-    const activeGroup = useDesignerStore.getState().componentGroupDrag;
+    const activeGroup = designerStore.getState().componentGroupDrag;
     if (activeGroup?.leaderId === componentId && activeGroup.memberIds.length > 1) {
       commitComponentGroupDrag(componentId, { x: snapped.x, y: snapped.y });
     } else {
@@ -285,7 +286,7 @@ export const ComponentRenderer = memo(function ComponentRenderer({
   const handleDragStart = (e: DraggableEvent, _data: DraggableData): false | void => {
     const native = 'clientX' in e ? e : null;
     if (native && typeof native.clientX === 'number') {
-      const state = useDesignerStore.getState();
+      const state = designerStore.getState();
       const page = getReportPage(state.report, state.activePageId);
       const hit = pickCanvasHitAtClient(
         native.clientX,
@@ -311,7 +312,7 @@ export const ComponentRenderer = memo(function ComponentRenderer({
       selectItem(componentId, e);
     }
 
-    if (isSelected || useDesignerStore.getState().selectedIds.includes(componentId)) {
+    if (isSelected || designerStore.getState().selectedIds.includes(componentId)) {
       beginComponentGroupDrag(componentId);
     }
   };
@@ -319,7 +320,7 @@ export const ComponentRenderer = memo(function ComponentRenderer({
   const handlePointerDown = (e: ReactMouseEvent) => {
     if (e.button !== 0) return;
     e.stopPropagation();
-    const state = useDesignerStore.getState();
+    const state = designerStore.getState();
     const page = getReportPage(state.report, state.activePageId);
     const next = resolveCanvasSelectionAtPointer(
       e.clientX,

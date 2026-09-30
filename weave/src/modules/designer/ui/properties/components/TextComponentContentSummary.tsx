@@ -2,7 +2,7 @@ import React from 'react';
 import { PencilLine } from 'lucide-react';
 import type { ReportComponent } from '../../../../components/common/domain';
 import { mergeTextEditorDraftStyle } from '../../../domain/textEditorModal';
-import { useDesignerStore } from '../../../application/store/designerStore';
+import { useDesignerStore } from '../../../application/store/DesignerStoreContext';
 import { FormattedText } from '../../../../components/text/ui';
 import { cn } from '../../../../../shared/ui/cn';
 

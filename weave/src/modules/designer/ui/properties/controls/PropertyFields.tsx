@@ -1,6 +1,6 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
 import { Braces, ChevronDown, Minus, Plus } from 'lucide-react';
-import { useDesignerStore } from '../../../application/store/designerStore';
+import { useDesignerStore } from '../../../application/store/DesignerStoreContext';
 import { stylePreviewDebug } from '../../../../../shared/diagnostics/stylePreviewDebug';
 import { cn } from '../../../../../shared/ui/cn';
 

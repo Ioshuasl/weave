@@ -19,7 +19,7 @@ import {
 import { type BandType, getBandDisplayLabel, getAllPlacedBandIds } from '../../../band/domain';
 import { type ComponentType, type ReportComponent, getComponentDisplayLabel } from '../../../components/common/domain';
 import { type ReportDefinition, findPageIdForBand, findPageIdForComponent } from '../../../report/domain';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore } from '../../application/store/DesignerStoreContext';
 import {
   getPrimarySelectedId,
   isIdSelected,

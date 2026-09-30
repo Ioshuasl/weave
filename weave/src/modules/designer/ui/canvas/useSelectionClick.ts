@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore } from '../../application/store/DesignerStoreContext';
 import type { SelectionMode } from '../../domain/selectionUtils';
 
 function resolveSelectionMode(event: { ctrlKey?: boolean; metaKey?: boolean; shiftKey?: boolean }): SelectionMode {

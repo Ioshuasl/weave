@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore } from '../../application/store/DesignerStoreContext';
 
 export const DataEditor = ({ onClose }: { onClose: () => void }) => {
   const data = useDesignerStore(state => state.data);

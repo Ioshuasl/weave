@@ -1,7 +1,7 @@
 import { memo, useMemo, useRef, useState, type RefObject } from 'react';
 import { ZoomIn, ZoomOut, RotateCcw, Magnet } from 'lucide-react';
 import { type ReportPage, getPageContentSize } from '../../../page/domain';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../../application/store/DesignerStoreContext';
 import { PlacedBandOverlay } from './bands/PlacedBandOverlay';
 import { AlignmentGuidesOverlay } from './AlignmentGuidesOverlay';
 import { DesignerEmptyState } from './DesignerEmptyState';
@@ -47,6 +47,7 @@ const CanvasDesignerPage = memo(function CanvasDesignerPage({
   isPageSelected,
   onSelectPage,
 }: CanvasDesignerPageProps) {
+  const designerStore = useDesignerStoreApi();
   const addBand = useDesignerStore((state) => state.addBand);
   const addComponent = useDesignerStore((state) => state.addComponent);
   const { handlePointerMove, handlePointerLeave } =
@@ -118,7 +119,7 @@ const CanvasDesignerPage = memo(function CanvasDesignerPage({
             onPageDropTargetChange(false);
             handlePageContentDrop(
               e,
-              { zoom, page, bands: useDesignerStore.getState().report.bands },
+              { zoom, page, bands: designerStore.getState().report.bands },
               { addBand, addComponent }
             );
           }}
@@ -143,6 +144,7 @@ interface CanvasProps {
 }
 
 export const Canvas = ({ canvasSelectionClasses, fitLayoutKey = 0 }: CanvasProps = {}) => {
+  const designerStore = useDesignerStoreApi();
   const report = useDesignerStore((state) => state.report);
   const activePageId = useDesignerStore((state) => state.activePageId);
   const page = getReportPage(report, activePageId)!;
@@ -170,7 +172,7 @@ export const Canvas = ({ canvasSelectionClasses, fitLayoutKey = 0 }: CanvasProps
     });
 
   const placedBandIds = useMemo(
-    () => getAllPlacedBandIds(page, useDesignerStore.getState().report.bands),
+    () => getAllPlacedBandIds(page, designerStore.getState().report.bands),
     [page.bands, page.dividers]
   );
   const contentSize = getPageContentSize(page);

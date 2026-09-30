@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../../application/store/DesignerStoreContext';
 import { isReportStateDirty } from '../../../report/domain';
 
 const HISTORY_GUARD_KEY = 'reportDesignerUnsavedGuard';
@@ -24,6 +24,7 @@ export function useUnsavedChangesGuard({
   onClose,
   onSave,
 }: UseUnsavedChangesGuardOptions) {
+  const designerStore = useDesignerStoreApi();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isExitSaving, setIsExitSaving] = useState(false);
   const guardPushedRef = useRef(false);
@@ -31,7 +32,7 @@ export function useUnsavedChangesGuard({
   const ignorePopStateRef = useRef(false);
 
   const checkDirty = useCallback(() => {
-    const { report, data } = useDesignerStore.getState();
+    const { report, data } = designerStore.getState();
     return isReportStateDirty(report, data, lastSavedSnapshotRef.current);
   }, [lastSavedSnapshotRef]);
 

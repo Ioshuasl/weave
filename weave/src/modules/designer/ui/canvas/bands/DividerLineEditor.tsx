@@ -10,7 +10,7 @@ import {
   snapLineAngle,
   setLineAnglePreservingCenter,
 } from '../../../../band/domain';
-import { useDesignerStore } from '../../../application/store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../../../application/store/DesignerStoreContext';
 import { getReportPage } from '../../../../report/domain';
 import {
   attachDocumentPointerDrag,
@@ -91,6 +91,7 @@ export const DividerLineEditor: React.FC<DividerLineEditorProps> = ({
   thickness = 1,
   anchorRef,
 }) => {
+  const designerStore = useDesignerStoreApi();
   const updateBand = useDesignerStore((state) => state.updateBand);
   const report = useDesignerStore((state) => state.report);
   const activePageId = useDesignerStore((state) => state.activePageId);
@@ -99,13 +100,13 @@ export const DividerLineEditor: React.FC<DividerLineEditorProps> = ({
   const dragSessionRef = useRef(0);
 
   const getCurrentLine = () => {
-    const current = useDesignerStore.getState().report.bands[bandId];
+    const current = designerStore.getState().report.bands[bandId];
     if (!current) return line;
     return resolveDividerLine(current, getBandRect(current, page));
   };
 
   const commitLine = (nextLine: DividerLineVector) => {
-    const current = useDesignerStore.getState().report.bands[bandId];
+    const current = designerStore.getState().report.bands[bandId];
     if (!current) return;
     const rect = getBandRect(current, page);
     const updates = applyDividerLineUpdate(current, rect, nextLine, thickness);
@@ -113,7 +114,7 @@ export const DividerLineEditor: React.FC<DividerLineEditorProps> = ({
   };
 
   const pointerToLocal = (clientX: number, clientY: number) => {
-    const current = useDesignerStore.getState().report.bands[bandId];
+    const current = designerStore.getState().report.bands[bandId];
     if (!current) return { x: 0, y: 0 };
     const rect = getBandRect(current, page);
     return clientToBandLocal(clientX, clientY, rect, anchorRef.current, zoom);

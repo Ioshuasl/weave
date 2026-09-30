@@ -23,7 +23,7 @@ import {
   getImageCropX,
   getImageCropY,
 } from '../../../../components/image/domain';
-import { useDesignerStore } from '../../../application/store/designerStore';
+import { useDesignerStore } from '../../../application/store/DesignerStoreContext';
 import {
   PropertyCheckbox,
   PropertyFieldGrid,

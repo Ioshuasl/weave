@@ -2,7 +2,8 @@ export { REPORT_AUTO_SAVE_INTERVAL_MS, REPORT_HISTORY_PERSIST_INTERVAL_MS } from
 export type { ReportAutoSaveIntervalMs, ReportHistoryPersistIntervalMs } from './persistence/persistIntervals';
 export { useReportAutoSave } from './persistence/useReportAutoSave';
 export { useReportHistoryPersist } from './persistence/useReportHistoryPersist';
-export { useDesignerStore } from './store/designerStore';
+export { DesignerStoreProvider, useDesignerStore, useDesignerStoreApi } from './store/DesignerStoreContext';
+export type { DesignerStoreApi } from './store/designerStore';
 export type {
   DesignerServices,
   DesignerTourLauncher,

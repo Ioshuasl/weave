@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../../application/store/DesignerStoreContext';
 import { getSelectedComponentIds } from '../../domain/selectionUtils';
 
 function isEditableTarget(target: EventTarget | null): boolean {
@@ -22,6 +22,7 @@ export function useDesignerKeyboardShortcuts(
   disabled = false,
   options?: DesignerKeyboardOptions
 ) {
+  const designerStore = useDesignerStoreApi();
   const selectedIds = useDesignerStore((state) => state.selectedIds);
   const reportComponents = useDesignerStore((state) => state.report.components);
   const removeSelected = useDesignerStore((state) => state.removeSelected);
@@ -43,7 +44,7 @@ export function useDesignerKeyboardShortcuts(
       const hasSelection = selectedIds.length > 0;
       const hasComponentSelection = getSelectedComponentIds(
         selectedIds,
-        useDesignerStore.getState().report
+        designerStore.getState().report
       ).length > 0;
 
       if (mod && e.key.toLowerCase() === 's') {
@@ -81,10 +82,10 @@ export function useDesignerKeyboardShortcuts(
         if (targetEditable) return;
         const componentIds = getSelectedComponentIds(
           selectedIds,
-          useDesignerStore.getState().report
+          designerStore.getState().report
         );
         if (componentIds.length !== 1) return;
-        const component = useDesignerStore.getState().report.components[componentIds[0]];
+        const component = designerStore.getState().report.components[componentIds[0]];
         if (component?.type !== 'text') return;
 
         e.preventDefault();
@@ -138,7 +139,7 @@ export function useDesignerKeyboardShortcuts(
       if (mod || e.altKey) return;
 
       const hasKnownSelection = selectedIds.some(
-        (id) => reportComponents[id] || useDesignerStore.getState().report.bands[id]
+        (id) => reportComponents[id] || designerStore.getState().report.bands[id]
       );
       if (!hasKnownSelection) return;
 

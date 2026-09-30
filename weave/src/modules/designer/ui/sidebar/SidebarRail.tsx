@@ -5,7 +5,7 @@ import {
   LayoutTemplate,
   PanelLeft,
 } from 'lucide-react';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore } from '../../application/store/DesignerStoreContext';
 import { cn } from '../../../../shared/ui/cn';
 import { setDesignerDragData } from '../canvas/designerDragDrop';
 import type { BandType } from '../../../band/domain';

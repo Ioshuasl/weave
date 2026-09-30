@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { stylePreviewDebug } from '../../../../../shared/diagnostics/stylePreviewDebug';
-import { useDesignerStore } from '../../../application/store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../../../application/store/DesignerStoreContext';
 import { cn } from '../../../../../shared/ui/cn';
 import { useDesignerZoom } from '../designerZoomContext';
 import { DividerLine } from '../../../../band/ui';
@@ -32,6 +32,7 @@ function stopCanvasBubble(e: React.SyntheticEvent) {
 export const DividerBandOverlay = React.memo(function DividerBandOverlay({
   bandId,
 }: DividerBandOverlayProps) {
+  const designerStore = useDesignerStoreApi();
   const band = useDesignerStore((state) => state.report.bands[bandId]);
   const report = useDesignerStore((state) => state.report);
   const activePageId = useDesignerStore((state) => state.activePageId);
@@ -90,7 +91,7 @@ export const DividerBandOverlay = React.memo(function DividerBandOverlay({
   };
 
   const applyBandGroupDragPreview = (leaderX: number, leaderY: number) => {
-    const drag = useDesignerStore.getState().bandGroupDrag;
+    const drag = designerStore.getState().bandGroupDrag;
     if (!drag || drag.leaderId !== bandId) return;
 
     const leaderStart = drag.startRects[bandId];
@@ -167,7 +168,7 @@ export const DividerBandOverlay = React.memo(function DividerBandOverlay({
         );
         const snappedRect = { ...next, x: snapped.x, y: snapped.y };
 
-        const activeGroup = useDesignerStore.getState().bandGroupDrag;
+        const activeGroup = designerStore.getState().bandGroupDrag;
         if (activeGroup?.leaderId === bandId && activeGroup.memberIds.length > 1) {
           applyBandGroupDragPreview(snapped.x, snapped.y);
         } else {
@@ -182,9 +183,9 @@ export const DividerBandOverlay = React.memo(function DividerBandOverlay({
         });
       },
       onEnd: () => {
-        const activeGroup = useDesignerStore.getState().bandGroupDrag;
+        const activeGroup = designerStore.getState().bandGroupDrag;
         const finalRect = previewRectRef.current;
-        const leaderPreview = useDesignerStore.getState().dragPreviewRects?.[bandId];
+        const leaderPreview = designerStore.getState().dragPreviewRects?.[bandId];
 
         if (activeGroup?.leaderId === bandId && activeGroup.memberIds.length > 1 && leaderPreview) {
           stylePreviewDebug.countAction('dragBand:stop', {

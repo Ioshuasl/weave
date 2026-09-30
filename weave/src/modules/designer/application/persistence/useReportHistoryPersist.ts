@@ -1,5 +1,5 @@
 import { useEffect, useRef, type MutableRefObject } from 'react';
-import { useDesignerStore } from '../store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../store/DesignerStoreContext';
 import { getHistoryEntriesToPersist } from '../../../history/domain';
 
 interface UseReportHistoryPersistOptions {
@@ -20,6 +20,7 @@ export function useReportHistoryPersist({
   onPersist,
   isPersistingRef,
 }: UseReportHistoryPersistOptions) {
+  const designerStore = useDesignerStoreApi();
   const isBlockedRef = useRef(isBlocked);
   isBlockedRef.current = isBlocked;
 
@@ -29,7 +30,7 @@ export function useReportHistoryPersist({
     const tick = () => {
       if (isBlockedRef.current || isPersistingRef.current) return;
 
-      const { historyPast } = useDesignerStore.getState();
+      const { historyPast } = designerStore.getState();
       const pending = getHistoryEntriesToPersist(
         historyPast,
         persistedEntryIdsRef.current

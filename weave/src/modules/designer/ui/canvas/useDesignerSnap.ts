@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore, useDesignerStoreApi } from '../../application/store/DesignerStoreContext';
 import {
   collectBandSnapTargets,
   collectComponentSnapTargets,
@@ -12,13 +12,14 @@ import { getBandRect } from '../../../band/domain';
 import { getReportPage } from '../../../report/domain';
 
 export function useDesignerSnap() {
+  const designerStore = useDesignerStoreApi();
   const snapEnabled = useDesignerStore((state) => state.snapEnabled);
   const setActiveSnapGuides = useDesignerStore((state) => state.setActiveSnapGuides);
   const clearSnapGuides = useDesignerStore((state) => state.clearSnapGuides);
 
   const snapBandRect = useCallback(
     (rect: SnapRect, excludeBandId: string, shiftKey = false): SnapResult => {
-      const state = useDesignerStore.getState();
+      const state = designerStore.getState();
       const page = getReportPage(state.report, state.activePageId);
       if (!page) {
         return { x: rect.x, y: rect.y, guides: { vertical: [], horizontal: [] } };
@@ -41,7 +42,7 @@ export function useDesignerSnap() {
       excludeComponentId: string,
       shiftKey = false
     ): SnapResult => {
-      const state = useDesignerStore.getState();
+      const state = designerStore.getState();
       const page = getReportPage(state.report, state.activePageId);
       if (!page) {
         return { x: rect.x, y: rect.y, guides: { vertical: [], horizontal: [] } };

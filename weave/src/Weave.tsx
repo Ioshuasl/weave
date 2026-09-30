@@ -10,7 +10,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { type ReportDefinition, createReportSaveSnapshot } from './modules/report/domain';
 import {
+  DesignerStoreProvider,
   useDesignerStore,
+  useDesignerStoreApi,
   useReportAutoSave,
   useReportHistoryPersist,
   type ReportHistoryPersistIntervalMs,
@@ -178,6 +180,7 @@ function WeaveWorkspace({
   persistPanelState,
   compactMode,
 }: WeaveProps) {
+  const designerStore = useDesignerStoreApi();
   const loadReport = useDesignerStore((state) => state.loadReport);
   const setHostPagePresets = useDesignerStore((state) => state.setHostPagePresets);
   const isTextEditorOpen = useDesignerStore((state) => state.textEditorModal !== null);
@@ -191,7 +194,7 @@ function WeaveWorkspace({
   const persistedHistoryEntryIdsRef = useRef<Set<string>>(new Set());
 
   const markSnapshotSaved = useCallback(() => {
-    const { report: currentReport, data: currentData } = useDesignerStore.getState();
+    const { report: currentReport, data: currentData } = designerStore.getState();
     lastSavedSnapshotRef.current = createReportSaveSnapshot(currentReport, currentData);
   }, []);
 
@@ -199,7 +202,7 @@ function WeaveWorkspace({
     async (source: 'manual' | 'auto' = 'manual') => {
       if (!onSave || isSavingRef.current) return;
 
-      const { report: currentReport, data: currentData } = useDesignerStore.getState();
+      const { report: currentReport, data: currentData } = designerStore.getState();
       isSavingRef.current = true;
       setIsSaving(true);
       try {
@@ -222,7 +225,7 @@ function WeaveWorkspace({
     async (source: 'manual' | 'auto' = 'auto') => {
       if (!onPersistHistory || isPersistingHistoryRef.current) return;
 
-      const state = useDesignerStore.getState();
+      const state = designerStore.getState();
       const entries = getHistoryEntriesToPersist(
         state.historyPast,
         persistedHistoryEntryIdsRef.current
@@ -460,8 +463,10 @@ function WeaveWorkspace({
 
 export function Weave(props: WeaveProps) {
   return (
-    <WeaveServicesProvider>
-      <WeaveWorkspace {...props} />
-    </WeaveServicesProvider>
+    <DesignerStoreProvider>
+      <WeaveServicesProvider>
+        <WeaveWorkspace {...props} />
+      </WeaveServicesProvider>
+    </DesignerStoreProvider>
   );
 }

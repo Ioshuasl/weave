@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDesignerStore } from '../../application/store/designerStore';
+import { useDesignerStore } from '../../application/store/DesignerStoreContext';
 import { ReportPreview } from '../../../rendering/ui';
 import type { WeavePrintPayload } from '../../../rendering/domain';
 
