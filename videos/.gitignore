@@ -1,0 +1,6 @@
+.tts/
+build/
+out/
+node_modules/
+remotion/node_modules/
+remotion/public/b*/

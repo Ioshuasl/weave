@@ -1,0 +1,197 @@
+@source "..";
+
+/*
+ * Tema visual do Weave (claro/escuro).
+ * Reescreve, só dentro do designer, a escala neutral/indigo/sky do Tailwind — os componentes
+ * continuam usando as mesmas classes. A folha do relatório (.weave-paper) é sempre clara.
+ */
+@theme inline {
+  --color-weave-surface: var(--weave-surface);
+  --color-weave-brand: var(--weave-brand);
+}
+
+[data-weave-root],
+[data-weave-theme],
+.weave-paper {
+  --weave-surface: #ffffff;
+  --weave-brand: #2563eb;
+  --color-neutral-50: #f7f8fb;
+  --color-neutral-100: #f0f2f7;
+  --color-neutral-200: #e4e8ef;
+  --color-neutral-300: #cfd5e0;
+  --color-neutral-400: #9aa4b6;
+  --color-neutral-500: #6b7589;
+  --color-neutral-600: #4b5568;
+  --color-neutral-700: #343d4f;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
+  --color-neutral-950: #0b1120;
+  --color-indigo-50: #eff4ff;
+  --color-indigo-100: #dbe6fe;
+  --color-indigo-200: #bfd3fe;
+  --color-indigo-300: #93b4fd;
+  --color-indigo-400: #6090fa;
+  --color-indigo-500: #3b72f6;
+  --color-indigo-600: #2563eb;
+  --color-indigo-700: #1d4fd8;
+  --color-indigo-800: #1e40af;
+  --color-indigo-900: #1e3a8a;
+  --color-sky-50: #eff4ff;
+  --color-sky-100: #dbe6fe;
+  --color-sky-400: #6090fa;
+  --color-sky-500: #3b72f6;
+  --color-sky-600: #2563eb;
+  color-scheme: light;
+}
+
+.dark [data-weave-root],
+.dark [data-weave-theme] {
+  --weave-surface: #161e2e;
+  --weave-brand: #4d83f7;
+  --color-neutral-50: #0f1521;
+  --color-neutral-100: #151c2b;
+  --color-neutral-200: #212a3b;
+  --color-neutral-300: #2f3a50;
+  --color-neutral-400: #6b7791;
+  --color-neutral-500: #8a95ab;
+  --color-neutral-600: #a9b2c4;
+  --color-neutral-700: #c7cedb;
+  --color-neutral-800: #e1e5ee;
+  --color-neutral-900: #f1f3f8;
+  --color-neutral-950: #ffffff;
+  --color-indigo-50: #16254a;
+  --color-indigo-100: #1b2f5e;
+  --color-indigo-200: #25407f;
+  --color-indigo-300: #3558a8;
+  --color-indigo-400: #5b86ef;
+  --color-indigo-500: #6a96f5;
+  --color-indigo-600: #3b72f6;
+  --color-indigo-700: #9bb9ff;
+  --color-indigo-800: #b7ccff;
+  --color-indigo-900: #dbe6fe;
+  --color-sky-50: #16254a;
+  --color-sky-100: #1b2f5e;
+  --color-sky-400: #5b86ef;
+  --color-sky-500: #6a96f5;
+  --color-sky-600: #9bb9ff;
+  color-scheme: dark;
+}
+
+.dark .weave-paper {
+  --weave-surface: #ffffff;
+  color-scheme: light;
+}
+
+
+/* Oculta scrollbars (setas de altura no Windows) em superfícies compactas do designer */
+.hide-scrollbar {
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Tour do designer (driver.js) */
+.designer-tour-popover {
+  font-family: var(--font-sans);
+  max-width: 22rem;
+}
+
+.designer-tour-popover .driver-popover-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #171717;
+}
+
+.designer-tour-popover .driver-popover-description {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #404040;
+}
+
+.designer-tour-popover .driver-popover-description code {
+  font-size: 12px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+.designer-tour-popover .driver-popover-next-btn {
+  background: #171717;
+  color: #fff;
+  border: 0;
+  text-shadow: none;
+}
+
+.designer-tour-popover .driver-popover-prev-btn {
+  color: #525252;
+  border-color: #e5e5e5;
+  text-shadow: none;
+}
+
+/*
+ * Destaque sutil do que o assistente de IA alterou: um anel que aparece e some (~1,6 s).
+ * Fica num elemento irmão (nunca no próprio componente/banda), sem mexer em layout, e respeita "reduzir movimento".
+ */
+@keyframes weave-flash {
+  0% { opacity: 0; transform: scale(0.98); }
+  16% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+@keyframes weave-flash-static {
+  0%, 70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.weave-flash {
+  position: absolute;
+  inset: -3px;
+  z-index: 60;
+  pointer-events: none;
+  border: 2px solid #6366f1;
+  border-radius: 4px;
+  background: rgb(99 102 241 / 0.1);
+  box-shadow: 0 0 0 4px rgb(99 102 241 / 0.16);
+  animation: weave-flash 1.6s ease-out forwards;
+}
+
+.weave-flash[data-flash-kind='band'] {
+  inset: 0;
+  border-style: dashed;
+  background: rgb(99 102 241 / 0.06);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .weave-flash {
+    animation: weave-flash-static 1.6s linear forwards;
+  }
+}
+
+/* Campo dinâmico em texto (editor, canvas e resumo): destaque sutil que NÃO altera a tipografia.
+   Fonte, tamanho, cor, peso, espaçamento e decoração vêm do texto ao redor, então toda formatação vale. */
+.rich-field-chip,
+.weave-field {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+  line-height: inherit;
+  text-transform: inherit;
+  display: inline;
+  padding: 0 1px;
+  border-radius: 2px;
+  background-color: rgba(99, 102, 241, 0.1);
+  box-shadow: inset 0 -1px 0 rgba(99, 102, 241, 0.45);
+  cursor: default;
+}
+
+.rich-field-chip {
+  user-select: all;
+}

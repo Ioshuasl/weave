@@ -1,0 +1,322 @@
+{
+  "id": "suporte-instrumento-de-protesto",
+  "titulo": "Instrumento de Protesto: montagem do layout",
+  "subtitulo": "Treinamento para o suporte da Orius",
+  "etapas": [
+    {
+      "id": "e1",
+      "titulo": "Folha e lista"
+    },
+    {
+      "id": "e2",
+      "titulo": "Cabeçalho"
+    },
+    {
+      "id": "e3",
+      "titulo": "Título e dados do título"
+    },
+    {
+      "id": "e4",
+      "titulo": "Devedores"
+    },
+    {
+      "id": "e5",
+      "titulo": "Selo e QR Code"
+    },
+    {
+      "id": "e6",
+      "titulo": "Finalização"
+    },
+    {
+      "id": "e7",
+      "titulo": "Conferência final"
+    }
+  ],
+  "cenas": [
+    {
+      "id": "e1-folha",
+      "etapa": "e1",
+      "inicio": 4.3,
+      "fim": 13.03,
+      "duracaoAudio": 8.235,
+      "fala": "Vamos montar o instrumento de protesto. Primeiro, a folha: clique no fundo, deixe o papel A4 em pé e reduza as margens para meio centímetro."
+    },
+    {
+      "id": "e1-lista",
+      "etapa": "e1",
+      "inicio": 13.03,
+      "fim": 28.02,
+      "duracaoAudio": 14.485,
+      "fala": "Agora o ponto principal. A API da Orius entrega os instrumentos em lista, o que os desenvolvedores chamam de array: vários títulos de uma vez. Por isso usamos a Lista de registros, ligada a instrumentos. Ela repete o desenho para cada título, uma folha para cada."
+    },
+    {
+      "id": "e1-tamanho",
+      "etapa": "e1",
+      "inicio": 28.02,
+      "fim": 38.7,
+      "duracaoAudio": 8.128,
+      "fala": "Dê um nome, faça a lista cobrir a folha inteira e, em Avançado, desligue a altura automática. Ligada, ela estica as caixas e desmancha o desenho."
+    },
+    {
+      "id": "e1-previa",
+      "etapa": "e1",
+      "inicio": 38.7,
+      "fim": 53.31,
+      "duracaoAudio": 4.011,
+      "fala": "Conferindo: duas folhas em branco, uma para cada título. É isso mesmo.",
+      "congelar": 51.6
+    },
+    {
+      "id": "e2-logo",
+      "etapa": "e2",
+      "inicio": 53.31,
+      "fim": 66.33,
+      "duracaoAudio": 5.376,
+      "fala": "Cabeçalho. Primeiro o brasão: clique em Imagem e escolha a logo do cartório, que já vem do sistema."
+    },
+    {
+      "id": "e2-texto",
+      "etapa": "e2",
+      "inicio": 66.33,
+      "fim": 84.6,
+      "duracaoAudio": 7.104,
+      "fala": "Depois o texto do cabeçalho. As informações do sistema entram escrevendo o nome entre chaves: estado, cartório, cidade."
+    },
+    {
+      "id": "e2-caixas",
+      "etapa": "e2",
+      "inicio": 84.6,
+      "fim": 191.74,
+      "duracaoAudio": 10.347,
+      "fala": "Ao lado, as caixinhas de tipo, livro e página. Cada uma é um texto pequeno: escreva, centralize, ligue as bordas e ajuste posição e tamanho. Os rótulos em cima, os valores embaixo."
+    },
+    {
+      "id": "e2-previa",
+      "etapa": "e2",
+      "inicio": 191.74,
+      "fim": 206.27,
+      "duracaoAudio": 1.472,
+      "fala": "Conferindo o cabeçalho.",
+      "congelar": 204.54
+    },
+    {
+      "id": "e3-titulo",
+      "etapa": "e3",
+      "inicio": 206.27,
+      "fim": 219.51,
+      "duracaoAudio": 2.795,
+      "fala": "O título do documento: grande e centralizado."
+    },
+    {
+      "id": "e3-paragrafo",
+      "etapa": "e3",
+      "inicio": 219.51,
+      "fim": 252.79,
+      "duracaoAudio": 4.587,
+      "fala": "O parágrafo mistura texto fixo e informações do sistema. Deixe justificado."
+    },
+    {
+      "id": "e3-quadro1",
+      "etapa": "e3",
+      "inicio": 252.79,
+      "fim": 364.17,
+      "duracaoAudio": 10.56,
+      "fala": "Agora o quadro com os dados do título. É uma grade de caixinhas: em cima o nome da informação, embaixo o valor. Primeira fila: distribuição, protocolo, motivo e tipo de documento."
+    },
+    {
+      "id": "e3-quadro2",
+      "etapa": "e3",
+      "inicio": 364.17,
+      "fim": 500.7,
+      "duracaoAudio": 3.861,
+      "fala": "Segunda fila: documento, emissão, vencimento e os dois valores."
+    },
+    {
+      "id": "e3-partes",
+      "etapa": "e3",
+      "inicio": 500.7,
+      "fim": 555.49,
+      "duracaoAudio": 4.139,
+      "fala": "E as linhas do apresentante e do sacador, com o valor alinhado à esquerda."
+    },
+    {
+      "id": "e3-previa",
+      "etapa": "e3",
+      "inicio": 555.49,
+      "fim": 570.25,
+      "duracaoAudio": 1.28,
+      "fala": "Conferindo o quadro.",
+      "congelar": 568.69
+    },
+    {
+      "id": "e4-cabecalhos",
+      "etapa": "e4",
+      "inicio": 570.25,
+      "fim": 597.71,
+      "duracaoAudio": 3.456,
+      "fala": "Devedores. Dois títulos de coluna e duas caixas grandes."
+    },
+    {
+      "id": "e4-caixas",
+      "etapa": "e4",
+      "inicio": 597.71,
+      "fim": 626.24,
+      "duracaoAudio": 10.112,
+      "fala": "Na da esquerda, nome e endereço; na da direita, o documento. Cada título pode ter vários devedores, e o sistema repete as linhas sozinho. Deixe a caixa alta para caber todos."
+    },
+    {
+      "id": "e4-previa",
+      "etapa": "e4",
+      "inicio": 626.24,
+      "fim": 643.41,
+      "duracaoAudio": 4.203,
+      "fala": "Conferindo: o primeiro título mostra um devedor, e o segundo mostra dois.",
+      "congelar": 641.74
+    },
+    {
+      "id": "e5-moldura",
+      "etapa": "e5",
+      "inicio": 643.41,
+      "fim": 656.2,
+      "duracaoAudio": 3.307,
+      "fala": "Selo. Primeiro a moldura: uma caixa vazia, só com borda."
+    },
+    {
+      "id": "e5-qr",
+      "etapa": "e5",
+      "inicio": 656.2,
+      "fim": 668.53,
+      "duracaoAudio": 6.464,
+      "fala": "Depois o QR Code, em Mais elementos. Escolha o endereço do selo: cada título gera um código diferente."
+    },
+    {
+      "id": "e5-texto",
+      "etapa": "e5",
+      "inicio": 668.53,
+      "fim": 689.02,
+      "duracaoAudio": 4.437,
+      "fala": "Ao lado, o texto do selo, centralizado, com as duas primeiras linhas em negrito."
+    },
+    {
+      "id": "e5-previa",
+      "etapa": "e5",
+      "inicio": 689.02,
+      "fim": 704.56,
+      "duracaoAudio": 1.216,
+      "fala": "Conferindo o selo.",
+      "congelar": 692.3
+    },
+    {
+      "id": "e6-info",
+      "etapa": "e6",
+      "inicio": 704.56,
+      "fim": 731.05,
+      "duracaoAudio": 4.16,
+      "fala": "Finalização. A caixa de informação adicional e o rótulo da averbação."
+    },
+    {
+      "id": "e6-averbacao",
+      "etapa": "e6",
+      "inicio": 731.05,
+      "fim": 756.57,
+      "duracaoAudio": 4.736,
+      "fala": "O texto da averbação: quem assina, a cidade e a data de impressão. Justificado."
+    },
+    {
+      "id": "e6-custas",
+      "etapa": "e6",
+      "inicio": 756.57,
+      "fim": 796.56,
+      "duracaoAudio": 3.307,
+      "fala": "O parágrafo das custas e o aviso da assinatura digital."
+    },
+    {
+      "id": "e6-lateral",
+      "etapa": "e6",
+      "inicio": 796.56,
+      "fim": 816.66,
+      "duracaoAudio": 4.544,
+      "fala": "Por último, o texto da lateral: gire para vertical e coloque na margem direita."
+    },
+    {
+      "id": "e6-previa",
+      "etapa": "e6",
+      "inicio": 816.66,
+      "fim": 833.61,
+      "duracaoAudio": 1.536,
+      "fala": "Conferindo o fechamento.",
+      "congelar": 831.86
+    },
+    {
+      "id": "e7-final",
+      "etapa": "e7",
+      "inicio": 833.61,
+      "fim": 851.66,
+      "duracaoAudio": 6.187,
+      "fala": "Conferência final: duas folhas completas, cada uma com os dados do seu título. Salve com Control S e pronto.",
+      "congelar": 847.61
+    }
+  ],
+  "destaques": [
+    {
+      "t": 5.92,
+      "dur": 2.5,
+      "rect": {
+        "x": 1683,
+        "y": 256,
+        "w": 223,
+        "h": 34
+      }
+    },
+    {
+      "t": 13.98,
+      "dur": 3,
+      "rect": {
+        "x": 11,
+        "y": 255,
+        "w": 188,
+        "h": 34
+      }
+    },
+    {
+      "t": 17.96,
+      "dur": 3.5,
+      "rect": {
+        "x": 1683,
+        "y": 327,
+        "w": 223,
+        "h": 36
+      }
+    },
+    {
+      "t": 35.97,
+      "dur": 3,
+      "rect": {
+        "x": 1875,
+        "y": 488,
+        "w": 32,
+        "h": 18
+      }
+    },
+    {
+      "t": 56.85,
+      "dur": 2.5,
+      "rect": {
+        "x": 1683,
+        "y": 372,
+        "w": 223,
+        "h": 36
+      }
+    },
+    {
+      "t": 660.52,
+      "dur": 2.5,
+      "rect": {
+        "x": 1683,
+        "y": 432,
+        "w": 223,
+        "h": 36
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "passo": 5,
+  "titulo": "Caixinhas Tipo, Livro e Página",
+  "proximo": "Passo 6 — Título e texto corrido",
+  "cenas": [
+    {
+      "id": "abertura",
+      "fala": "Neste passo, vamos criar as caixinhas de tipo, livro e página, no canto do cabeçalho. Cada caixinha é um texto pequeno com borda, como a célula de uma tabela."
+    },
+    {
+      "id": "tipo",
+      "fala": "Selecione o bloco, clique em Texto e escreva TIPO. Em Aparência, deixe o tamanho nove, o alinhamento no centro e, em Bordas, clique em Todas. Depois, em Posição e espaçamento, informe X quatrocentos e noventa e dois, Y catorze, largura cinquenta e oito e altura dezessete."
+    },
+    {
+      "id": "rotulos",
+      "fala": "Crie do mesmo jeito os rótulos LIVRO e PÁGINA, um ao lado do outro. Se preferir, duplique a caixinha com Control D e ajuste a posição e o texto.",
+      "rapido": 3
+    },
+    {
+      "id": "valores",
+      "fala": "Na segunda fila, em vez de texto fixo, use os campos do registro: letra do livro, número do livro e folha. Cada título vai mostrar os seus próprios valores.",
+      "rapido": 3
+    },
+    {
+      "id": "fecho",
+      "fala": "As caixinhas estão prontas. No próximo passo, vamos escrever o título e o texto corrido."
+    }
+  ],
+  "id": "b05-caixinhas"
+}

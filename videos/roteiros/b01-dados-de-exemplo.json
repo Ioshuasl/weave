@@ -1,0 +1,36 @@
+{
+  "passo": 1,
+  "titulo": "Preparar os dados de exemplo",
+  "proximo": "Passo 2 — Configurar a folha",
+  "cenas": [
+    {
+      "id": "abertura",
+      "fala": "Neste primeiro passo, vamos preparar os dados de exemplo. O Weave usa esses dados para mostrar como o documento vai ficar de verdade, antes de ligar ao seu sistema."
+    },
+    {
+      "id": "novo",
+      "fala": "Em Meus modelos, clique em Novo modelo, escolha um nome, como Instrumento de Protesto, e clique em Criar modelo."
+    },
+    {
+      "id": "dados",
+      "fala": "Na página do modelo, abra a aba Dados de exemplo e clique em Novo conjunto de dados."
+    },
+    {
+      "id": "json",
+      "fala": "Dê o nome Exemplo e mude para o modo Avançado. Cole o conteúdo em JSON: os dados do cartório e dois títulos protestados. O segundo título tem dois devedores, para testarmos a lista dentro do registro."
+    },
+    {
+      "id": "salvar",
+      "fala": "Clique em Salvar dados. O conjunto fica como padrão deste modelo."
+    },
+    {
+      "id": "editor",
+      "fala": "Agora abra o editor. Na barra da esquerda, em Dados do relatório, aparecem os dados gerais do cartório e a lista de instrumentos, com os devedores dentro de cada um."
+    },
+    {
+      "id": "fecho",
+      "fala": "Pronto! Os dados estão preparados. No próximo passo, vamos configurar a folha."
+    }
+  ],
+  "id": "b01-dados-de-exemplo"
+}

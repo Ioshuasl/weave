@@ -1,0 +1,547 @@
+[
+  {
+    "id": "b01-dados-de-exemplo",
+    "passo": 1,
+    "titulo": "Preparar os dados de exemplo",
+    "proximo": "Passo 2 — Configurar a folha",
+    "duracaoVideo": 59.4,
+    "cenas": [
+      {
+        "id": "abertura",
+        "inicio": 1.49,
+        "fim": 12.14,
+        "duracaoAudio": 9.749,
+        "fala": "Neste primeiro passo, vamos preparar os dados de exemplo. O Weave usa esses dados para mostrar como o documento vai ficar de verdade, antes de ligar ao seu sistema."
+      },
+      {
+        "id": "novo",
+        "inicio": 12.14,
+        "fim": 19.48,
+        "duracaoAudio": 6.293,
+        "fala": "Em Meus modelos, clique em Novo modelo, escolha um nome, como Instrumento de Protesto, e clique em Criar modelo."
+      },
+      {
+        "id": "dados",
+        "inicio": 19.48,
+        "fim": 25.57,
+        "duracaoAudio": 5.184,
+        "fala": "Na página do modelo, abra a aba Dados de exemplo e clique em Novo conjunto de dados."
+      },
+      {
+        "id": "json",
+        "inicio": 25.57,
+        "fim": 38.27,
+        "duracaoAudio": 11.797,
+        "fala": "Dê o nome Exemplo e mude para o modo Avançado. Cole o conteúdo em JSON: os dados do cartório e dois títulos protestados. O segundo título tem dois devedores, para testarmos a lista dentro do registro."
+      },
+      {
+        "id": "salvar",
+        "inicio": 38.27,
+        "fim": 43.22,
+        "duracaoAudio": 4.053,
+        "fala": "Clique em Salvar dados. O conjunto fica como padrão deste modelo."
+      },
+      {
+        "id": "editor",
+        "inicio": 43.22,
+        "fim": 53.85,
+        "duracaoAudio": 9.728,
+        "fala": "Agora abra o editor. Na barra da esquerda, em Dados do relatório, aparecem os dados gerais do cartório e a lista de instrumentos, com os devedores dentro de cada um."
+      },
+      {
+        "id": "fecho",
+        "inicio": 53.85,
+        "fim": 59.4,
+        "duracaoAudio": 4.651,
+        "fala": "Pronto! Os dados estão preparados. No próximo passo, vamos configurar a folha."
+      }
+    ]
+  },
+  {
+    "id": "b02-configurar-a-folha",
+    "passo": 2,
+    "titulo": "Configurar a folha",
+    "proximo": "Passo 3 — Criar o bloco do instrumento",
+    "duracaoVideo": 41.47,
+    "cenas": [
+      {
+        "id": "abertura",
+        "inicio": 4.16,
+        "fim": 9.3,
+        "duracaoAudio": 4.245,
+        "fala": "Neste passo, vamos configurar a folha: o tamanho do papel e as margens."
+      },
+      {
+        "id": "pagina",
+        "inicio": 9.3,
+        "fim": 16.33,
+        "duracaoAudio": 6.123,
+        "fala": "Clique na folha vazia, fora de qualquer elemento. O painel da direita mostra as propriedades da página."
+      },
+      {
+        "id": "tamanho",
+        "inicio": 16.33,
+        "fim": 22.18,
+        "duracaoAudio": 4.949,
+        "fala": "Em Tamanho da folha, escolha A4 retrato, que é o formato do instrumento de protesto."
+      },
+      {
+        "id": "margens",
+        "inicio": 22.18,
+        "fim": 31.29,
+        "duracaoAudio": 8.213,
+        "fala": "Agora, as margens. Vamos deixar meio centímetro nos quatro lados. As linhas tracejadas na folha mostram a área onde o conteúdo cabe."
+      },
+      {
+        "id": "fecho",
+        "inicio": 31.29,
+        "fim": 41.47,
+        "duracaoAudio": 9.28,
+        "fala": "A área útil ficou com setecentos e cinquenta e quatro por mil e oitenta e três pixels. No próximo passo, vamos criar o bloco que se repete para cada título."
+      }
+    ]
+  },
+  {
+    "id": "b03-criar-o-bloco",
+    "passo": 3,
+    "titulo": "Criar o bloco do instrumento",
+    "proximo": "Passo 4 — Cabeçalho do cartório",
+    "duracaoVideo": 67.23,
+    "cenas": [
+      {
+        "id": "abertura",
+        "inicio": 4.17,
+        "fim": 15.76,
+        "duracaoAudio": 10.688,
+        "fala": "O Weave desenha um bloco para cada registro. Aqui, o bloco será um título protestado, ocupando a folha inteira. Como temos vários títulos, o Weave repete o bloco, uma folha para cada."
+      },
+      {
+        "id": "lista",
+        "inicio": 15.76,
+        "fim": 20.91,
+        "duracaoAudio": 4.245,
+        "fala": "Em Elementos, clique em Lista de registros. Um bloco aparece na folha."
+      },
+      {
+        "id": "fonte",
+        "inicio": 20.91,
+        "fim": 30.64,
+        "duracaoAudio": 8.832,
+        "fala": "No painel da direita, em Uma linha para cada, escolha instrumentos. O bloco novo vem ligado à primeira lista, então troque antes de criar os textos."
+      },
+      {
+        "id": "nome",
+        "inicio": 30.64,
+        "fim": 34.51,
+        "duracaoAudio": 2.965,
+        "fala": "Dê um nome claro ao bloco: Instrumento, um por folha."
+      },
+      {
+        "id": "tamanho",
+        "inicio": 34.51,
+        "fim": 44.63,
+        "duracaoAudio": 9.216,
+        "fala": "Em Posição e tamanho, preencha X zero, Y zero, largura setecentos e cinquenta e quatro e altura mil e setenta. O bloco passa a ocupar a folha inteira."
+      },
+      {
+        "id": "altura",
+        "inicio": 44.63,
+        "fim": 59.65,
+        "duracaoAudio": 14.123,
+        "fala": "Um detalhe importante: em Avançado, desligue Altura automática. Com ela ligada, o Weave estica cada elemento até a altura do bloco, e as caixas ficam desformadas no documento. Como vamos posicionar tudo manualmente, mantenha desligada."
+      },
+      {
+        "id": "fecho",
+        "inicio": 59.65,
+        "fim": 67.23,
+        "duracaoAudio": 6.677,
+        "fala": "Tudo o que colocarmos dentro deste bloco se repete para cada título. No próximo passo, vamos montar o cabeçalho."
+      }
+    ]
+  },
+  {
+    "id": "b04-cabecalho",
+    "passo": 4,
+    "titulo": "Cabeçalho do cartório",
+    "proximo": "Passo 5 — Caixinhas Tipo, Livro e Página",
+    "duracaoVideo": 89.94,
+    "cenas": [
+      {
+        "id": "abertura",
+        "inicio": 4.21,
+        "fim": 9.84,
+        "duracaoAudio": 4.736,
+        "fala": "Vamos montar o cabeçalho: o brasão do cartório e o texto com o nome e a cidade."
+      },
+      {
+        "id": "imagem",
+        "inicio": 9.85,
+        "fim": 20.17,
+        "duracaoAudio": 9.429,
+        "fala": "Com o bloco selecionado, clique em Imagem. No painel, em Ou usar uma imagem dos dados, escolha cartório, logo. Assim, cada cartório mostra a sua própria imagem."
+      },
+      {
+        "id": "imagemPos",
+        "inicio": 20.18,
+        "fim": 31.83,
+        "duracaoAudio": 10.752,
+        "fala": "Posicione a imagem: X vinte e oito, Y catorze, largura oitenta e altura oitenta e quatro. Como a logo de exemplo está vazia, o Weave reserva o espaço com Sem imagem."
+      },
+      {
+        "id": "texto",
+        "inicio": 31.83,
+        "fim": 46.78,
+        "duracaoAudio": 9.365,
+        "fala": "Agora, o texto. Com o bloco selecionado, clique em Texto e depois em Editar texto. Digite a primeira linha do cabeçalho: República Federativa do Brasil."
+      },
+      {
+        "id": "campos",
+        "inicio": 46.78,
+        "fim": 67.49,
+        "duracaoAudio": 12.971,
+        "fala": "Para inserir um campo, clique nele na lista à direita, e ele entra na posição do cursor. Insira o estado e a denominação do cartório, e na última linha a cidade e a UF. Também dá para digitar abre-chaves e escolher na lista."
+      },
+      {
+        "id": "textoPos",
+        "inicio": 67.49,
+        "fim": 82.38,
+        "duracaoAudio": 11.328,
+        "fala": "Salve o texto. Em Aparência, deixe o tamanho doze e o alinhamento centralizado. Em Posição, use X cento e dezoito, Y catorze, largura trezentos e sessenta e altura oitenta e quatro."
+      },
+      {
+        "id": "salvar",
+        "inicio": 82.38,
+        "fim": 89.94,
+        "duracaoAudio": 6.656,
+        "fala": "Clique em Salvar. O cabeçalho está pronto e, no próximo passo, vamos criar as caixinhas de tipo, livro e página."
+      }
+    ]
+  },
+  {
+    "id": "b05-caixinhas",
+    "passo": 5,
+    "titulo": "Caixinhas Tipo, Livro e Página",
+    "proximo": "Passo 6 — Título e texto corrido",
+    "duracaoVideo": 96.13,
+    "cenas": [
+      {
+        "id": "abertura",
+        "inicio": 4.27,
+        "fim": 14.6,
+        "duracaoAudio": 9.429,
+        "fala": "Neste passo, vamos criar as caixinhas de tipo, livro e página, no canto do cabeçalho. Cada caixinha é um texto pequeno com borda, como a célula de uma tabela."
+      },
+      {
+        "id": "tipo",
+        "inicio": 14.6,
+        "fim": 42.22,
+        "duracaoAudio": 16.405,
+        "fala": "Selecione o bloco, clique em Texto e escreva TIPO. Em Aparência, deixe o tamanho nove, o alinhamento no centro e, em Bordas, clique em Todas. Depois, em Posição e espaçamento, informe X quatrocentos e noventa e dois, Y catorze, largura cinquenta e oito e altura dezessete."
+      },
+      {
+        "id": "rotulos",
+        "inicio": 42.22,
+        "fim": 60.35,
+        "duracaoAudio": 8.405,
+        "fala": "Crie do mesmo jeito os rótulos LIVRO e PÁGINA, um ao lado do outro. Se preferir, duplique a caixinha com Control D e ajuste a posição e o texto.",
+        "rapido": 3
+      },
+      {
+        "id": "valores",
+        "inicio": 60.35,
+        "fim": 89.81,
+        "duracaoAudio": 9.429,
+        "fala": "Na segunda fila, em vez de texto fixo, use os campos do registro: letra do livro, número do livro e folha. Cada título vai mostrar os seus próprios valores.",
+        "rapido": 3
+      },
+      {
+        "id": "fecho",
+        "inicio": 89.81,
+        "fim": 96.13,
+        "duracaoAudio": 5.419,
+        "fala": "As caixinhas estão prontas. No próximo passo, vamos escrever o título e o texto corrido."
+      }
+    ]
+  },
+  {
+    "id": "b06-titulo-e-texto",
+    "passo": 6,
+    "titulo": "Título e texto corrido",
+    "proximo": "Passo 7 — Quadro com os dados do título",
+    "duracaoVideo": 95.9,
+    "cenas": [
+      {
+        "id": "abertura",
+        "inicio": 4.5,
+        "fim": 11.76,
+        "duracaoAudio": 6.357,
+        "fala": "Agora vamos ao título do documento e ao parágrafo principal, que mistura texto fixo com campos do registro."
+      },
+      {
+        "id": "titulo",
+        "inicio": 11.76,
+        "fim": 38.59,
+        "duracaoAudio": 11.584,
+        "fala": "Crie um texto com INSTRUMENTO DE PROTESTO, tamanho dezesseis, alinhado ao centro, ocupando toda a largura: X zero, Y cento e vinte e oito, largura setecentos e catorze e altura vinte e dois."
+      },
+      {
+        "id": "paragrafo",
+        "inicio": 38.6,
+        "fim": 76.69,
+        "duracaoAudio": 12.885,
+        "fala": "Em um novo texto, digite o parágrafo e, nos pontos variáveis, escreva o campo entre chaves, como dia de apresentação, mês, ano, cartório, apresentante e tipo de protesto. O Weave transforma cada trecho em um campo."
+      },
+      {
+        "id": "ajuste",
+        "inicio": 76.69,
+        "fim": 87.59,
+        "duracaoAudio": 10.005,
+        "fala": "Deixe o tamanho onze, o alinhamento justificado e posicione em X zero, Y cento e cinquenta e oito, com largura setecentos e catorze e altura sessenta e seis."
+      },
+      {
+        "id": "fecho",
+        "inicio": 87.59,
+        "fim": 95.9,
+        "duracaoAudio": 7.403,
+        "fala": "Note que o texto já mostra os dados do primeiro título. No próximo passo, vamos montar o quadro com as informações do título."
+      }
+    ]
+  },
+  {
+    "id": "b07-quadro-de-dados",
+    "passo": 7,
+    "titulo": "Quadro com os dados do título",
+    "proximo": "Passo 8 — Devedores",
+    "duracaoVideo": 135.54,
+    "cenas": [
+      {
+        "id": "abertura",
+        "inicio": 4.33,
+        "fim": 14.23,
+        "duracaoAudio": 9.003,
+        "fala": "O quadro com os dados do título é feito de várias caixinhas com borda, em linhas. Vamos montar a primeira linha, com rótulos em cima e valores embaixo."
+      },
+      {
+        "id": "rotulos",
+        "inicio": 14.23,
+        "fim": 52.23,
+        "duracaoAudio": 13.035,
+        "fala": "Os rótulos usam tamanho oito, alinhamento no centro e bordas ligadas: data da distribuição, número e data do protocolo, motivo do protesto e tipo de documento. Cada um com a sua posição e largura, como na tabela do guia.",
+        "rapido": 4
+      },
+      {
+        "id": "valores",
+        "inicio": 52.23,
+        "fim": 92.81,
+        "duracaoAudio": 6.869,
+        "fala": "Logo abaixo, os valores usam campos do registro, em tamanho nove. Assim, cada título mostra os seus próprios dados.",
+        "rapido": 4
+      },
+      {
+        "id": "partes",
+        "inicio": 92.81,
+        "fim": 130.5,
+        "duracaoAudio": 6.528,
+        "fala": "Por fim, as linhas do apresentante e do sacador: o rótulo à esquerda e o valor à direita, alinhado à esquerda.",
+        "rapido": 4
+      },
+      {
+        "id": "fecho",
+        "inicio": 130.5,
+        "fim": 135.54,
+        "duracaoAudio": 4.139,
+        "fala": "O quadro está montado. No próximo passo, vamos incluir os devedores."
+      }
+    ]
+  },
+  {
+    "id": "b08-devedores",
+    "passo": 8,
+    "titulo": "Devedores",
+    "proximo": "Passo 9 — Selo eletrônico e QR Code",
+    "duracaoVideo": 73.08,
+    "cenas": [
+      {
+        "id": "abertura",
+        "inicio": 4.27,
+        "fim": 12.4,
+        "duracaoAudio": 7.232,
+        "fala": "Cada título pode ter um ou mais devedores. Em vez de criar outro bloco, vamos usar a lista que está dentro do registro."
+      },
+      {
+        "id": "cabecalhos",
+        "inicio": 12.4,
+        "fim": 31.27,
+        "duracaoAudio": 5.376,
+        "fala": "Crie os dois cabeçalhos do quadro: Devedor ou devedores, e Documentos de identificação.",
+        "rapido": 3
+      },
+      {
+        "id": "caixas",
+        "inicio": 31.27,
+        "fim": 50.87,
+        "duracaoAudio": 15.189,
+        "fala": "Agora as duas caixas grandes. Na da esquerda, escreva o nome e o endereço do devedor; na da direita, o documento. Como os campos vêm da lista de devedores, o Weave repete o texto para cada devedor do título. Dê altura de sobra, porque cada devedor acrescenta linhas.",
+        "rapido": 3
+      },
+      {
+        "id": "visualizar",
+        "inicio": 50.87,
+        "fim": 67.08,
+        "duracaoAudio": 6.507,
+        "fala": "Abra Visualizar e confira: o primeiro título mostra um devedor, e o segundo mostra dois, um embaixo do outro."
+      },
+      {
+        "id": "fecho",
+        "inicio": 67.08,
+        "fim": 73.08,
+        "duracaoAudio": 5.099,
+        "fala": "Perfeito. No próximo passo, vamos adicionar o selo eletrônico com o QR Code."
+      }
+    ]
+  },
+  {
+    "id": "b09-selo-e-qr",
+    "passo": 9,
+    "titulo": "Selo eletrônico e QR Code",
+    "proximo": "Passo 10 — Informações e assinatura",
+    "duracaoVideo": 61.62,
+    "cenas": [
+      {
+        "id": "abertura",
+        "inicio": 4.37,
+        "fim": 10.44,
+        "duracaoAudio": 5.163,
+        "fala": "Vamos criar o quadro do selo, com o QR Code que leva à consulta do selo de cada título."
+      },
+      {
+        "id": "moldura",
+        "inicio": 10.44,
+        "fim": 20.69,
+        "duracaoAudio": 9.067,
+        "fala": "Primeiro, o quadro: um texto vazio, com bordas, de X zero, Y quinhentos e sessenta e seis, largura setecentos e catorze e altura oitenta e seis.",
+        "rapido": 2
+      },
+      {
+        "id": "qr",
+        "inicio": 20.69,
+        "fim": 39.44,
+        "duracaoAudio": 17.856,
+        "fala": "Depois, clique em Mais elementos e escolha QR Code. Em Ou usar uma informação dos dados, escolha instrumentos, selo url. Como o QR vem de um campo, cada título gera um código diferente. Posicione em X dezenove, Y quinhentos e setenta e quatro, com largura sessenta e seis e altura setenta."
+      },
+      {
+        "id": "texto",
+        "inicio": 39.44,
+        "fim": 55.66,
+        "duracaoAudio": 6.784,
+        "fala": "Ao lado, o texto do selo, centralizado e com borda: duas linhas em negrito, o número do selo e o endereço de consulta.",
+        "rapido": 3
+      },
+      {
+        "id": "fecho",
+        "inicio": 55.66,
+        "fim": 61.62,
+        "duracaoAudio": 5.056,
+        "fala": "O selo está pronto. No próximo passo, vamos completar as informações e a assinatura."
+      }
+    ]
+  },
+  {
+    "id": "b10-informacoes",
+    "passo": 10,
+    "titulo": "Informações e assinatura",
+    "proximo": "Passo 11 — Visualizar, ajustar e salvar",
+    "duracaoVideo": 64.05,
+    "cenas": [
+      {
+        "id": "abertura",
+        "inicio": 4.98,
+        "fim": 12.11,
+        "duracaoAudio": 6.229,
+        "fala": "Para fechar o documento, vamos criar as áreas de informação, a averbação com a assinatura e o aviso legal."
+      },
+      {
+        "id": "informacao",
+        "inicio": 12.11,
+        "fim": 22.53,
+        "duracaoAudio": 8.917,
+        "fala": "Crie a caixa Informação, de tamanho dez, com borda: X zero, Y seiscentos e cinquenta e dois, largura setecentos e catorze e altura sessenta.",
+        "rapido": 2
+      },
+      {
+        "id": "averbacao",
+        "inicio": 22.53,
+        "fim": 45.96,
+        "duracaoAudio": 7.723,
+        "fala": "Em seguida, o rótulo Averbação e, ao lado, o texto da averbação, justificado, com o nome de quem assina vindo do campo assinante.",
+        "rapido": 3
+      },
+      {
+        "id": "aviso",
+        "inicio": 45.97,
+        "fim": 58.14,
+        "duracaoAudio": 5.248,
+        "fala": "Por último, o aviso legal sobre a assinatura digital, em tamanho oito, no pé do documento.",
+        "rapido": 2
+      },
+      {
+        "id": "fecho",
+        "inicio": 58.14,
+        "fim": 64.05,
+        "duracaoAudio": 5.013,
+        "fala": "O documento está completo. No último passo, vamos visualizar, ajustar e salvar."
+      }
+    ]
+  },
+  {
+    "id": "b11-visualizar-e-salvar",
+    "passo": 11,
+    "titulo": "Visualizar, ajustar e salvar",
+    "proximo": "Pronto! Compare com o modelo Instrumento - Protesto da Biblioteca",
+    "duracaoVideo": 57.39,
+    "cenas": [
+      {
+        "id": "abertura",
+        "inicio": 4.28,
+        "fim": 10.19,
+        "duracaoAudio": 5.013,
+        "fala": "Chegamos ao último passo: conferir o resultado, ajustar o que for preciso e salvar."
+      },
+      {
+        "id": "visualizar",
+        "inicio": 10.2,
+        "fim": 27.24,
+        "duracaoAudio": 5.803,
+        "fala": "Clique em Visualizar. O Weave gera uma folha para cada título, e o segundo traz os dois devedores."
+      },
+      {
+        "id": "campos",
+        "inicio": 27.24,
+        "fim": 36.22,
+        "duracaoAudio": 8.085,
+        "fala": "Volte ao editor e alterne entre Dados e Campos, no alto da folha. Em Campos, você vê qual campo cada texto usa; em Dados, o resultado."
+      },
+      {
+        "id": "salvar",
+        "inicio": 36.23,
+        "fim": 42.1,
+        "duracaoAudio": 4.971,
+        "fala": "Salve com Control S. O topo muda para Salvo e uma nova versão entra no Histórico."
+      },
+      {
+        "id": "modelo",
+        "inicio": 42.1,
+        "fim": 53.28,
+        "duracaoAudio": 10.283,
+        "fala": "Ao voltar para a página do modelo, a miniatura já mostra o documento. A partir daqui, você pode compartilhar o modelo ou compará-lo com o Instrumento de Protesto da Biblioteca."
+      },
+      {
+        "id": "fecho",
+        "inicio": 53.28,
+        "fim": 57.39,
+        "duracaoAudio": 3.2,
+        "fala": "Parabéns! Você montou um instrumento de protesto do zero."
+      }
+    ]
+  }
+]

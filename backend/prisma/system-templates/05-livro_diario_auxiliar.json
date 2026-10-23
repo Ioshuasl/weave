@@ -1,0 +1,1392 @@
+{
+ "order": 5,
+ "name": "Livro Diário Auxiliar",
+ "description": "Receitas, despesas e saldos por dia, bloco e período",
+ "tags": [
+  "Notariado",
+  "Livro"
+ ],
+ "sourceSystem": 2,
+ "sourceFile": "20261008200000_seed_g_config_relatorio_livro_diario_auxiliar.sql",
+ "report": {
+  "id": "livro_diario_auxiliar",
+  "name": "Livro Diário Auxiliar",
+  "pages": [
+   {
+    "id": "page_1",
+    "name": "Livro Diário Auxiliar (Weave)",
+    "presetId": "a4-portrait",
+    "profile": "document",
+    "width": 794,
+    "height": 1123,
+    "margins": {
+     "top": 20,
+     "right": 20,
+     "bottom": 20,
+     "left": 20
+    },
+    "bands": [
+     "band_cab",
+     "band_dia",
+     "band_bloco",
+     "band_lanc",
+     "band_total_bloco",
+     "band_saldos"
+    ]
+   }
+  ],
+  "bands": {
+   "band_cab": {
+    "id": "band_cab",
+    "type": "pageHeader",
+    "name": "Cabeçalho da página (dados do cartório, livro/folha e colunas)",
+    "height": 132,
+    "bandRect": {
+     "x": 0,
+     "y": 0,
+     "width": 754,
+     "height": 132
+    },
+    "components": [
+     "c_logo",
+     "c_brasao",
+     "c_cartorio",
+     "c_linha",
+     "c_livro",
+     "h_faixa",
+     "h_data",
+     "h_descricao",
+     "h_qtd",
+     "h_emolumento",
+     "h_taxa_judiciaria",
+     "h_fundo",
+     "h_iss",
+     "h_total"
+    ]
+   },
+   "band_dia": {
+    "id": "band_dia",
+    "type": "masterData",
+    "name": "Dia",
+    "height": 46,
+    "bandRect": {
+     "x": 0,
+     "y": 136,
+     "width": 754,
+     "height": 46
+    },
+    "components": [
+     "d_titulo",
+     "d_data"
+    ],
+    "dataSource": "dias"
+   },
+   "band_bloco": {
+    "id": "band_bloco",
+    "type": "detailData",
+    "name": "Bloco do dia (receitas por sistema, repasses e despesas)",
+    "height": 26,
+    "bandRect": {
+     "x": 0,
+     "y": 182,
+     "width": 754,
+     "height": 26
+    },
+    "components": [
+     "b_titulo"
+    ],
+    "dataSource": "blocos",
+    "link": {
+     "parentBandId": "band_dia",
+     "parentField": "dia_id",
+     "field": "dia_id",
+     "placement": "below"
+    }
+   },
+   "band_lanc": {
+    "id": "band_lanc",
+    "type": "detailData",
+    "name": "Lançamento",
+    "height": 18,
+    "bandRect": {
+     "x": 0,
+     "y": 212,
+     "width": 754,
+     "height": 18
+    },
+    "components": [
+     "l_data",
+     "l_descricao",
+     "l_qtd",
+     "l_emolumento",
+     "l_taxa_judiciaria",
+     "l_fundo",
+     "l_iss",
+     "l_total"
+    ],
+    "dataSource": "lancamentos",
+    "autoHeight": true,
+    "link": {
+     "parentBandId": "band_bloco",
+     "parentField": "bloco_id",
+     "field": "bloco_id",
+     "placement": "below"
+    },
+    "lines": {
+     "rows": true,
+     "columns": true,
+     "sides": true,
+     "header": true,
+     "thickness": "thin",
+     "color": "#808080"
+    }
+   },
+   "band_total_bloco": {
+    "id": "band_total_bloco",
+    "type": "detailData",
+    "name": "Total de atos do bloco",
+    "height": 24,
+    "bandRect": {
+     "x": 0,
+     "y": 234,
+     "width": 754,
+     "height": 24
+    },
+    "components": [
+     "t_total"
+    ],
+    "dataSource": "blocos",
+    "link": {
+     "parentBandId": "band_bloco",
+     "placement": "below"
+    },
+    "showWhen": {
+     "field": "qtd",
+     "operator": "gt",
+     "value": "0"
+    }
+   },
+   "band_saldos": {
+    "id": "band_saldos",
+    "type": "detailData",
+    "name": "Saldos do dia, do mês e do ano",
+    "height": 118,
+    "bandRect": {
+     "x": 0,
+     "y": 262,
+     "width": 754,
+     "height": 118
+    },
+    "components": [
+     "s_dia_box",
+     "s_dia_tit",
+     "s_dia_r0",
+     "s_dia_v0",
+     "s_dia_r1",
+     "s_dia_v1",
+     "s_dia_r2",
+     "s_dia_v2",
+     "s_dia_r3",
+     "s_dia_v3",
+     "s_mes_box",
+     "s_mes_tit",
+     "s_mes_r0",
+     "s_mes_v0",
+     "s_mes_r1",
+     "s_mes_v1",
+     "s_mes_r2",
+     "s_mes_v2",
+     "s_mes_r3",
+     "s_mes_v3",
+     "s_ano_box",
+     "s_ano_tit",
+     "s_ano_r0",
+     "s_ano_v0",
+     "s_ano_r1",
+     "s_ano_v1",
+     "s_ano_r2",
+     "s_ano_v2",
+     "s_ano_r3",
+     "s_ano_v3"
+    ],
+    "dataSource": "dias",
+    "link": {
+     "parentBandId": "band_dia",
+     "placement": "below"
+    },
+    "keepTogether": true
+   }
+  },
+  "components": {
+   "c_logo": {
+    "id": "c_logo",
+    "type": "image",
+    "name": "Logomarca",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 220,
+     "height": 64
+    },
+    "content": "{cartorio.logo}",
+    "style": {},
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "left",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    }
+   },
+   "c_brasao": {
+    "id": "c_brasao",
+    "type": "image",
+    "name": "Brasão",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 690,
+     "y": 0,
+     "width": 64,
+     "height": 64
+    },
+    "content": "{cartorio.brasao}",
+    "style": {},
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "right",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    }
+   },
+   "c_cartorio": {
+    "id": "c_cartorio",
+    "type": "text",
+    "name": "c_cartorio",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 226,
+     "y": 0,
+     "width": 458,
+     "height": 66
+    },
+    "content": "**{cartorio.nome}**\n{cartorio.oficial} - {cartorio.cargo}\n{cartorio.endereco}\n{cartorio.cidade_uf}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "textAlign": "center"
+    }
+   },
+   "c_linha": {
+    "id": "c_linha",
+    "type": "text",
+    "name": "c_linha",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 0,
+     "y": 72,
+     "width": 754,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "borderTop": "1px solid #000000"
+    }
+   },
+   "c_livro": {
+    "id": "c_livro",
+    "type": "text",
+    "name": "c_livro",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 0,
+     "y": 80,
+     "width": 754,
+     "height": 26
+    },
+    "content": "LIVRO Nº {page.livro} - FOLHA {page.folha}/{page.lado}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "17px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "h_faixa": {
+    "id": "h_faixa",
+    "type": "text",
+    "name": "h_faixa",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 0,
+     "y": 110,
+     "width": 754,
+     "height": 18
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "backgroundColor": "#e5e7eb"
+    }
+   },
+   "h_data": {
+    "id": "h_data",
+    "type": "text",
+    "name": "h_data",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 2,
+     "y": 110,
+     "width": 62,
+     "height": 18
+    },
+    "content": "DATA",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "left",
+     "paddingTop": "2px"
+    }
+   },
+   "h_descricao": {
+    "id": "h_descricao",
+    "type": "text",
+    "name": "h_descricao",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 66,
+     "y": 110,
+     "width": 250,
+     "height": 18
+    },
+    "content": "DESCRIÇÃO",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "left",
+     "paddingTop": "2px"
+    }
+   },
+   "h_qtd": {
+    "id": "h_qtd",
+    "type": "text",
+    "name": "h_qtd",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 318,
+     "y": 110,
+     "width": 38,
+     "height": 18
+    },
+    "content": "QUANT.",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "paddingTop": "2px"
+    }
+   },
+   "h_emolumento": {
+    "id": "h_emolumento",
+    "type": "text",
+    "name": "h_emolumento",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 358,
+     "y": 110,
+     "width": 88,
+     "height": 18
+    },
+    "content": "EMOLUMENTOS",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "paddingTop": "2px"
+    }
+   },
+   "h_taxa_judiciaria": {
+    "id": "h_taxa_judiciaria",
+    "type": "text",
+    "name": "h_taxa_judiciaria",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 448,
+     "y": 110,
+     "width": 66,
+     "height": 18
+    },
+    "content": "TAXA",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "paddingTop": "2px"
+    }
+   },
+   "h_fundo": {
+    "id": "h_fundo",
+    "type": "text",
+    "name": "h_fundo",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 516,
+     "y": 110,
+     "width": 66,
+     "height": 18
+    },
+    "content": "FUNDESP",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "paddingTop": "2px"
+    }
+   },
+   "h_iss": {
+    "id": "h_iss",
+    "type": "text",
+    "name": "h_iss",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 584,
+     "y": 110,
+     "width": 44,
+     "height": 18
+    },
+    "content": "ISS",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "paddingTop": "2px"
+    }
+   },
+   "h_total": {
+    "id": "h_total",
+    "type": "text",
+    "name": "h_total",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 630,
+     "y": 110,
+     "width": 124,
+     "height": 18
+    },
+    "content": "TOTAL",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "paddingTop": "2px"
+    }
+   },
+   "d_titulo": {
+    "id": "d_titulo",
+    "type": "text",
+    "name": "d_titulo",
+    "parentId": "band_dia",
+    "rect": {
+     "x": 0,
+     "y": 4,
+     "width": 754,
+     "height": 22
+    },
+    "content": "LIVRO DE REGISTRO DIÁRIO AUXILIAR DA RECEITA E DA DESPESA",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "15px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "d_data": {
+    "id": "d_data",
+    "type": "text",
+    "name": "d_data",
+    "parentId": "band_dia",
+    "rect": {
+     "x": 0,
+     "y": 28,
+     "width": 754,
+     "height": 16
+    },
+    "content": "Data: **{dias.data}**",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "center",
+     "borderBottom": "1px solid #000000"
+    }
+   },
+   "b_titulo": {
+    "id": "b_titulo",
+    "type": "text",
+    "name": "b_titulo",
+    "parentId": "band_bloco",
+    "rect": {
+     "x": 0,
+     "y": 2,
+     "width": 754,
+     "height": 20
+    },
+    "content": "{blocos.titulo}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "backgroundColor": "#e5e7eb",
+     "paddingLeft": "4px"
+    }
+   },
+   "l_data": {
+    "id": "l_data",
+    "type": "text",
+    "name": "l_data",
+    "parentId": "band_lanc",
+    "rect": {
+     "x": 2,
+     "y": 2,
+     "width": 62,
+     "height": 14
+    },
+    "content": "{lancamentos.data}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "left"
+    }
+   },
+   "l_descricao": {
+    "id": "l_descricao",
+    "type": "text",
+    "name": "l_descricao",
+    "parentId": "band_lanc",
+    "rect": {
+     "x": 66,
+     "y": 2,
+     "width": 250,
+     "height": 14
+    },
+    "content": "{lancamentos.descricao}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "left"
+    }
+   },
+   "l_qtd": {
+    "id": "l_qtd",
+    "type": "text",
+    "name": "l_qtd",
+    "parentId": "band_lanc",
+    "rect": {
+     "x": 318,
+     "y": 2,
+     "width": 38,
+     "height": 14
+    },
+    "content": "{lancamentos.qtd}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "l_emolumento": {
+    "id": "l_emolumento",
+    "type": "text",
+    "name": "l_emolumento",
+    "parentId": "band_lanc",
+    "rect": {
+     "x": 358,
+     "y": 2,
+     "width": 88,
+     "height": 14
+    },
+    "content": "{=MOEDA([lancamentos.emolumento])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "l_taxa_judiciaria": {
+    "id": "l_taxa_judiciaria",
+    "type": "text",
+    "name": "l_taxa_judiciaria",
+    "parentId": "band_lanc",
+    "rect": {
+     "x": 448,
+     "y": 2,
+     "width": 66,
+     "height": 14
+    },
+    "content": "{=MOEDA([lancamentos.taxa_judiciaria])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "l_fundo": {
+    "id": "l_fundo",
+    "type": "text",
+    "name": "l_fundo",
+    "parentId": "band_lanc",
+    "rect": {
+     "x": 516,
+     "y": 2,
+     "width": 66,
+     "height": 14
+    },
+    "content": "{=MOEDA([lancamentos.fundo])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "l_iss": {
+    "id": "l_iss",
+    "type": "text",
+    "name": "l_iss",
+    "parentId": "band_lanc",
+    "rect": {
+     "x": 584,
+     "y": 2,
+     "width": 44,
+     "height": 14
+    },
+    "content": "{=MOEDA([lancamentos.iss])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "l_total": {
+    "id": "l_total",
+    "type": "text",
+    "name": "l_total",
+    "parentId": "band_lanc",
+    "rect": {
+     "x": 630,
+     "y": 2,
+     "width": 124,
+     "height": 14
+    },
+    "content": "{=MOEDA([lancamentos.total])} {lancamentos.sinal}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "t_total": {
+    "id": "t_total",
+    "type": "text",
+    "name": "t_total",
+    "parentId": "band_total_bloco",
+    "rect": {
+     "x": 0,
+     "y": 2,
+     "width": 754,
+     "height": 18
+    },
+    "content": "Total Ato: **{blocos.qtd}**",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "textAlign": "center",
+     "borderTop": "1px solid #000000",
+     "paddingTop": "2px"
+    }
+   },
+   "s_dia_box": {
+    "id": "s_dia_box",
+    "type": "text",
+    "name": "s_dia_box",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 0,
+     "y": 4,
+     "width": 246,
+     "height": 108
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "border": "1px solid #9ca3af"
+    }
+   },
+   "s_dia_tit": {
+    "id": "s_dia_tit",
+    "type": "text",
+    "name": "s_dia_tit",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 6,
+     "y": 8,
+     "width": 234,
+     "height": 16
+    },
+    "content": "Saldo acumulado do dia",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textDecoration": "underline"
+    }
+   },
+   "s_dia_r0": {
+    "id": "s_dia_r0",
+    "type": "text",
+    "name": "s_dia_r0",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 6,
+     "y": 30,
+     "width": 100,
+     "height": 16
+    },
+    "content": "Receita Própria:",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "s_dia_v0": {
+    "id": "s_dia_v0",
+    "type": "text",
+    "name": "s_dia_v0",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 104,
+     "y": 30,
+     "width": 136,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([dias.dia_emolumento])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "s_dia_r1": {
+    "id": "s_dia_r1",
+    "type": "text",
+    "name": "s_dia_r1",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 6,
+     "y": 50,
+     "width": 100,
+     "height": 16
+    },
+    "content": "Receita Bruta:",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "s_dia_v1": {
+    "id": "s_dia_v1",
+    "type": "text",
+    "name": "s_dia_v1",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 104,
+     "y": 50,
+     "width": 136,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([dias.dia_receita])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "s_dia_r2": {
+    "id": "s_dia_r2",
+    "type": "text",
+    "name": "s_dia_r2",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 6,
+     "y": 70,
+     "width": 100,
+     "height": 16
+    },
+    "content": "Despesa:",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "s_dia_v2": {
+    "id": "s_dia_v2",
+    "type": "text",
+    "name": "s_dia_v2",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 104,
+     "y": 70,
+     "width": 136,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([dias.dia_despesa])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "s_dia_r3": {
+    "id": "s_dia_r3",
+    "type": "text",
+    "name": "s_dia_r3",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 6,
+     "y": 94,
+     "width": 100,
+     "height": 16
+    },
+    "content": "Saldo:",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold"
+    }
+   },
+   "s_dia_v3": {
+    "id": "s_dia_v3",
+    "type": "text",
+    "name": "s_dia_v3",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 104,
+     "y": 94,
+     "width": 136,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([dias.dia_saldo])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "s_mes_box": {
+    "id": "s_mes_box",
+    "type": "text",
+    "name": "s_mes_box",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 254,
+     "y": 4,
+     "width": 246,
+     "height": 108
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "border": "1px solid #9ca3af"
+    }
+   },
+   "s_mes_tit": {
+    "id": "s_mes_tit",
+    "type": "text",
+    "name": "s_mes_tit",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 260,
+     "y": 8,
+     "width": 234,
+     "height": 16
+    },
+    "content": "Saldo acumulado do mês",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textDecoration": "underline"
+    }
+   },
+   "s_mes_r0": {
+    "id": "s_mes_r0",
+    "type": "text",
+    "name": "s_mes_r0",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 260,
+     "y": 30,
+     "width": 100,
+     "height": 16
+    },
+    "content": "Receita Própria:",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "s_mes_v0": {
+    "id": "s_mes_v0",
+    "type": "text",
+    "name": "s_mes_v0",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 358,
+     "y": 30,
+     "width": 136,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([dias.mes_emolumento])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "s_mes_r1": {
+    "id": "s_mes_r1",
+    "type": "text",
+    "name": "s_mes_r1",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 260,
+     "y": 50,
+     "width": 100,
+     "height": 16
+    },
+    "content": "Receita Bruta:",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "s_mes_v1": {
+    "id": "s_mes_v1",
+    "type": "text",
+    "name": "s_mes_v1",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 358,
+     "y": 50,
+     "width": 136,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([dias.mes_receita])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "s_mes_r2": {
+    "id": "s_mes_r2",
+    "type": "text",
+    "name": "s_mes_r2",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 260,
+     "y": 70,
+     "width": 100,
+     "height": 16
+    },
+    "content": "Despesa:",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "s_mes_v2": {
+    "id": "s_mes_v2",
+    "type": "text",
+    "name": "s_mes_v2",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 358,
+     "y": 70,
+     "width": 136,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([dias.mes_despesa])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "s_mes_r3": {
+    "id": "s_mes_r3",
+    "type": "text",
+    "name": "s_mes_r3",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 260,
+     "y": 94,
+     "width": 100,
+     "height": 16
+    },
+    "content": "Saldo:",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold"
+    }
+   },
+   "s_mes_v3": {
+    "id": "s_mes_v3",
+    "type": "text",
+    "name": "s_mes_v3",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 358,
+     "y": 94,
+     "width": 136,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([dias.mes_saldo])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "s_ano_box": {
+    "id": "s_ano_box",
+    "type": "text",
+    "name": "s_ano_box",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 508,
+     "y": 4,
+     "width": 246,
+     "height": 108
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "border": "1px solid #9ca3af"
+    }
+   },
+   "s_ano_tit": {
+    "id": "s_ano_tit",
+    "type": "text",
+    "name": "s_ano_tit",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 514,
+     "y": 8,
+     "width": 234,
+     "height": 16
+    },
+    "content": "Saldo anual",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textDecoration": "underline"
+    }
+   },
+   "s_ano_r0": {
+    "id": "s_ano_r0",
+    "type": "text",
+    "name": "s_ano_r0",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 514,
+     "y": 30,
+     "width": 100,
+     "height": 16
+    },
+    "content": "Receita Própria:",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "s_ano_v0": {
+    "id": "s_ano_v0",
+    "type": "text",
+    "name": "s_ano_v0",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 612,
+     "y": 30,
+     "width": 136,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([dias.ano_emolumento])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "s_ano_r1": {
+    "id": "s_ano_r1",
+    "type": "text",
+    "name": "s_ano_r1",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 514,
+     "y": 50,
+     "width": 100,
+     "height": 16
+    },
+    "content": "Receita Bruta:",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "s_ano_v1": {
+    "id": "s_ano_v1",
+    "type": "text",
+    "name": "s_ano_v1",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 612,
+     "y": 50,
+     "width": 136,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([dias.ano_receita])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "s_ano_r2": {
+    "id": "s_ano_r2",
+    "type": "text",
+    "name": "s_ano_r2",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 514,
+     "y": 70,
+     "width": 100,
+     "height": 16
+    },
+    "content": "Despesa:",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "s_ano_v2": {
+    "id": "s_ano_v2",
+    "type": "text",
+    "name": "s_ano_v2",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 612,
+     "y": 70,
+     "width": 136,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([dias.ano_despesa])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "s_ano_r3": {
+    "id": "s_ano_r3",
+    "type": "text",
+    "name": "s_ano_r3",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 514,
+     "y": 94,
+     "width": 100,
+     "height": 16
+    },
+    "content": "Saldo:",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold"
+    }
+   },
+   "s_ano_v3": {
+    "id": "s_ano_v3",
+    "type": "text",
+    "name": "s_ano_v3",
+    "parentId": "band_saldos",
+    "rect": {
+     "x": 612,
+     "y": 94,
+     "width": 136,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([dias.ano_saldo])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   }
+  }
+ },
+ "mockData": {
+  "cartorio": [
+   {
+    "nome": "Tabelionato de Notas e Protesto de Títulos",
+    "oficial": "Ana Souza",
+    "cargo": "Tabeliã",
+    "endereco": "Rua das Flores, 100 - Centro",
+    "cidade_uf": "Goiânia - GO",
+    "logo": "",
+    "brasao": ""
+   }
+  ],
+  "dias": [
+   {
+    "dia_id": 1,
+    "data": "20/10/2026",
+    "dia_emolumento": 2000.5,
+    "mes_emolumento": 18450.0,
+    "ano_emolumento": 164300.0,
+    "dia_receita": 2365.08,
+    "mes_receita": 21820.4,
+    "ano_receita": 190112.9,
+    "dia_despesa": 420.0,
+    "mes_despesa": 3980.0,
+    "ano_despesa": 36110.0,
+    "dia_saldo": 1945.08,
+    "mes_saldo": 17840.4,
+    "ano_saldo": 154002.9
+   }
+  ],
+  "blocos": [
+   {
+    "dia_id": 1,
+    "bloco_id": 1,
+    "titulo": "TABELIONATO DE NOTAS",
+    "qtd": 2
+   },
+   {
+    "dia_id": 1,
+    "bloco_id": 2,
+    "titulo": "DESPESAS",
+    "qtd": 1
+   }
+  ],
+  "lancamentos": [
+   {
+    "bloco_id": 1,
+    "data": "20/10/2026",
+    "descricao": "Escritura de compra e venda",
+    "qtd": 1,
+    "emolumento": 1820.4,
+    "taxa_judiciaria": 140.2,
+    "fundo": 182.04,
+    "iss": 91.02,
+    "total": 2233.66,
+    "sinal": "+"
+   },
+   {
+    "bloco_id": 1,
+    "data": "20/10/2026",
+    "descricao": "Procuração pública",
+    "qtd": 1,
+    "emolumento": 180.5,
+    "taxa_judiciaria": 20.1,
+    "fundo": 18.05,
+    "iss": 9.03,
+    "total": 227.68,
+    "sinal": "+"
+   },
+   {
+    "bloco_id": 2,
+    "data": "20/10/2026",
+    "descricao": "Material de expediente",
+    "qtd": 1,
+    "emolumento": 420.0,
+    "taxa_judiciaria": 0.0,
+    "fundo": 0.0,
+    "iss": 0.0,
+    "total": 420.0,
+    "sinal": "-"
+   }
+  ]
+ }
+}

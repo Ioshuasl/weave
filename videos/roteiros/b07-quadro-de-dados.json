@@ -1,0 +1,31 @@
+{
+  "passo": 7,
+  "titulo": "Quadro com os dados do título",
+  "proximo": "Passo 8 — Devedores",
+  "cenas": [
+    {
+      "id": "abertura",
+      "fala": "O quadro com os dados do título é feito de várias caixinhas com borda, em linhas. Vamos montar a primeira linha, com rótulos em cima e valores embaixo."
+    },
+    {
+      "id": "rotulos",
+      "fala": "Os rótulos usam tamanho oito, alinhamento no centro e bordas ligadas: data da distribuição, número e data do protocolo, motivo do protesto e tipo de documento. Cada um com a sua posição e largura, como na tabela do guia.",
+      "rapido": 4
+    },
+    {
+      "id": "valores",
+      "fala": "Logo abaixo, os valores usam campos do registro, em tamanho nove. Assim, cada título mostra os seus próprios dados.",
+      "rapido": 4
+    },
+    {
+      "id": "partes",
+      "fala": "Por fim, as linhas do apresentante e do sacador: o rótulo à esquerda e o valor à direita, alinhado à esquerda.",
+      "rapido": 4
+    },
+    {
+      "id": "fecho",
+      "fala": "O quadro está montado. No próximo passo, vamos incluir os devedores."
+    }
+  ],
+  "id": "b07-quadro-de-dados"
+}

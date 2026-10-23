@@ -1,0 +1,5 @@
+export * from './application/tags.use-cases'
+export { PrismaTagRepository } from './infra/prisma-tag.repository'
+export { TagsController } from './presentation/tags.controller'
+export { tagsRoutes } from './presentation/tags.routes'
+export { PrismaTagAccess } from './infra/prisma-tag-access'

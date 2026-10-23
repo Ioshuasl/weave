@@ -1,0 +1,30 @@
+{
+  "passo": 8,
+  "titulo": "Devedores",
+  "proximo": "Passo 9 — Selo eletrônico e QR Code",
+  "cenas": [
+    {
+      "id": "abertura",
+      "fala": "Cada título pode ter um ou mais devedores. Em vez de criar outro bloco, vamos usar a lista que está dentro do registro."
+    },
+    {
+      "id": "cabecalhos",
+      "fala": "Crie os dois cabeçalhos do quadro: Devedor ou devedores, e Documentos de identificação.",
+      "rapido": 3
+    },
+    {
+      "id": "caixas",
+      "fala": "Agora as duas caixas grandes. Na da esquerda, escreva o nome e o endereço do devedor; na da direita, o documento. Como os campos vêm da lista de devedores, o Weave repete o texto para cada devedor do título. Dê altura de sobra, porque cada devedor acrescenta linhas.",
+      "rapido": 3
+    },
+    {
+      "id": "visualizar",
+      "fala": "Abra Visualizar e confira: o primeiro título mostra um devedor, e o segundo mostra dois, um embaixo do outro."
+    },
+    {
+      "id": "fecho",
+      "fala": "Perfeito. No próximo passo, vamos adicionar o selo eletrônico com o QR Code."
+    }
+  ],
+  "id": "b08-devedores"
+}

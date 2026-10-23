@@ -1,0 +1,5 @@
+export * from './application/assistant.use-cases'
+export { N8nAssistantGateway } from './infra/n8n-assistant.gateway'
+export { PrismaAssistantHistoryRepository } from './infra/prisma-assistant-history.repository'
+export { AssistantController } from './presentation/assistant.controller'
+export { assistantRoutes } from './presentation/assistant.routes'

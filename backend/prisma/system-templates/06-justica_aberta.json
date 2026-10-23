@@ -1,0 +1,1000 @@
+{
+ "order": 6,
+ "name": "Justiça Aberta",
+ "description": "Demonstrativo de apoio ao Justiça Aberta/CNJ",
+ "tags": [
+  "Notariado",
+  "Relatório"
+ ],
+ "sourceSystem": 2,
+ "sourceFile": "20261009100000_seed_g_config_relatorio_justica_aberta.sql",
+ "report": {
+  "id": "justica_aberta",
+  "name": "Justiça Aberta",
+  "pages": [
+   {
+    "id": "page_1",
+    "name": "Justiça Aberta (Weave)",
+    "presetId": "a4-portrait",
+    "profile": "document",
+    "width": 794,
+    "height": 1123,
+    "margins": {
+     "top": 20,
+     "right": 20,
+     "bottom": 20,
+     "left": 20
+    },
+    "bands": [
+     "band_cab",
+     "band_tit_receitas",
+     "band_receitas",
+     "band_receitas_total",
+     "band_tit_despesas",
+     "band_despesas",
+     "band_despesas_total",
+     "band_tit_outros",
+     "band_outros",
+     "band_outros_total",
+     "band_resumo"
+    ]
+   }
+  ],
+  "bands": {
+   "band_cab": {
+    "id": "band_cab",
+    "type": "pageHeader",
+    "name": "Cabeçalho (dados do cartório, título, período e colunas)",
+    "height": 158,
+    "bandRect": {
+     "x": 0,
+     "y": 0,
+     "width": 754,
+     "height": 158
+    },
+    "components": [
+     "c_logo",
+     "c_brasao",
+     "c_cartorio",
+     "c_linha",
+     "c_titulo",
+     "c_periodo",
+     "h_faixa",
+     "h_desc",
+     "h_valor",
+     "h_item"
+    ]
+   },
+   "band_tit_receitas": {
+    "id": "band_tit_receitas",
+    "type": "masterData",
+    "name": "Título: receitas",
+    "height": 26,
+    "bandRect": {
+     "x": 0,
+     "y": 162,
+     "width": 754,
+     "height": 26
+    },
+    "components": [
+     "t_receitas"
+    ],
+    "dataSource": "titulo_receitas"
+   },
+   "band_receitas": {
+    "id": "band_receitas",
+    "type": "masterData",
+    "name": "Linhas: receitas",
+    "height": 20,
+    "bandRect": {
+     "x": 0,
+     "y": 192,
+     "width": 754,
+     "height": 20
+    },
+    "components": [
+     "receitas_d",
+     "receitas_v",
+     "receitas_i"
+    ],
+    "dataSource": "receitas",
+    "autoHeight": true,
+    "showWhen": {
+     "field": "destaque",
+     "operator": "eq",
+     "value": "N"
+    }
+   },
+   "band_receitas_total": {
+    "id": "band_receitas_total",
+    "type": "masterData",
+    "name": "Total: receitas",
+    "height": 22,
+    "bandRect": {
+     "x": 0,
+     "y": 216,
+     "width": 754,
+     "height": 22
+    },
+    "components": [
+     "receitas_td",
+     "receitas_tv",
+     "receitas_ti"
+    ],
+    "dataSource": "receitas",
+    "autoHeight": true,
+    "showWhen": {
+     "field": "destaque",
+     "operator": "eq",
+     "value": "S"
+    }
+   },
+   "band_tit_despesas": {
+    "id": "band_tit_despesas",
+    "type": "masterData",
+    "name": "Título: despesas",
+    "height": 26,
+    "bandRect": {
+     "x": 0,
+     "y": 242,
+     "width": 754,
+     "height": 26
+    },
+    "components": [
+     "t_despesas"
+    ],
+    "dataSource": "titulo_despesas"
+   },
+   "band_despesas": {
+    "id": "band_despesas",
+    "type": "masterData",
+    "name": "Linhas: despesas",
+    "height": 20,
+    "bandRect": {
+     "x": 0,
+     "y": 272,
+     "width": 754,
+     "height": 20
+    },
+    "components": [
+     "despesas_d",
+     "despesas_v",
+     "despesas_i"
+    ],
+    "dataSource": "despesas",
+    "autoHeight": true,
+    "showWhen": {
+     "field": "destaque",
+     "operator": "eq",
+     "value": "N"
+    }
+   },
+   "band_despesas_total": {
+    "id": "band_despesas_total",
+    "type": "masterData",
+    "name": "Total: despesas",
+    "height": 22,
+    "bandRect": {
+     "x": 0,
+     "y": 296,
+     "width": 754,
+     "height": 22
+    },
+    "components": [
+     "despesas_td",
+     "despesas_tv",
+     "despesas_ti"
+    ],
+    "dataSource": "despesas",
+    "autoHeight": true,
+    "showWhen": {
+     "field": "destaque",
+     "operator": "eq",
+     "value": "S"
+    }
+   },
+   "band_tit_outros": {
+    "id": "band_tit_outros",
+    "type": "masterData",
+    "name": "Título: outros",
+    "height": 26,
+    "bandRect": {
+     "x": 0,
+     "y": 322,
+     "width": 754,
+     "height": 26
+    },
+    "components": [
+     "t_outros"
+    ],
+    "dataSource": "titulo_outros"
+   },
+   "band_outros": {
+    "id": "band_outros",
+    "type": "masterData",
+    "name": "Linhas: outros",
+    "height": 20,
+    "bandRect": {
+     "x": 0,
+     "y": 352,
+     "width": 754,
+     "height": 20
+    },
+    "components": [
+     "outros_d",
+     "outros_v",
+     "outros_i"
+    ],
+    "dataSource": "outros",
+    "autoHeight": true,
+    "showWhen": {
+     "field": "destaque",
+     "operator": "eq",
+     "value": "N"
+    }
+   },
+   "band_outros_total": {
+    "id": "band_outros_total",
+    "type": "masterData",
+    "name": "Total: outros",
+    "height": 22,
+    "bandRect": {
+     "x": 0,
+     "y": 376,
+     "width": 754,
+     "height": 22
+    },
+    "components": [
+     "outros_td",
+     "outros_tv",
+     "outros_ti"
+    ],
+    "dataSource": "outros",
+    "autoHeight": true,
+    "showWhen": {
+     "field": "destaque",
+     "operator": "eq",
+     "value": "S"
+    }
+   },
+   "band_resumo": {
+    "id": "band_resumo",
+    "type": "reportSummary",
+    "name": "Rodapé do relatório",
+    "height": 76,
+    "bandRect": {
+     "x": 0,
+     "y": 412,
+     "width": 754,
+     "height": 76
+    },
+    "components": [
+     "r_rodape",
+     "r_emissao"
+    ]
+   }
+  },
+  "components": {
+   "c_logo": {
+    "id": "c_logo",
+    "type": "image",
+    "name": "Logomarca",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 220,
+     "height": 64
+    },
+    "content": "{cartorio.logo}",
+    "style": {},
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "left",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    }
+   },
+   "c_brasao": {
+    "id": "c_brasao",
+    "type": "image",
+    "name": "Brasão",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 690,
+     "y": 0,
+     "width": 64,
+     "height": 64
+    },
+    "content": "{cartorio.brasao}",
+    "style": {},
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "right",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    }
+   },
+   "c_cartorio": {
+    "id": "c_cartorio",
+    "type": "text",
+    "name": "c_cartorio",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 226,
+     "y": 0,
+     "width": 458,
+     "height": 66
+    },
+    "content": "**{cartorio.nome}**\n{cartorio.oficial} - {cartorio.cargo}\n{cartorio.endereco}\n{cartorio.cidade_uf}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "textAlign": "center"
+    }
+   },
+   "c_linha": {
+    "id": "c_linha",
+    "type": "text",
+    "name": "c_linha",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 0,
+     "y": 72,
+     "width": 754,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "borderTop": "1px solid #000000"
+    }
+   },
+   "c_titulo": {
+    "id": "c_titulo",
+    "type": "text",
+    "name": "c_titulo",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 0,
+     "y": 82,
+     "width": 754,
+     "height": 24
+    },
+    "content": "{cartorio.titulo}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "17px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "c_periodo": {
+    "id": "c_periodo",
+    "type": "text",
+    "name": "c_periodo",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 0,
+     "y": 110,
+     "width": 754,
+     "height": 16
+    },
+    "content": "{cartorio.periodo}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "center"
+    }
+   },
+   "h_faixa": {
+    "id": "h_faixa",
+    "type": "text",
+    "name": "h_faixa",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 0,
+     "y": 134,
+     "width": 754,
+     "height": 20
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "backgroundColor": "#e5e7eb",
+     "borderTop": "1px solid #808080",
+     "borderBottom": "1px solid #808080"
+    }
+   },
+   "h_desc": {
+    "id": "h_desc",
+    "type": "text",
+    "name": "h_desc",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 4,
+     "y": 137,
+     "width": 330,
+     "height": 14
+    },
+    "content": "Descrição",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold"
+    }
+   },
+   "h_valor": {
+    "id": "h_valor",
+    "type": "text",
+    "name": "h_valor",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 340,
+     "y": 137,
+     "width": 120,
+     "height": 14
+    },
+    "content": "Valor",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "h_item": {
+    "id": "h_item",
+    "type": "text",
+    "name": "h_item",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 470,
+     "y": 137,
+     "width": 284,
+     "height": 14
+    },
+    "content": "Item do Justiça Aberta",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "10px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold"
+    }
+   },
+   "t_receitas": {
+    "id": "t_receitas",
+    "type": "text",
+    "name": "t_receitas",
+    "parentId": "band_tit_receitas",
+    "rect": {
+     "x": 0,
+     "y": 2,
+     "width": 754,
+     "height": 20
+    },
+    "content": "{titulo_receitas.texto}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "backgroundColor": "#e5e7eb",
+     "paddingLeft": "4px"
+    }
+   },
+   "receitas_d": {
+    "id": "receitas_d",
+    "type": "text",
+    "name": "receitas_d",
+    "parentId": "band_receitas",
+    "rect": {
+     "x": 4,
+     "y": 2,
+     "width": 330,
+     "height": 16
+    },
+    "content": "{receitas.descricao}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "receitas_v": {
+    "id": "receitas_v",
+    "type": "text",
+    "name": "receitas_v",
+    "parentId": "band_receitas",
+    "rect": {
+     "x": 340,
+     "y": 2,
+     "width": 120,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([receitas.valor])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "receitas_i": {
+    "id": "receitas_i",
+    "type": "text",
+    "name": "receitas_i",
+    "parentId": "band_receitas",
+    "rect": {
+     "x": 470,
+     "y": 2,
+     "width": 284,
+     "height": 16
+    },
+    "content": "{receitas.item}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "receitas_td": {
+    "id": "receitas_td",
+    "type": "text",
+    "name": "receitas_td",
+    "parentId": "band_receitas_total",
+    "rect": {
+     "x": 4,
+     "y": 2,
+     "width": 330,
+     "height": 16
+    },
+    "content": "{receitas.descricao}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "borderTop": "1px solid #000000",
+     "paddingTop": "2px"
+    }
+   },
+   "receitas_tv": {
+    "id": "receitas_tv",
+    "type": "text",
+    "name": "receitas_tv",
+    "parentId": "band_receitas_total",
+    "rect": {
+     "x": 340,
+     "y": 2,
+     "width": 120,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([receitas.valor])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "borderTop": "1px solid #000000",
+     "paddingTop": "2px"
+    }
+   },
+   "receitas_ti": {
+    "id": "receitas_ti",
+    "type": "text",
+    "name": "receitas_ti",
+    "parentId": "band_receitas_total",
+    "rect": {
+     "x": 470,
+     "y": 2,
+     "width": 284,
+     "height": 16
+    },
+    "content": "{receitas.item}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "borderTop": "1px solid #000000",
+     "paddingTop": "2px"
+    }
+   },
+   "t_despesas": {
+    "id": "t_despesas",
+    "type": "text",
+    "name": "t_despesas",
+    "parentId": "band_tit_despesas",
+    "rect": {
+     "x": 0,
+     "y": 2,
+     "width": 754,
+     "height": 20
+    },
+    "content": "{titulo_despesas.texto}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "backgroundColor": "#e5e7eb",
+     "paddingLeft": "4px"
+    }
+   },
+   "despesas_d": {
+    "id": "despesas_d",
+    "type": "text",
+    "name": "despesas_d",
+    "parentId": "band_despesas",
+    "rect": {
+     "x": 4,
+     "y": 2,
+     "width": 330,
+     "height": 16
+    },
+    "content": "{despesas.descricao}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "despesas_v": {
+    "id": "despesas_v",
+    "type": "text",
+    "name": "despesas_v",
+    "parentId": "band_despesas",
+    "rect": {
+     "x": 340,
+     "y": 2,
+     "width": 120,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([despesas.valor])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "despesas_i": {
+    "id": "despesas_i",
+    "type": "text",
+    "name": "despesas_i",
+    "parentId": "band_despesas",
+    "rect": {
+     "x": 470,
+     "y": 2,
+     "width": 284,
+     "height": 16
+    },
+    "content": "{despesas.item}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "despesas_td": {
+    "id": "despesas_td",
+    "type": "text",
+    "name": "despesas_td",
+    "parentId": "band_despesas_total",
+    "rect": {
+     "x": 4,
+     "y": 2,
+     "width": 330,
+     "height": 16
+    },
+    "content": "{despesas.descricao}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "borderTop": "1px solid #000000",
+     "paddingTop": "2px"
+    }
+   },
+   "despesas_tv": {
+    "id": "despesas_tv",
+    "type": "text",
+    "name": "despesas_tv",
+    "parentId": "band_despesas_total",
+    "rect": {
+     "x": 340,
+     "y": 2,
+     "width": 120,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([despesas.valor])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "borderTop": "1px solid #000000",
+     "paddingTop": "2px"
+    }
+   },
+   "despesas_ti": {
+    "id": "despesas_ti",
+    "type": "text",
+    "name": "despesas_ti",
+    "parentId": "band_despesas_total",
+    "rect": {
+     "x": 470,
+     "y": 2,
+     "width": 284,
+     "height": 16
+    },
+    "content": "{despesas.item}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "borderTop": "1px solid #000000",
+     "paddingTop": "2px"
+    }
+   },
+   "t_outros": {
+    "id": "t_outros",
+    "type": "text",
+    "name": "t_outros",
+    "parentId": "band_tit_outros",
+    "rect": {
+     "x": 0,
+     "y": 2,
+     "width": 754,
+     "height": 20
+    },
+    "content": "{titulo_outros.texto}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "backgroundColor": "#e5e7eb",
+     "paddingLeft": "4px"
+    }
+   },
+   "outros_d": {
+    "id": "outros_d",
+    "type": "text",
+    "name": "outros_d",
+    "parentId": "band_outros",
+    "rect": {
+     "x": 4,
+     "y": 2,
+     "width": 330,
+     "height": 16
+    },
+    "content": "{outros.descricao}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "outros_v": {
+    "id": "outros_v",
+    "type": "text",
+    "name": "outros_v",
+    "parentId": "band_outros",
+    "rect": {
+     "x": 340,
+     "y": 2,
+     "width": 120,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([outros.valor])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "outros_i": {
+    "id": "outros_i",
+    "type": "text",
+    "name": "outros_i",
+    "parentId": "band_outros",
+    "rect": {
+     "x": 470,
+     "y": 2,
+     "width": 284,
+     "height": 16
+    },
+    "content": "{outros.item}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "outros_td": {
+    "id": "outros_td",
+    "type": "text",
+    "name": "outros_td",
+    "parentId": "band_outros_total",
+    "rect": {
+     "x": 4,
+     "y": 2,
+     "width": 330,
+     "height": 16
+    },
+    "content": "{outros.descricao}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "borderTop": "1px solid #000000",
+     "paddingTop": "2px"
+    }
+   },
+   "outros_tv": {
+    "id": "outros_tv",
+    "type": "text",
+    "name": "outros_tv",
+    "parentId": "band_outros_total",
+    "rect": {
+     "x": 340,
+     "y": 2,
+     "width": 120,
+     "height": 16
+    },
+    "content": "R$ {=MOEDA([outros.valor])}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "borderTop": "1px solid #000000",
+     "paddingTop": "2px"
+    }
+   },
+   "outros_ti": {
+    "id": "outros_ti",
+    "type": "text",
+    "name": "outros_ti",
+    "parentId": "band_outros_total",
+    "rect": {
+     "x": 470,
+     "y": 2,
+     "width": 284,
+     "height": 16
+    },
+    "content": "{outros.item}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "borderTop": "1px solid #000000",
+     "paddingTop": "2px"
+    }
+   },
+   "r_rodape": {
+    "id": "r_rodape",
+    "type": "text",
+    "name": "r_rodape",
+    "parentId": "band_resumo",
+    "rect": {
+     "x": 0,
+     "y": 10,
+     "width": 754,
+     "height": 40
+    },
+    "content": "{cartorio.rodape}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "9px",
+     "lineHeight": "1.15",
+     "textAlign": "left",
+     "fontStyle": "italic"
+    }
+   },
+   "r_emissao": {
+    "id": "r_emissao",
+    "type": "text",
+    "name": "r_emissao",
+    "parentId": "band_resumo",
+    "rect": {
+     "x": 0,
+     "y": 56,
+     "width": 754,
+     "height": 14
+    },
+    "content": "{cartorio.emissao}",
+    "style": {
+     "fontFamily": "Arial, Helvetica, sans-serif",
+     "fontSize": "9px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   }
+  }
+ },
+ "mockData": {
+  "cartorio": [
+   {
+    "titulo": "Demonstrativo de Apoio - Justiça Aberta/CNJ",
+    "nome": "Tabelionato de Notas e Protesto de Títulos",
+    "oficial": "Ana Souza",
+    "cargo": "Tabeliã",
+    "endereco": "Rua das Flores, 100 - Centro",
+    "cidade_uf": "Goiânia - GO",
+    "periodo": "01/09/2026 a 30/09/2026",
+    "emissao": "22/10/2026",
+    "logo": "",
+    "brasao": "",
+    "rodape": "Demonstrativo de apoio ao preenchimento do Justiça Aberta/CNJ."
+   }
+  ],
+  "titulo_receitas": [
+   {
+    "texto": "RECEITAS"
+   }
+  ],
+  "receitas": [
+   {
+    "item": "1.1",
+    "descricao": "Emolumentos de Notas",
+    "valor": 98450.9
+   },
+   {
+    "item": "1.2",
+    "descricao": "Emolumentos de Protesto",
+    "valor": 41230.0
+   }
+  ],
+  "titulo_despesas": [
+   {
+    "texto": "DESPESAS"
+   }
+  ],
+  "despesas": [
+   {
+    "item": "2.1",
+    "descricao": "Salários e encargos",
+    "valor": 52100.0
+   },
+   {
+    "item": "2.2",
+    "descricao": "Aluguel e condomínio",
+    "valor": 9800.0
+   },
+   {
+    "item": "2.3",
+    "descricao": "Material e serviços",
+    "valor": 6120.35
+   }
+  ],
+  "titulo_outros": [
+   {
+    "texto": "OUTROS VALORES"
+   }
+  ],
+  "outros": [
+   {
+    "item": "3.1",
+    "descricao": "Repasses a fundos",
+    "valor": 14230.1
+   }
+  ]
+ }
+}

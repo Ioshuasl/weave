@@ -1,0 +1,824 @@
+{
+ "order": 4,
+ "name": "Livro de Protocolos - Protesto",
+ "description": "Tabelionato de Protesto — títulos apresentados por dia",
+ "tags": [
+  "Protesto",
+  "Livro"
+ ],
+ "sourceSystem": 13,
+ "sourceFile": "20261007100000_seed_g_config_relatorio_livro_protocolos_protesto.sql",
+ "report": {
+  "id": "livro_protocolos_protesto",
+  "name": "Livro de Protocolos - Protesto",
+  "pages": [
+   {
+    "id": "page_1",
+    "name": "Livro de Protocolos",
+    "presetId": "a4-landscape",
+    "profile": "document",
+    "width": 1123,
+    "height": 794,
+    "margins": {
+     "top": 40,
+     "right": 22,
+     "bottom": 40,
+     "left": 76
+    },
+    "bands": [
+     "band_cabecalho",
+     "band_dia",
+     "band_titulo",
+     "band_fech_com",
+     "band_fech_sem"
+    ]
+   }
+  ],
+  "bands": {
+   "band_cabecalho": {
+    "id": "band_cabecalho",
+    "type": "pageHeader",
+    "name": "Cabeçalho da página (repete em toda folha)",
+    "height": 142,
+    "bandRect": {
+     "x": 0,
+     "y": 0,
+     "width": 1025,
+     "height": 142
+    },
+    "components": [
+     "comp_logo",
+     "comp_info",
+     "comp_titulo",
+     "comp_subtitulo",
+     "comp_rubrica_caixa",
+     "comp_rubrica",
+     "comp_livro",
+     "comp_folha",
+     "comp_ano",
+     "cab_prot",
+     "cab_data",
+     "cab_nat",
+     "cab_apres",
+     "cab_dev",
+     "cab_divida",
+     "cab_emol",
+     "cab_ocor"
+    ]
+   },
+   "band_dia": {
+    "id": "band_dia",
+    "type": "masterData",
+    "name": "Dia do período (agrupador, sem altura própria)",
+    "height": 40,
+    "bandRect": {
+     "x": 0,
+     "y": 150,
+     "width": 1025,
+     "height": 40
+    },
+    "dataSource": "dias",
+    "components": []
+   },
+   "band_titulo": {
+    "id": "band_titulo",
+    "type": "detailData",
+    "name": "Títulos apontados do dia",
+    "height": 20,
+    "bandRect": {
+     "x": 0,
+     "y": 198,
+     "width": 1025,
+     "height": 20
+    },
+    "dataSource": "titulos",
+    "link": {
+     "parentBandId": "band_dia",
+     "parentField": "data_chave",
+     "field": "data_chave",
+     "placement": "above"
+    },
+    "keepTogether": true,
+    "autoHeight": true,
+    "components": [
+     "t_prot",
+     "t_data",
+     "t_nat",
+     "t_apres",
+     "t_dev",
+     "t_divida",
+     "t_emol",
+     "t_ocor"
+    ],
+    "lines": {
+     "rows": true,
+     "columns": true,
+     "sides": true,
+     "header": true,
+     "fillPage": true,
+     "thickness": "thin"
+    }
+   },
+   "band_fech_com": {
+    "id": "band_fech_com",
+    "type": "detailData",
+    "name": "Fechamento do dia: com títulos",
+    "height": 20,
+    "bandRect": {
+     "x": 0,
+     "y": 226,
+     "width": 1025,
+     "height": 20
+    },
+    "dataSource": "dias",
+    "autoHeight": true,
+    "link": {
+     "parentBandId": "band_dia",
+     "placement": "below"
+    },
+    "showWhen": {
+     "field": "qtd",
+     "operator": "gt",
+     "value": "0"
+    },
+    "components": [
+     "comp_fech_com"
+    ],
+    "lines": {
+     "outline": true,
+     "thickness": "thin"
+    }
+   },
+   "band_fech_sem": {
+    "id": "band_fech_sem",
+    "type": "detailData",
+    "name": "Fechamento do dia: sem títulos",
+    "height": 20,
+    "bandRect": {
+     "x": 0,
+     "y": 254,
+     "width": 1025,
+     "height": 20
+    },
+    "dataSource": "dias",
+    "autoHeight": true,
+    "link": {
+     "parentBandId": "band_dia",
+     "placement": "below"
+    },
+    "showWhen": {
+     "field": "qtd",
+     "operator": "eq",
+     "value": "0"
+    },
+    "components": [
+     "comp_fech_sem"
+    ],
+    "lines": {
+     "outline": true,
+     "thickness": "thin"
+    }
+   }
+  },
+  "components": {
+   "comp_logo": {
+    "id": "comp_logo",
+    "type": "image",
+    "name": "Brasão",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 8,
+     "y": 0,
+     "width": 76,
+     "height": 80
+    },
+    "content": "{cartorio.logo}",
+    "style": {},
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "left",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    }
+   },
+   "comp_info": {
+    "id": "comp_info",
+    "type": "text",
+    "name": "Dados do cartório",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 94,
+     "y": 6,
+     "width": 380,
+     "height": 48
+    },
+    "content": "**{cartorio.nome}**\n**{cartorio.endereco}**\n**{cartorio.contato}**\n**{cartorio.oficial}**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "11px",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "comp_titulo": {
+    "id": "comp_titulo",
+    "type": "text",
+    "name": "Título do relatório",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 479,
+     "y": 0,
+     "width": 350,
+     "height": 34
+    },
+    "content": "**{cartorio.titulo}**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "28px",
+     "lineHeight": "34px",
+     "textAlign": "center"
+    }
+   },
+   "comp_subtitulo": {
+    "id": "comp_subtitulo",
+    "type": "text",
+    "name": "Subtítulo",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 479,
+     "y": 34,
+     "width": 350,
+     "height": 26
+    },
+    "content": "**PROTOCOLO**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "20px",
+     "lineHeight": "26px",
+     "textAlign": "center"
+    }
+   },
+   "comp_rubrica_caixa": {
+    "id": "comp_rubrica_caixa",
+    "type": "text",
+    "name": "Caixa da rubrica",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 917,
+     "y": 9,
+     "width": 84,
+     "height": 36
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "border": "1px solid #000000"
+    }
+   },
+   "comp_rubrica": {
+    "id": "comp_rubrica",
+    "type": "text",
+    "name": "Rubrica",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 930,
+     "y": 2,
+     "width": 58,
+     "height": 14
+    },
+    "content": "**RUBRICA**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "14px",
+     "textAlign": "center",
+     "backgroundColor": "#ffffff"
+    }
+   },
+   "comp_livro": {
+    "id": "comp_livro",
+    "type": "text",
+    "name": "Livro (por página)",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 250,
+     "y": 86,
+     "width": 160,
+     "height": 20
+    },
+    "content": "**LIVRO {page.livro}**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "16px",
+     "lineHeight": "20px",
+     "textAlign": "center"
+    }
+   },
+   "comp_folha": {
+    "id": "comp_folha",
+    "type": "text",
+    "name": "Folha (por página)",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 560,
+     "y": 86,
+     "width": 190,
+     "height": 20
+    },
+    "content": "**FOLHA {page.folha}**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "16px",
+     "lineHeight": "20px",
+     "textAlign": "center"
+    }
+   },
+   "comp_ano": {
+    "id": "comp_ano",
+    "type": "text",
+    "name": "Ano",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 870,
+     "y": 86,
+     "width": 155,
+     "height": 20
+    },
+    "content": "**ANO {cartorio.ano}**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "16px",
+     "lineHeight": "20px",
+     "textAlign": "center"
+    }
+   },
+   "cab_prot": {
+    "id": "cab_prot",
+    "type": "text",
+    "name": "Título da coluna: PROT.",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 0,
+     "y": 110,
+     "width": 50,
+     "height": 32
+    },
+    "content": "**PROT.**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "13px",
+     "lineHeight": "30px",
+     "textAlign": "center",
+     "backgroundColor": "#e8e8e8"
+    }
+   },
+   "cab_data": {
+    "id": "cab_data",
+    "type": "text",
+    "name": "Título da coluna: DATA",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 50,
+     "y": 110,
+     "width": 84,
+     "height": 32
+    },
+    "content": "**DATA**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "13px",
+     "lineHeight": "30px",
+     "textAlign": "center",
+     "backgroundColor": "#e8e8e8"
+    }
+   },
+   "cab_nat": {
+    "id": "cab_nat",
+    "type": "text",
+    "name": "Título da coluna: NATUREZA FORMAL DO TÍTULO",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 134,
+     "y": 110,
+     "width": 171,
+     "height": 32
+    },
+    "content": "**NATUREZA FORMAL DO TÍTULO**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "13px",
+     "lineHeight": "15px",
+     "textAlign": "center",
+     "backgroundColor": "#e8e8e8"
+    }
+   },
+   "cab_apres": {
+    "id": "cab_apres",
+    "type": "text",
+    "name": "Título da coluna: APRESENTANTE",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 305,
+     "y": 110,
+     "width": 162,
+     "height": 32
+    },
+    "content": "**APRESENTANTE**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "13px",
+     "lineHeight": "30px",
+     "textAlign": "center",
+     "backgroundColor": "#e8e8e8"
+    }
+   },
+   "cab_dev": {
+    "id": "cab_dev",
+    "type": "text",
+    "name": "Título da coluna: DEVEDOR",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 467,
+     "y": 110,
+     "width": 173,
+     "height": 32
+    },
+    "content": "**DEVEDOR**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "13px",
+     "lineHeight": "30px",
+     "textAlign": "center",
+     "backgroundColor": "#e8e8e8"
+    }
+   },
+   "cab_divida": {
+    "id": "cab_divida",
+    "type": "text",
+    "name": "Título da coluna: DÍVIDA",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 640,
+     "y": 110,
+     "width": 84,
+     "height": 32
+    },
+    "content": "**DÍVIDA**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "13px",
+     "lineHeight": "30px",
+     "textAlign": "center",
+     "backgroundColor": "#e8e8e8"
+    }
+   },
+   "cab_emol": {
+    "id": "cab_emol",
+    "type": "text",
+    "name": "Título da coluna: EMOL",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 724,
+     "y": 110,
+     "width": 84,
+     "height": 32
+    },
+    "content": "**EMOL**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "13px",
+     "lineHeight": "30px",
+     "textAlign": "center",
+     "backgroundColor": "#e8e8e8"
+    }
+   },
+   "cab_ocor": {
+    "id": "cab_ocor",
+    "type": "text",
+    "name": "Título da coluna: OCORRÊNCIA",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 808,
+     "y": 110,
+     "width": 217,
+     "height": 32
+    },
+    "content": "**OCORRÊNCIA**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "13px",
+     "lineHeight": "30px",
+     "textAlign": "center",
+     "backgroundColor": "#e8e8e8"
+    }
+   },
+   "t_prot": {
+    "id": "t_prot",
+    "type": "text",
+    "name": "Título: PROT.",
+    "parentId": "band_titulo",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 50,
+     "height": 20
+    },
+    "content": "{titulos.prot}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "14px",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "textAlign": "left"
+    }
+   },
+   "t_data": {
+    "id": "t_data",
+    "type": "text",
+    "name": "Título: DATA",
+    "parentId": "band_titulo",
+    "rect": {
+     "x": 50,
+     "y": 0,
+     "width": 84,
+     "height": 20
+    },
+    "content": "{titulos.data}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "14px",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "textAlign": "left"
+    }
+   },
+   "t_nat": {
+    "id": "t_nat",
+    "type": "text",
+    "name": "Título: NATUREZA FORMAL DO TÍTULO",
+    "parentId": "band_titulo",
+    "rect": {
+     "x": 134,
+     "y": 0,
+     "width": 171,
+     "height": 20
+    },
+    "content": "{titulos.nat}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "14px",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "textAlign": "left"
+    }
+   },
+   "t_apres": {
+    "id": "t_apres",
+    "type": "text",
+    "name": "Título: APRESENTANTE",
+    "parentId": "band_titulo",
+    "rect": {
+     "x": 305,
+     "y": 0,
+     "width": 162,
+     "height": 20
+    },
+    "content": "{titulos.apres}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "14px",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "textAlign": "left"
+    }
+   },
+   "t_dev": {
+    "id": "t_dev",
+    "type": "text",
+    "name": "Título: DEVEDOR",
+    "parentId": "band_titulo",
+    "rect": {
+     "x": 467,
+     "y": 0,
+     "width": 173,
+     "height": 20
+    },
+    "content": "{titulos.dev}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "14px",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "textAlign": "left"
+    }
+   },
+   "t_divida": {
+    "id": "t_divida",
+    "type": "text",
+    "name": "Título: DÍVIDA",
+    "parentId": "band_titulo",
+    "rect": {
+     "x": 640,
+     "y": 0,
+     "width": 84,
+     "height": 20
+    },
+    "content": "{titulos.divida}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "14px",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "textAlign": "right"
+    }
+   },
+   "t_emol": {
+    "id": "t_emol",
+    "type": "text",
+    "name": "Título: EMOL",
+    "parentId": "band_titulo",
+    "rect": {
+     "x": 724,
+     "y": 0,
+     "width": 84,
+     "height": 20
+    },
+    "content": "{titulos.emol}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "14px",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "textAlign": "right"
+    }
+   },
+   "t_ocor": {
+    "id": "t_ocor",
+    "type": "text",
+    "name": "Título: OCORRÊNCIA",
+    "parentId": "band_titulo",
+    "rect": {
+     "x": 808,
+     "y": 0,
+     "width": 217,
+     "height": 20
+    },
+    "content": "{titulos.ocor}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "14px",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "textAlign": "left"
+    }
+   },
+   "comp_fech_com": {
+    "id": "comp_fech_com",
+    "type": "text",
+    "name": "Texto: encerramento com títulos",
+    "parentId": "band_fech_com",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 1025,
+     "height": 20
+    },
+    "content": "ENCERRADO o expediente e hora legal, com {dias.qtd} ({dias.qtd_extenso}), Títulos Apresentados. Dou fé. {cartorio.cidade}/ {cartorio.uf}, {dias.data_extenso}.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "14px",
+     "paddingLeft": "3px",
+     "paddingRight": "3px"
+    }
+   },
+   "comp_fech_sem": {
+    "id": "comp_fech_sem",
+    "type": "text",
+    "name": "Texto: dia sem títulos",
+    "parentId": "band_fech_sem",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 1025,
+     "height": 20
+    },
+    "content": "ENCERRADO o expediente e hora legal, sem Títulos Apresentados. Dou fé. {cartorio.cidade}/ {cartorio.uf}, {dias.data_extenso}.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', monospace",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "14px",
+     "paddingLeft": "3px",
+     "paddingRight": "3px"
+    }
+   }
+  }
+ },
+ "mockData": {
+  "cartorio": [
+   {
+    "titulo": "Livro de Protocolos",
+    "nome": "1º Tabelionato de Protesto de Títulos",
+    "denominacao": "1º Tabelionato de Protesto de Títulos de Goiânia",
+    "titular": "Carlos Almeida",
+    "oficial": "Carlos Almeida",
+    "escrevente": "Mariana Lopes",
+    "estado": "ESTADO DE GOIÁS",
+    "uf": "GO",
+    "cidade": "Goiânia",
+    "endereco": "Av. Goiás, 1500",
+    "bairro": "Setor Central",
+    "cep": "74000-000",
+    "fone": "(62) 3222-1111",
+    "contato": "(62) 3222-1111",
+    "email": "protesto@cartorioexemplo.com.br",
+    "ano": "2026",
+    "logo": "",
+    "nome_curto": "1º Protesto"
+   }
+  ],
+  "dias": [
+   {
+    "data_chave": "2026-10-20",
+    "data_extenso": "Terça-feira, 20 de outubro de 2026",
+    "qtd": 2,
+    "qtd_extenso": "dois"
+   },
+   {
+    "data_chave": "2026-10-21",
+    "data_extenso": "Quarta-feira, 21 de outubro de 2026",
+    "qtd": 1,
+    "qtd_extenso": "um"
+   }
+  ],
+  "titulos": [
+   {
+    "data_chave": "2026-10-20",
+    "prot": "88121",
+    "data": "20/10/2026",
+    "apres": "Banco Exemplo S/A",
+    "dev": "Empresa Alfa Ltda",
+    "nat": "DMI",
+    "divida": "R$ 12.500,00",
+    "emol": "R$ 214,60",
+    "ocor": "Apontado"
+   },
+   {
+    "data_chave": "2026-10-20",
+    "prot": "88122",
+    "data": "20/10/2026",
+    "apres": "Comercial Beta Ltda",
+    "dev": "José Ricardo Santos",
+    "nat": "DMI",
+    "divida": "R$ 3.890,90",
+    "emol": "R$ 98,40",
+    "ocor": "Pago"
+   },
+   {
+    "data_chave": "2026-10-21",
+    "prot": "88123",
+    "data": "21/10/2026",
+    "apres": "Financeira Gama",
+    "dev": "Marcos Vinícius Rocha",
+    "nat": "CBI",
+    "divida": "R$ 45.780,00",
+    "emol": "R$ 612,75",
+    "ocor": "Protestado"
+   }
+  ]
+ }
+}

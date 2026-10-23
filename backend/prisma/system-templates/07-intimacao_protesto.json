@@ -1,0 +1,1747 @@
+{
+ "order": 7,
+ "name": "Intimação - Protesto",
+ "description": "Intimação do devedor com comprovante de recebimento (uma folha por devedor)",
+ "tags": [
+  "Protesto",
+  "Intimação/Edital"
+ ],
+ "sourceSystem": 13,
+ "sourceFile": "20261019100000_seed_g_config_relatorio_intimacao_protesto.sql",
+ "report": {
+  "id": "intimacao_protesto",
+  "name": "Intimação - Protesto",
+  "pages": [
+   {
+    "id": "page_1",
+    "name": "Intimação",
+    "presetId": "a4-portrait",
+    "profile": "document",
+    "width": 794,
+    "height": 1123,
+    "margins": {
+     "top": 20,
+     "right": 20,
+     "bottom": 20,
+     "left": 20
+    },
+    "bands": [
+     "band_folha"
+    ]
+   }
+  ],
+  "bands": {
+   "band_folha": {
+    "id": "band_folha",
+    "type": "masterData",
+    "name": "Intimação (uma folha por devedor/endereço)",
+    "height": 1070,
+    "bandRect": {
+     "x": 0,
+     "y": 0,
+     "width": 754,
+     "height": 1070
+    },
+    "dataSource": "intimacoes",
+    "keepTogether": true,
+    "components": [
+     "c_logo",
+     "c_nome",
+     "c_info",
+     "c_titulo",
+     "c_dev",
+     "c_end",
+     "c_tel",
+     "c_cred",
+     "c_apont",
+     "c_tit",
+     "c_ced",
+     "c_nat",
+     "c_selo",
+     "c_motivo",
+     "c_obs_box",
+     "c_obs",
+     "c_o1",
+     "c_o2",
+     "c_o3",
+     "c_o4",
+     "c_o5",
+     "c_o6",
+     "c_o6_linha",
+     "c_aceite_box",
+     "c_aceite",
+     "c_aceite_sn",
+     "c_aceite_data",
+     "c_aceite_d1",
+     "c_aceite_d2",
+     "c_aceite_d3",
+     "c_aceite_b1",
+     "c_aceite_b2",
+     "c_ass_linha",
+     "c_ass",
+     "c_barras",
+     "c_corte",
+     "i_logo",
+     "i_nome",
+     "i_info",
+     "i_titulo",
+     "i_dev",
+     "i_end",
+     "i_tel",
+     "i_cred",
+     "i_ced",
+     "i_apont",
+     "i_tit",
+     "i_emissao",
+     "i_venc",
+     "i_dtap",
+     "i_emol",
+     "i_tj",
+     "i_ti",
+     "i_fu",
+     "i_iss",
+     "i_nat",
+     "i_selo",
+     "i_motivo",
+     "i_vtit",
+     "i_vcus",
+     "i_desc",
+     "i_vtot",
+     "i_texto",
+     "i_obs_box",
+     "i_obs",
+     "i_horario",
+     "i_pgto",
+     "i_qr",
+     "i_escrevente",
+     "i_ass_linha"
+    ]
+   }
+  },
+  "components": {
+   "c_logo": {
+    "id": "c_logo",
+    "type": "image",
+    "name": "Brasão",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 76,
+     "height": 78
+    },
+    "content": "{cartorio.logo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000"
+    },
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "left",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    }
+   },
+   "c_nome": {
+    "id": "c_nome",
+    "type": "text",
+    "name": "Nome do cartório",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 86,
+     "y": 0,
+     "width": 582,
+     "height": 44
+    },
+    "content": "Tabelionato de Notas, Protestos de Títulos e\nRegistros de Contratos Marítimos",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "18px",
+     "lineHeight": "20px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_info": {
+    "id": "c_info",
+    "type": "text",
+    "name": "Endereço do cartório",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 86,
+     "y": 46,
+     "width": 582,
+     "height": 40
+    },
+    "content": "{cartorio.endereco}\n{cartorio.contato}\nemail: {cartorio.email}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_titulo": {
+    "id": "c_titulo",
+    "type": "text",
+    "name": "Título do comprovante",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 82,
+     "width": 754,
+     "height": 18
+    },
+    "content": "**COMPROVANTE DE RECEBIMENTO**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "13px",
+     "lineHeight": "18px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_dev": {
+    "id": "c_dev",
+    "type": "text",
+    "name": "Devedor",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 102,
+     "width": 220,
+     "height": 34
+    },
+    "content": "**Devedor**\n{intimacoes.devedor}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left",
+     "borderTopLeftRadius": "10px"
+    }
+   },
+   "c_end": {
+    "id": "c_end",
+    "type": "text",
+    "name": "Endereço completo",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 220,
+     "y": 102,
+     "width": 420,
+     "height": 34
+    },
+    "content": "**Endereço Completo**\n{intimacoes.endereco}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left"
+    }
+   },
+   "c_tel": {
+    "id": "c_tel",
+    "type": "text",
+    "name": "Telefone",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 640,
+     "y": 102,
+     "width": 114,
+     "height": 34
+    },
+    "content": "**Telefone**\n{intimacoes.telefone}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left",
+     "borderTopRightRadius": "10px"
+    }
+   },
+   "c_cred": {
+    "id": "c_cred",
+    "type": "text",
+    "name": "Credor",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 136,
+     "width": 440,
+     "height": 34
+    },
+    "content": "**Credor**\n{intimacoes.credor}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left"
+    }
+   },
+   "c_apont": {
+    "id": "c_apont",
+    "type": "text",
+    "name": "Nº apontamento",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 440,
+     "y": 136,
+     "width": 190,
+     "height": 34
+    },
+    "content": "**Nº Apontamento**\n{intimacoes.numero_apontamento}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "right"
+    }
+   },
+   "c_tit": {
+    "id": "c_tit",
+    "type": "text",
+    "name": "Título",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 630,
+     "y": 136,
+     "width": 124,
+     "height": 34
+    },
+    "content": "**Título**\n{intimacoes.numero_titulo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "right"
+    }
+   },
+   "c_ced": {
+    "id": "c_ced",
+    "type": "text",
+    "name": "Cedente",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 170,
+     "width": 440,
+     "height": 34
+    },
+    "content": "**Cedente**\n{intimacoes.cedente}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left"
+    }
+   },
+   "c_nat": {
+    "id": "c_nat",
+    "type": "text",
+    "name": "Natureza do título",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 204,
+     "width": 440,
+     "height": 34
+    },
+    "content": "**Natureza do Título**\n{intimacoes.natureza}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left"
+    }
+   },
+   "c_selo": {
+    "id": "c_selo",
+    "type": "text",
+    "name": "Selo eletrônico",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 238,
+     "width": 440,
+     "height": 52
+    },
+    "content": "**Selo Eletrônico:  Consulte este selo em: http://extrajudicial.tjgo.jus.br/selo**\n{intimacoes.selo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left"
+    }
+   },
+   "c_motivo": {
+    "id": "c_motivo",
+    "type": "text",
+    "name": "Motivo do apontamento",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 440,
+     "y": 170,
+     "width": 314,
+     "height": 120
+    },
+    "content": "**Motivo do Apontamento**\n{intimacoes.motivo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left"
+    }
+   },
+   "c_obs_box": {
+    "id": "c_obs_box",
+    "type": "text",
+    "name": "Quadro das observações",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 290,
+     "width": 754,
+     "height": 62
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "border": "1px solid #000000"
+    }
+   },
+   "c_obs": {
+    "id": "c_obs",
+    "type": "text",
+    "name": "Observações",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 6,
+     "y": 296,
+     "width": 104,
+     "height": 20
+    },
+    "content": "**Observações :**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "20px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_o1": {
+    "id": "c_o1",
+    "type": "text",
+    "name": "Mudou-se",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 110,
+     "y": 296,
+     "width": 190,
+     "height": 22
+    },
+    "content": "◯ Mudou-se",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "14px",
+     "lineHeight": "22px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_o2": {
+    "id": "c_o2",
+    "type": "text",
+    "name": "Recusado",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 320,
+     "y": 296,
+     "width": 190,
+     "height": 22
+    },
+    "content": "◯ Recusado",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "14px",
+     "lineHeight": "22px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_o3": {
+    "id": "c_o3",
+    "type": "text",
+    "name": "Ausente",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 540,
+     "y": 296,
+     "width": 190,
+     "height": 22
+    },
+    "content": "◯ Ausente",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "14px",
+     "lineHeight": "22px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_o4": {
+    "id": "c_o4",
+    "type": "text",
+    "name": "Desconhecido",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 110,
+     "y": 322,
+     "width": 190,
+     "height": 22
+    },
+    "content": "◯ Desconhecido",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "14px",
+     "lineHeight": "22px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_o5": {
+    "id": "c_o5",
+    "type": "text",
+    "name": "Endereço insuficiente",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 320,
+     "y": 322,
+     "width": 190,
+     "height": 22
+    },
+    "content": "◯ Endereço Insuficiente",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "14px",
+     "lineHeight": "22px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_o6": {
+    "id": "c_o6",
+    "type": "text",
+    "name": "Outro",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 540,
+     "y": 322,
+     "width": 190,
+     "height": 22
+    },
+    "content": "◯",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "14px",
+     "lineHeight": "22px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_o6_linha": {
+    "id": "c_o6_linha",
+    "type": "text",
+    "name": "Linha do outro",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 566,
+     "y": 340,
+     "width": 170,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    }
+   },
+   "c_aceite_box": {
+    "id": "c_aceite_box",
+    "type": "text",
+    "name": "Quadro do aceite",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 352,
+     "width": 754,
+     "height": 68
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "border": "1px solid #000000"
+    }
+   },
+   "c_aceite": {
+    "id": "c_aceite",
+    "type": "text",
+    "name": "Aceite",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 14,
+     "y": 358,
+     "width": 120,
+     "height": 20
+    },
+    "content": "**Aceite:**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "20px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_aceite_sn": {
+    "id": "c_aceite_sn",
+    "type": "text",
+    "name": "Sim / Não",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 14,
+     "y": 378,
+     "width": 170,
+     "height": 22
+    },
+    "content": "Sim ◯   Não ◯",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "14px",
+     "lineHeight": "22px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_aceite_data": {
+    "id": "c_aceite_data",
+    "type": "text",
+    "name": "Data do aceite",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 150,
+     "y": 380,
+     "width": 92,
+     "height": 18
+    },
+    "content": "**Data do Aceite :**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "18px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_aceite_d1": {
+    "id": "c_aceite_d1",
+    "type": "text",
+    "name": "Data do aceite (1)",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 244,
+     "y": 392,
+     "width": 26,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    }
+   },
+   "c_aceite_d2": {
+    "id": "c_aceite_d2",
+    "type": "text",
+    "name": "Data do aceite (2)",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 278,
+     "y": 392,
+     "width": 26,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    }
+   },
+   "c_aceite_d3": {
+    "id": "c_aceite_d3",
+    "type": "text",
+    "name": "Data do aceite (3)",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 312,
+     "y": 392,
+     "width": 36,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    }
+   },
+   "c_aceite_b1": {
+    "id": "c_aceite_b1",
+    "type": "text",
+    "name": "Barra 1",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 271,
+     "y": 380,
+     "width": 6,
+     "height": 18
+    },
+    "content": "/",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "18px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_aceite_b2": {
+    "id": "c_aceite_b2",
+    "type": "text",
+    "name": "Barra 2",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 305,
+     "y": 380,
+     "width": 6,
+     "height": 18
+    },
+    "content": "/",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "18px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_ass_linha": {
+    "id": "c_ass_linha",
+    "type": "text",
+    "name": "Linha da assinatura",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 360,
+     "y": 392,
+     "width": 380,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    }
+   },
+   "c_ass": {
+    "id": "c_ass",
+    "type": "text",
+    "name": "Assinatura",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 360,
+     "y": 396,
+     "width": 380,
+     "height": 18
+    },
+    "content": "**Assinatura**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "18px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_barras": {
+    "id": "c_barras",
+    "type": "image",
+    "name": "Código de barras",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 560,
+     "y": 426,
+     "width": 190,
+     "height": 30
+    },
+    "content": "{intimacoes.codigo_barras}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000"
+    },
+    "imageProps": {
+     "sizeMode": "fill",
+     "alignX": "center",
+     "alignY": "middle",
+     "lockAspectRatio": false
+    }
+   },
+   "c_corte": {
+    "id": "c_corte",
+    "type": "text",
+    "name": "Linha de corte",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 460,
+     "width": 754,
+     "height": 14
+    },
+    "content": "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "14px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "i_logo": {
+    "id": "i_logo",
+    "type": "image",
+    "name": "Brasão",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 490,
+     "width": 76,
+     "height": 78
+    },
+    "content": "{cartorio.logo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000"
+    },
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "left",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    }
+   },
+   "i_nome": {
+    "id": "i_nome",
+    "type": "text",
+    "name": "Nome do cartório",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 86,
+     "y": 490,
+     "width": 582,
+     "height": 24
+    },
+    "content": "{cartorio.nome}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "18px",
+     "lineHeight": "20px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "i_info": {
+    "id": "i_info",
+    "type": "text",
+    "name": "Endereço do cartório",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 86,
+     "y": 516,
+     "width": 582,
+     "height": 40
+    },
+    "content": "{cartorio.endereco}\n{cartorio.contato}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "i_titulo": {
+    "id": "i_titulo",
+    "type": "text",
+    "name": "Título da intimação",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 572,
+     "width": 754,
+     "height": 18
+    },
+    "content": "**INTIMAÇÃO**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "13px",
+     "lineHeight": "18px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "i_dev": {
+    "id": "i_dev",
+    "type": "text",
+    "name": "Devedor",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 592,
+     "width": 220,
+     "height": 34
+    },
+    "content": "**Devedor**\n{intimacoes.devedor}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left",
+     "borderTopLeftRadius": "10px"
+    }
+   },
+   "i_end": {
+    "id": "i_end",
+    "type": "text",
+    "name": "Endereço completo",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 220,
+     "y": 592,
+     "width": 420,
+     "height": 34
+    },
+    "content": "**Endereço Completo**\n{intimacoes.endereco}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left"
+    }
+   },
+   "i_tel": {
+    "id": "i_tel",
+    "type": "text",
+    "name": "Telefone",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 640,
+     "y": 592,
+     "width": 114,
+     "height": 34
+    },
+    "content": "**Telefone**\n{intimacoes.telefone}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left",
+     "borderTopRightRadius": "10px"
+    }
+   },
+   "i_cred": {
+    "id": "i_cred",
+    "type": "text",
+    "name": "Credor",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 626,
+     "width": 250,
+     "height": 34
+    },
+    "content": "**Credor**\n{intimacoes.credor}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left"
+    }
+   },
+   "i_ced": {
+    "id": "i_ced",
+    "type": "text",
+    "name": "Cedente",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 250,
+     "y": 626,
+     "width": 190,
+     "height": 34
+    },
+    "content": "**Cedente**\n{intimacoes.cedente}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left"
+    }
+   },
+   "i_apont": {
+    "id": "i_apont",
+    "type": "text",
+    "name": "Nº apontamento",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 440,
+     "y": 626,
+     "width": 190,
+     "height": 34
+    },
+    "content": "**Nº Apontamento**\n{intimacoes.numero_apontamento}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "right"
+    }
+   },
+   "i_tit": {
+    "id": "i_tit",
+    "type": "text",
+    "name": "Título",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 630,
+     "y": 626,
+     "width": 124,
+     "height": 34
+    },
+    "content": "**Título**\n{intimacoes.numero_titulo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "right"
+    }
+   },
+   "i_emissao": {
+    "id": "i_emissao",
+    "type": "text",
+    "name": "Emissão",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 660,
+     "width": 64,
+     "height": 34
+    },
+    "content": "**Emissão**\n{intimacoes.data_emissao}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "2px",
+     "paddingRight": "2px",
+     "paddingTop": "2px",
+     "textAlign": "center"
+    }
+   },
+   "i_venc": {
+    "id": "i_venc",
+    "type": "text",
+    "name": "Vencimento",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 64,
+     "y": 660,
+     "width": 74,
+     "height": 34
+    },
+    "content": "**Vencimento**\n{intimacoes.data_vencimento}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "2px",
+     "paddingRight": "2px",
+     "paddingTop": "2px",
+     "textAlign": "center"
+    }
+   },
+   "i_dtap": {
+    "id": "i_dtap",
+    "type": "text",
+    "name": "Data Apontamento",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 138,
+     "y": 660,
+     "width": 96,
+     "height": 34
+    },
+    "content": "**Data Apontamento**\n{intimacoes.data_apontamento}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "2px",
+     "paddingRight": "2px",
+     "paddingTop": "2px",
+     "textAlign": "center"
+    }
+   },
+   "i_emol": {
+    "id": "i_emol",
+    "type": "text",
+    "name": "Emolumentos",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 234,
+     "y": 660,
+     "width": 100,
+     "height": 34
+    },
+    "content": "**Emolumentos**\n{intimacoes.emolumentos}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "2px",
+     "paddingRight": "2px",
+     "paddingTop": "2px",
+     "textAlign": "center"
+    }
+   },
+   "i_tj": {
+    "id": "i_tj",
+    "type": "text",
+    "name": "Tx. Judiciária",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 334,
+     "y": 660,
+     "width": 100,
+     "height": 34
+    },
+    "content": "**Tx. Judiciária**\n{intimacoes.taxa_judiciaria}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "2px",
+     "paddingRight": "2px",
+     "paddingTop": "2px",
+     "textAlign": "center"
+    }
+   },
+   "i_ti": {
+    "id": "i_ti",
+    "type": "text",
+    "name": "Tx. Intimação",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 434,
+     "y": 660,
+     "width": 100,
+     "height": 34
+    },
+    "content": "**Tx. Intimação**\n{intimacoes.taxa_intimacao}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "2px",
+     "paddingRight": "2px",
+     "paddingTop": "2px",
+     "textAlign": "center"
+    }
+   },
+   "i_fu": {
+    "id": "i_fu",
+    "type": "text",
+    "name": "Fundos Est.",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 534,
+     "y": 660,
+     "width": 100,
+     "height": 34
+    },
+    "content": "**Fundos Est.**\n{intimacoes.fundos}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "2px",
+     "paddingRight": "2px",
+     "paddingTop": "2px",
+     "textAlign": "center"
+    }
+   },
+   "i_iss": {
+    "id": "i_iss",
+    "type": "text",
+    "name": "Tx. ISS",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 634,
+     "y": 660,
+     "width": 120,
+     "height": 34
+    },
+    "content": "**Tx. ISS**\n{intimacoes.iss}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "2px",
+     "paddingRight": "2px",
+     "paddingTop": "2px",
+     "textAlign": "center"
+    }
+   },
+   "i_nat": {
+    "id": "i_nat",
+    "type": "text",
+    "name": "Natureza do título",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 694,
+     "width": 300,
+     "height": 36
+    },
+    "content": "**Natureza do Título**\n{intimacoes.natureza}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left"
+    }
+   },
+   "i_selo": {
+    "id": "i_selo",
+    "type": "text",
+    "name": "Selo eletrônico",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 730,
+     "width": 300,
+     "height": 52
+    },
+    "content": "**Selo Eletrônico:  Consulte este selo em: http://extrajudicial.tjgo.jus.br/selo**\n{intimacoes.selo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left"
+    }
+   },
+   "i_motivo": {
+    "id": "i_motivo",
+    "type": "text",
+    "name": "Motivo do apontamento",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 300,
+     "y": 694,
+     "width": 280,
+     "height": 88
+    },
+    "content": "**Motivo do Apontamento**\n{intimacoes.motivo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "left"
+    }
+   },
+   "i_vtit": {
+    "id": "i_vtit",
+    "type": "text",
+    "name": "Valor do título",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 580,
+     "y": 694,
+     "width": 174,
+     "height": 36
+    },
+    "content": "**Valor Título**\n{intimacoes.valor_titulo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "right"
+    }
+   },
+   "i_vcus": {
+    "id": "i_vcus",
+    "type": "text",
+    "name": "Valor total de custas",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 580,
+     "y": 730,
+     "width": 174,
+     "height": 36
+    },
+    "content": "**Valor Total Custas**\n{intimacoes.total_custas}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "right"
+    }
+   },
+   "i_desc": {
+    "id": "i_desc",
+    "type": "text",
+    "name": "Desconto",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 580,
+     "y": 766,
+     "width": 174,
+     "height": 36
+    },
+    "content": "**Desconto**\n{intimacoes.desconto}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "right"
+    }
+   },
+   "i_vtot": {
+    "id": "i_vtot",
+    "type": "text",
+    "name": "Total geral",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 580,
+     "y": 802,
+     "width": 174,
+     "height": 36
+    },
+    "content": "**Total Geral**\n{intimacoes.total_geral}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px",
+     "textAlign": "right"
+    }
+   },
+   "i_texto": {
+    "id": "i_texto",
+    "type": "text",
+    "name": "Texto da intimação",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 782,
+     "width": 580,
+     "height": 56
+    },
+    "content": "**De acordo com a lei 9.492 de 10/09/1997, intimo-o a vir no cartório, no prazo máximo de 3 (três) dias úteis, a partir da data de emissão desta, para efetuar o pagamento título acima, ou dar-me as razões por que não o faz, ficando desde já notificado de seu protesto, caso não o faça.**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "13px",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px"
+    }
+   },
+   "i_obs_box": {
+    "id": "i_obs_box",
+    "type": "text",
+    "name": "Quadro das observações",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 0,
+     "y": 840,
+     "width": 754,
+     "height": 30
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "border": "1px solid #000000"
+    }
+   },
+   "i_obs": {
+    "id": "i_obs",
+    "type": "text",
+    "name": "Observações",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 6,
+     "y": 845,
+     "width": 104,
+     "height": 20
+    },
+    "content": "**Observações :**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "20px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "i_horario": {
+    "id": "i_horario",
+    "type": "text",
+    "name": "Horário",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 100,
+     "y": 845,
+     "width": 300,
+     "height": 20
+    },
+    "content": "Horário : 09:00h às 17:00h",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "20px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "i_pgto": {
+    "id": "i_pgto",
+    "type": "text",
+    "name": "Forma de pagamento",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 520,
+     "y": 845,
+     "width": 228,
+     "height": 20
+    },
+    "content": "Pagamento em Dinheiro.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "20px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "i_qr": {
+    "id": "i_qr",
+    "type": "qr",
+    "name": "QR do selo (intimação)",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 30,
+     "y": 884,
+     "width": 64,
+     "height": 64
+    },
+    "content": "{intimacoes.selo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000"
+    },
+    "qrProps": {
+     "errorCorrection": "M",
+     "margin": 0
+    }
+   },
+   "i_escrevente": {
+    "id": "i_escrevente",
+    "type": "text",
+    "name": "Escrevente",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 300,
+     "y": 896,
+     "width": 400,
+     "height": 20
+    },
+    "content": "{cartorio.escrevente}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "20px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "i_ass_linha": {
+    "id": "i_ass_linha",
+    "type": "text",
+    "name": "Linha da assinatura",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 300,
+     "y": 924,
+     "width": 400,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    }
+   }
+  }
+ },
+ "mockData": {
+  "cartorio": [
+   {
+    "nome": "1º Tabelionato de Protesto de Títulos",
+    "denominacao": "1º Tabelionato de Protesto de Títulos de Goiânia",
+    "endereco": "Av. Goiás, 1500 - Setor Central - Goiânia/GO",
+    "contato": "(62) 3222-1111",
+    "email": "protesto@cartorioexemplo.com.br",
+    "escrevente": "Mariana Lopes",
+    "logo": ""
+   }
+  ],
+  "intimacoes": [
+   {
+    "numero_apontamento": "88121",
+    "numero_titulo": "DM-2026/001",
+    "natureza": "Duplicata Mercantil",
+    "devedor": "Empresa Alfa Ltda",
+    "endereco": "Rua das Acácias, 45 - Jardim América - Goiânia/GO",
+    "telefone": "(62) 99999-0000",
+    "credor": "Banco Exemplo S/A",
+    "cedente": "Comercial Beta Ltda",
+    "data_emissao": "15/09/2026",
+    "data_vencimento": "10/10/2026",
+    "data_apontamento": "20/10/2026",
+    "valor_titulo": "R$ 12.500,00",
+    "emolumentos": "R$ 214,60",
+    "fundos": "R$ 61,40",
+    "taxa_judiciaria": "R$ 18,30",
+    "taxa_intimacao": "R$ 14,00",
+    "iss": "R$ 10,70",
+    "desconto": "R$ 0,00",
+    "total_custas": "R$ 319,00",
+    "total_geral": "R$ 12.819,00",
+    "selo": "ABC12345-6",
+    "codigo_barras": "",
+    "motivo": "Falta de pagamento"
+   }
+  ]
+ }
+}

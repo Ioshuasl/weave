@@ -1,0 +1,36 @@
+{
+  "passo": 3,
+  "titulo": "Criar o bloco do instrumento",
+  "proximo": "Passo 4 — Cabeçalho do cartório",
+  "cenas": [
+    {
+      "id": "abertura",
+      "fala": "O Weave desenha um bloco para cada registro. Aqui, o bloco será um título protestado, ocupando a folha inteira. Como temos vários títulos, o Weave repete o bloco, uma folha para cada."
+    },
+    {
+      "id": "lista",
+      "fala": "Em Elementos, clique em Lista de registros. Um bloco aparece na folha."
+    },
+    {
+      "id": "fonte",
+      "fala": "No painel da direita, em Uma linha para cada, escolha instrumentos. O bloco novo vem ligado à primeira lista, então troque antes de criar os textos."
+    },
+    {
+      "id": "nome",
+      "fala": "Dê um nome claro ao bloco: Instrumento, um por folha."
+    },
+    {
+      "id": "tamanho",
+      "fala": "Em Posição e tamanho, preencha X zero, Y zero, largura setecentos e cinquenta e quatro e altura mil e setenta. O bloco passa a ocupar a folha inteira."
+    },
+    {
+      "id": "altura",
+      "fala": "Um detalhe importante: em Avançado, desligue Altura automática. Com ela ligada, o Weave estica cada elemento até a altura do bloco, e as caixas ficam desformadas no documento. Como vamos posicionar tudo manualmente, mantenha desligada."
+    },
+    {
+      "id": "fecho",
+      "fala": "Tudo o que colocarmos dentro deste bloco se repete para cada título. No próximo passo, vamos montar o cabeçalho."
+    }
+  ],
+  "id": "b03-criar-o-bloco"
+}

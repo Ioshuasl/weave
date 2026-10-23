@@ -1,0 +1,359 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ShareMode {
+  OFF
+  PUBLIC
+  MEMBERS
+}
+
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum AccountSegment {
+  CARTORIO
+  ADVOCACIA
+  CONTABILIDADE
+  VAREJO
+  CONSTRUCAO
+  MEI
+  EMPRESA
+  OUTRO
+}
+
+enum AccountType {
+  PERSONAL
+  COMPANY
+}
+
+enum MemberRole {
+  OWNER
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+enum MembershipStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum TagColor {
+  DEFAULT
+  GRAY
+  BROWN
+  ORANGE
+  YELLOW
+  GREEN
+  BLUE
+  PURPLE
+  PINK
+  RED
+}
+
+enum PlatformRole {
+  USER
+  SUPPORT
+}
+
+enum VersionSource {
+  MANUAL
+  ASSISTANT
+  RESTORE
+}
+
+model User {
+  id                    String                 @id @default(uuid())
+  email                 String                 @unique
+  passwordHash          String
+  name                  String
+  emailVerifiedAt       DateTime?
+  platformRole          PlatformRole           @default(USER)
+  username              String?                @unique
+  jobRole               String?
+  timezone              String                 @default("America/Sao_Paulo")
+  website               String?
+  bio                   String?
+  avatarFile            String?
+  mustChangePassword    Boolean                @default(false)
+  tempPasswordExpiresAt DateTime?
+  /// conta (empresa) que cadastrou este usuário com senha provisória; só ela pode redefinir a senha
+  managedByAccountId    String?
+  managedBy             Account?               @relation("ManagedUsers", fields: [managedByAccountId], references: [id], onDelete: SetNull)
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  memberships           Membership[]
+  refreshTokens         RefreshToken[]
+  invitationsSent       Invitation[]           @relation("InvitedBy")
+  templatesCreated      ReportTemplate[]
+  versionsAuthored      ReportVersion[]
+  assistantInteractions AssistantInteraction[]
+  submissionsSent       LibrarySubmission[]    @relation("SubmissionAuthor")
+  submissionsReviewed   LibrarySubmission[]    @relation("SubmissionReviewer")
+  lessonProgress        LessonProgress[]
+
+  @@map("users")
+}
+
+model Account {
+  id           String           @id @default(uuid())
+  type         AccountType
+  name         String
+  document     String?
+  /// ramo de atuação (opcional, informado no cadastro): usado para sugerir modelos da biblioteca
+  segment      AccountSegment?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  memberships  Membership[]
+  invitations  Invitation[]
+  templates    ReportTemplate[]
+  tags         Tag[]
+  managedUsers User[]           @relation("ManagedUsers")
+
+  @@map("accounts")
+}
+
+model Membership {
+  id        String           @id @default(uuid())
+  accountId String
+  userId    String
+  role      MemberRole
+  status    MembershipStatus @default(ACTIVE)
+  createdAt DateTime         @default(now())
+  account   Account          @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, userId])
+  @@index([userId])
+  @@map("memberships")
+}
+
+model Invitation {
+  id          String     @id @default(uuid())
+  accountId   String
+  email       String
+  role        MemberRole
+  tokenHash   String     @unique
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  revokedAt   DateTime?
+  invitedById String
+  createdAt   DateTime   @default(now())
+  account     Account    @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  invitedBy   User       @relation("InvitedBy", fields: [invitedById], references: [id])
+
+  @@index([accountId])
+  @@index([email])
+  @@map("invitations")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  userAgent String?
+  ip        String?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model ReportTemplate {
+  id                    String                 @id @default(uuid())
+  accountId             String?
+  name                  String
+  description           String?
+  isSystem              Boolean                @default(false)
+  currentVersion        Int                    @default(1)
+  /// nome do arquivo da miniatura (1ª folha com os dados fictícios padrão) em storage/previews
+  previewFile           String?
+  /// modelo de origem (a raiz da cadeia de cópias): agrupa cópias do mesmo modelo na galeria
+  originId              String?
+  origin                ReportTemplate?        @relation("TemplateCopies", fields: [originId], references: [id], onDelete: SetNull)
+  copies                ReportTemplate[]       @relation("TemplateCopies")
+  createdById           String?
+  /// compartilhamento por link: OFF (padrão), PUBLIC (qualquer pessoa) ou MEMBERS (só quem tem conta no Weave)
+  shareMode             ShareMode              @default(OFF)
+  /// o autor decide se quem abre o link pode criar a própria cópia ("Usar este modelo")
+  shareAllowCopy        Boolean                @default(false)
+  /// token do link; criado ao compartilhar pela 1ª vez e mantido (desligar/religar não muda a URL)
+  shareToken            String?                @unique
+  archivedAt            DateTime?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  account               Account?               @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  createdBy             User?                  @relation(fields: [createdById], references: [id])
+  versions              ReportVersion[]
+  mockDatasets          MockDataset[]
+  tags                  TemplateTag[]
+  assistantInteractions AssistantInteraction[]
+  submissions           LibrarySubmission[]    @relation("SubmissionSource")
+  publishedFrom         LibrarySubmission?     @relation("SubmissionPublished")
+
+  @@index([accountId, archivedAt])
+  @@index([isSystem])
+  @@map("report_templates")
+}
+
+/// Pedido para publicar um modelo na Biblioteca. Guarda uma cópia congelada (documento + dados de exemplo)
+/// do que o suporte revisou; edições posteriores do autor não mudam o que foi avaliado.
+model LibrarySubmission {
+  id                  String           @id @default(uuid())
+  templateId          String
+  accountId           String
+  submittedById       String
+  status              SubmissionStatus @default(PENDING)
+  name                String
+  description         String?
+  segment             AccountSegment?
+  /// recado do autor para quem revisa
+  note                String?
+  versionNumber       Int
+  document            Json
+  mockDatasetName     String?
+  mockData            Json?
+  reviewNote          String?
+  reviewedById        String?
+  reviewedAt          DateTime?
+  /// modelo criado na Biblioteca ao aprovar
+  publishedTemplateId String?          @unique
+  createdAt           DateTime         @default(now())
+  template            ReportTemplate   @relation("SubmissionSource", fields: [templateId], references: [id], onDelete: Cascade)
+  publishedTemplate   ReportTemplate?  @relation("SubmissionPublished", fields: [publishedTemplateId], references: [id], onDelete: SetNull)
+  submittedBy         User             @relation("SubmissionAuthor", fields: [submittedById], references: [id])
+  reviewedBy          User?            @relation("SubmissionReviewer", fields: [reviewedById], references: [id])
+
+  @@index([status, createdAt])
+  @@index([templateId, createdAt])
+  @@map("library_submissions")
+}
+
+model ReportVersion {
+  id            String         @id @default(uuid())
+  templateId    String
+  number        Int
+  document      Json
+  changeSummary String?
+  source        VersionSource  @default(MANUAL)
+  authorId      String?
+  createdAt     DateTime       @default(now())
+  template      ReportTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  author        User?          @relation(fields: [authorId], references: [id])
+
+  @@unique([templateId, number])
+  @@map("report_versions")
+}
+
+model MockDataset {
+  id         String         @id @default(uuid())
+  templateId String
+  name       String
+  data       Json
+  isDefault  Boolean        @default(false)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  template   ReportTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@index([templateId])
+  @@map("mock_datasets")
+}
+
+model AssistantInteraction {
+  id         String         @id @default(uuid())
+  templateId String
+  accountId  String
+  userId     String
+  sessionKey String
+  request    String
+  message    String
+  actions    Json
+  kind       String
+  usage      Json?
+  createdAt  DateTime       @default(now())
+  template   ReportTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  user       User           @relation(fields: [userId], references: [id])
+
+  @@index([templateId, createdAt])
+  @@map("assistant_interactions")
+}
+
+model TrainingTrack {
+  id          String           @id @default(uuid())
+  title       String
+  description String?
+  position    Int              @default(0)
+  published   Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  lessons     TrainingLesson[]
+
+  @@map("training_tracks")
+}
+
+model TrainingLesson {
+  id          String           @id @default(uuid())
+  trackId     String
+  title       String
+  summary     String?
+  contentMd   String           @default("")
+  videoUrl    String?
+  durationMin Int?
+  position    Int              @default(0)
+  published   Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  track       TrainingTrack    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  progress    LessonProgress[]
+
+  @@index([trackId, position])
+  @@map("training_lessons")
+}
+
+model LessonProgress {
+  userId      String
+  lessonId    String
+  completedAt DateTime       @default(now())
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      TrainingLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@id([userId, lessonId])
+  @@map("lesson_progress")
+}
+
+model Tag {
+  id        String        @id @default(uuid())
+  /// null = tag do sistema (mantida pelo suporte, visível para todas as contas)
+  accountId String?
+  name      String
+  color     TagColor      @default(GRAY)
+  createdAt DateTime      @default(now())
+  account   Account?      @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  templates TemplateTag[]
+
+  @@index([accountId])
+  @@map("tags")
+}
+
+model TemplateTag {
+  templateId String
+  tagId      String
+  template   ReportTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  tag        Tag            @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([templateId, tagId])
+  @@index([tagId])
+  @@map("template_tags")
+}

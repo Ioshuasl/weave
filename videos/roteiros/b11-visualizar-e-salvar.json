@@ -1,0 +1,32 @@
+{
+  "passo": 11,
+  "titulo": "Visualizar, ajustar e salvar",
+  "proximo": "Pronto! Compare com o modelo Instrumento - Protesto da Biblioteca",
+  "cenas": [
+    {
+      "id": "abertura",
+      "fala": "Chegamos ao último passo: conferir o resultado, ajustar o que for preciso e salvar."
+    },
+    {
+      "id": "visualizar",
+      "fala": "Clique em Visualizar. O Weave gera uma folha para cada título, e o segundo traz os dois devedores."
+    },
+    {
+      "id": "campos",
+      "fala": "Volte ao editor e alterne entre Dados e Campos, no alto da folha. Em Campos, você vê qual campo cada texto usa; em Dados, o resultado."
+    },
+    {
+      "id": "salvar",
+      "fala": "Salve com Control S. O topo muda para Salvo e uma nova versão entra no Histórico."
+    },
+    {
+      "id": "modelo",
+      "fala": "Ao voltar para a página do modelo, a miniatura já mostra o documento. A partir daqui, você pode compartilhar o modelo ou compará-lo com o Instrumento de Protesto da Biblioteca."
+    },
+    {
+      "id": "fecho",
+      "fala": "Parabéns! Você montou um instrumento de protesto do zero."
+    }
+  ],
+  "id": "b11-visualizar-e-salvar"
+}

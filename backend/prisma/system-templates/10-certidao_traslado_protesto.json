@@ -1,0 +1,1047 @@
+{
+ "order": 10,
+ "name": "Certidão Traslado - Protesto",
+ "description": "Certidão de traslado do instrumento de protesto",
+ "tags": [
+  "Protesto",
+  "Certidão/Instrumento"
+ ],
+ "sourceSystem": 13,
+ "sourceFile": "20261021100100_seed_g_config_relatorio_certidao_traslado_protesto.sql",
+ "report": {
+  "id": "certidao_traslado_protesto",
+  "name": "Certidão Traslado - Protesto",
+  "pages": [
+   {
+    "id": "page_1",
+    "name": "Certidão",
+    "presetId": "a4-portrait",
+    "profile": "document",
+    "width": 794,
+    "height": 1123,
+    "margins": {
+     "top": 20,
+     "right": 20,
+     "bottom": 20,
+     "left": 20
+    },
+    "bands": [
+     "band_folha"
+    ]
+   }
+  ],
+  "bands": {
+   "band_folha": {
+    "id": "band_folha",
+    "type": "masterData",
+    "name": "Certidão de traslado de protesto (uma folha por título)",
+    "height": 1070,
+    "dataSource": "certidoes",
+    "components": [
+     "c_logo",
+     "c_cab",
+     "t_linha",
+     "t_titulo",
+     "t_certifico",
+     "t_saibam",
+     "cr_t",
+     "cr_l1",
+     "cr_l2",
+     "cr_r0",
+     "cr_v0",
+     "cr_r1",
+     "cr_v1",
+     "cr_r2",
+     "cr_v2",
+     "dv_t",
+     "dv_l1",
+     "dv_l2",
+     "dv_lista",
+     "tt_t",
+     "tt_l1",
+     "tt_l2",
+     "tt_r0",
+     "tt_v0",
+     "tt_r1",
+     "tt_v1",
+     "tt_r2",
+     "tt_v2",
+     "tt_r3",
+     "tt_v3",
+     "tt_r4",
+     "tt_v4",
+     "tt_r5",
+     "tt_v5",
+     "p_apontado",
+     "p_edital",
+     "p_pelo",
+     "p_era",
+     "p_eu",
+     "p_local",
+     "p_escrevente",
+     "s_qr",
+     "s_selo"
+    ],
+    "keepTogether": true,
+    "bandRect": {
+     "x": 0,
+     "y": 0,
+     "width": 754,
+     "height": 1070
+    }
+   }
+  },
+  "components": {
+   "c_logo": {
+    "id": "c_logo",
+    "type": "image",
+    "name": "Brasão",
+    "rect": {
+     "x": 30,
+     "y": 14,
+     "width": 84,
+     "height": 84
+    },
+    "content": "{cartorio.logo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000"
+    },
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "center",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    },
+    "parentId": "band_folha"
+   },
+   "c_cab": {
+    "id": "c_cab",
+    "type": "text",
+    "name": "Cabeçalho do cartório",
+    "rect": {
+     "x": 125,
+     "y": 14,
+     "width": 500,
+     "height": 84
+    },
+    "content": "REPÚBLICA FEDERATIVA DO BRASIL\n{cartorio.estado}\n{cartorio.denominacao}\n{cartorio.cidade} - {cartorio.uf}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "15px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "t_linha": {
+    "id": "t_linha",
+    "type": "text",
+    "name": "Linha do cabeçalho",
+    "rect": {
+     "x": 0,
+     "y": 112,
+     "width": 754,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    },
+    "parentId": "band_folha"
+   },
+   "t_titulo": {
+    "id": "t_titulo",
+    "type": "text",
+    "name": "Título",
+    "rect": {
+     "x": 0,
+     "y": 126,
+     "width": 754,
+     "height": 22
+    },
+    "content": "CERTIDÃO DE INSTRUMENTO DE PROTESTO",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "15px",
+     "lineHeight": "19px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap",
+     "fontWeight": "700"
+    },
+    "parentId": "band_folha"
+   },
+   "t_certifico": {
+    "id": "t_certifico",
+    "type": "text",
+    "name": "Certifico",
+    "rect": {
+     "x": 0,
+     "y": 158,
+     "width": 754,
+     "height": 32
+    },
+    "content": "Certifico a requerimento verbal da parte interessada, que revendo em Cartório os livros de instrumento de Protesto, no Livro de nº. {certidoes.livro_numero}, às fls. {certidoes.folha}, verifiquei constar o seguinte protesto:",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "textAlign": "justify",
+     "whiteSpace": "pre-wrap",
+     "textIndent": "36px"
+    },
+    "parentId": "band_folha"
+   },
+   "t_saibam": {
+    "id": "t_saibam",
+    "type": "text",
+    "name": "Saibam",
+    "rect": {
+     "x": 0,
+     "y": 198,
+     "width": 754,
+     "height": 54
+    },
+    "content": "Saibam, quantos este público instrumento de protesto bastante virem que, aos {certidoes.apresentacao_dia} dias do mês de {certidoes.apresentacao_mes} do ano de {certidoes.apresentacao_ano}, nesta cidade de {cartorio.cidade} - {cartorio.uf}, em cartório compareceu o representante {certidoes.apresentante} e me apresentou para ser apontado e depois protestado por {certidoes.motivo}, o título cujas características se seguem:",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "textAlign": "justify",
+     "whiteSpace": "pre-wrap",
+     "textIndent": "36px"
+    },
+    "parentId": "band_folha"
+   },
+   "cr_t": {
+    "id": "cr_t",
+    "type": "text",
+    "name": "Dados do Credor",
+    "rect": {
+     "x": 0,
+     "y": 262,
+     "width": 754,
+     "height": 14
+    },
+    "content": "**Dados do Credor**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "cr_l1": {
+    "id": "cr_l1",
+    "type": "text",
+    "name": "Dados do Credor (linha superior)",
+    "rect": {
+     "x": 0,
+     "y": 262,
+     "width": 754,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    },
+    "parentId": "band_folha"
+   },
+   "cr_l2": {
+    "id": "cr_l2",
+    "type": "text",
+    "name": "Dados do Credor (linha inferior)",
+    "rect": {
+     "x": 0,
+     "y": 276,
+     "width": 754,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    },
+    "parentId": "band_folha"
+   },
+   "cr_r0": {
+    "id": "cr_r0",
+    "type": "text",
+    "name": "Credor (a): (rótulo)",
+    "rect": {
+     "x": 0,
+     "y": 280,
+     "width": 130,
+     "height": 15
+    },
+    "content": "**Credor (a):**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "cr_v0": {
+    "id": "cr_v0",
+    "type": "text",
+    "name": "Credor (a):",
+    "rect": {
+     "x": 138,
+     "y": 280,
+     "width": 616,
+     "height": 15
+    },
+    "content": "{certidoes.credor}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "cr_r1": {
+    "id": "cr_r1",
+    "type": "text",
+    "name": "CPF/CNPJ : (rótulo)",
+    "rect": {
+     "x": 0,
+     "y": 296,
+     "width": 130,
+     "height": 15
+    },
+    "content": "**CPF/CNPJ :**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "cr_v1": {
+    "id": "cr_v1",
+    "type": "text",
+    "name": "CPF/CNPJ :",
+    "rect": {
+     "x": 138,
+     "y": 296,
+     "width": 616,
+     "height": 15
+    },
+    "content": "{certidoes.credor_documento}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "cr_r2": {
+    "id": "cr_r2",
+    "type": "text",
+    "name": "Endereço : (rótulo)",
+    "rect": {
+     "x": 0,
+     "y": 312,
+     "width": 130,
+     "height": 15
+    },
+    "content": "**Endereço :**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "cr_v2": {
+    "id": "cr_v2",
+    "type": "text",
+    "name": "Endereço :",
+    "rect": {
+     "x": 138,
+     "y": 312,
+     "width": 616,
+     "height": 15
+    },
+    "content": "{certidoes.credor_endereco}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "dv_t": {
+    "id": "dv_t",
+    "type": "text",
+    "name": "Dados do Devedor",
+    "rect": {
+     "x": 0,
+     "y": 334,
+     "width": 754,
+     "height": 14
+    },
+    "content": "**Dados do Devedor**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "dv_l1": {
+    "id": "dv_l1",
+    "type": "text",
+    "name": "Dados do Devedor (linha superior)",
+    "rect": {
+     "x": 0,
+     "y": 334,
+     "width": 754,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    },
+    "parentId": "band_folha"
+   },
+   "dv_l2": {
+    "id": "dv_l2",
+    "type": "text",
+    "name": "Dados do Devedor (linha inferior)",
+    "rect": {
+     "x": 0,
+     "y": 348,
+     "width": 754,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    },
+    "parentId": "band_folha"
+   },
+   "dv_lista": {
+    "id": "dv_lista",
+    "type": "text",
+    "name": "Devedores",
+    "rect": {
+     "x": 0,
+     "y": 352,
+     "width": 754,
+     "height": 104
+    },
+    "content": "**Devedor (a):** {devedores.nome}\n**CPF/CNPJ :** {devedores.documento}\n**Endereço :** {devedores.endereco}\n",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "15px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap",
+     "paddingLeft": "40px",
+     "paddingRight": "40px",
+     "paddingTop": "2px"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_t": {
+    "id": "tt_t",
+    "type": "text",
+    "name": "Dados do Título",
+    "rect": {
+     "x": 0,
+     "y": 462,
+     "width": 754,
+     "height": 14
+    },
+    "content": "**Dados do Título**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_l1": {
+    "id": "tt_l1",
+    "type": "text",
+    "name": "Dados do Título (linha superior)",
+    "rect": {
+     "x": 0,
+     "y": 462,
+     "width": 754,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_l2": {
+    "id": "tt_l2",
+    "type": "text",
+    "name": "Dados do Título (linha inferior)",
+    "rect": {
+     "x": 0,
+     "y": 476,
+     "width": 754,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_r0": {
+    "id": "tt_r0",
+    "type": "text",
+    "name": "Espécie do Título : (rótulo)",
+    "rect": {
+     "x": 0,
+     "y": 480,
+     "width": 130,
+     "height": 15
+    },
+    "content": "**Espécie do Título :**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_v0": {
+    "id": "tt_v0",
+    "type": "text",
+    "name": "Espécie do Título :",
+    "rect": {
+     "x": 138,
+     "y": 480,
+     "width": 616,
+     "height": 15
+    },
+    "content": "{certidoes.natureza}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_r1": {
+    "id": "tt_r1",
+    "type": "text",
+    "name": "Nº do Documento : (rótulo)",
+    "rect": {
+     "x": 0,
+     "y": 496,
+     "width": 130,
+     "height": 15
+    },
+    "content": "**Nº do Documento :**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_v1": {
+    "id": "tt_v1",
+    "type": "text",
+    "name": "Nº do Documento :",
+    "rect": {
+     "x": 138,
+     "y": 496,
+     "width": 616,
+     "height": 15
+    },
+    "content": "{certidoes.numero_titulo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_r2": {
+    "id": "tt_r2",
+    "type": "text",
+    "name": "Data de Emissão : (rótulo)",
+    "rect": {
+     "x": 0,
+     "y": 512,
+     "width": 130,
+     "height": 15
+    },
+    "content": "**Data de Emissão :**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_v2": {
+    "id": "tt_v2",
+    "type": "text",
+    "name": "Data de Emissão :",
+    "rect": {
+     "x": 138,
+     "y": 512,
+     "width": 616,
+     "height": 15
+    },
+    "content": "{certidoes.data_emissao}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_r3": {
+    "id": "tt_r3",
+    "type": "text",
+    "name": "Vencimento : (rótulo)",
+    "rect": {
+     "x": 0,
+     "y": 528,
+     "width": 130,
+     "height": 15
+    },
+    "content": "**Vencimento :**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_v3": {
+    "id": "tt_v3",
+    "type": "text",
+    "name": "Vencimento :",
+    "rect": {
+     "x": 138,
+     "y": 528,
+     "width": 616,
+     "height": 15
+    },
+    "content": "{certidoes.data_vencimento}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_r4": {
+    "id": "tt_r4",
+    "type": "text",
+    "name": "Valor : (rótulo)",
+    "rect": {
+     "x": 0,
+     "y": 544,
+     "width": 130,
+     "height": 15
+    },
+    "content": "**Valor :**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_v4": {
+    "id": "tt_v4",
+    "type": "text",
+    "name": "Valor :",
+    "rect": {
+     "x": 138,
+     "y": 544,
+     "width": 616,
+     "height": 15
+    },
+    "content": "R$ {certidoes.valor_titulo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_r5": {
+    "id": "tt_r5",
+    "type": "text",
+    "name": "Data do Protesto : (rótulo)",
+    "rect": {
+     "x": 0,
+     "y": 560,
+     "width": 130,
+     "height": 15
+    },
+    "content": "**Data do Protesto :**",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "tt_v5": {
+    "id": "tt_v5",
+    "type": "text",
+    "name": "Data do Protesto :",
+    "rect": {
+     "x": 138,
+     "y": 560,
+     "width": 616,
+     "height": 15
+    },
+    "content": "{certidoes.data_protesto}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "p_apontado": {
+    "id": "p_apontado",
+    "type": "text",
+    "name": "Apontado",
+    "rect": {
+     "x": 0,
+     "y": 586,
+     "width": 754,
+     "height": 16
+    },
+    "content": "Apontado às folhas {certidoes.apontamento_folha} do Livro {certidoes.apontamento_livro} sob nº. de ordem {certidoes.numero_apontamento} em {certidoes.data_apontamento}.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "p_edital": {
+    "id": "p_edital",
+    "type": "text",
+    "name": "Edital",
+    "rect": {
+     "x": 0,
+     "y": 616,
+     "width": 754,
+     "height": 56
+    },
+    "content": "Certifico e dou fé que intimei o(a) devedor(a) por Edital, sendo os mesmos afixados no placar desse Cartório de {cartorio.cidade} - {cartorio.uf}, neste Estado, para o prazo de 03 (três) dias úteis, vir resgatar o título ou dar razão por que não o fazia; transcorrido o prazo sem que nada fosse manifestado, foi lavrado e registrado o competente protesto na forma da lei.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "textAlign": "justify",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "p_pelo": {
+    "id": "p_pelo",
+    "type": "text",
+    "name": "Pelo que",
+    "rect": {
+     "x": 0,
+     "y": 682,
+     "width": 754,
+     "height": 44
+    },
+    "content": "Pelo que, para garantia do(a) credor(a), digitei o presente Instrumento de Protesto que vai por mim datado e assinado, do que dou fé. {cartorio.cidade} - {cartorio.uf}, {certidoes.data_protesto}. (as) {cartorio.titular} - Tabelião.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "13px",
+     "textAlign": "justify",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "p_era": {
+    "id": "p_era",
+    "type": "text",
+    "name": "Era o que continha",
+    "rect": {
+     "x": 0,
+     "y": 732,
+     "width": 754,
+     "height": 16
+    },
+    "content": "Era o que continha, o que me foi pedido para certificar, do que dou fé.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "p_eu": {
+    "id": "p_eu",
+    "type": "text",
+    "name": "Eu digitei",
+    "rect": {
+     "x": 0,
+     "y": 762,
+     "width": 420,
+     "height": 16
+    },
+    "content": "Eu, ________________ a digitei, dato e assino.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "p_local": {
+    "id": "p_local",
+    "type": "text",
+    "name": "Local e data",
+    "rect": {
+     "x": 420,
+     "y": 762,
+     "width": 334,
+     "height": 16
+    },
+    "content": "{certidoes.local_data}.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "p_escrevente": {
+    "id": "p_escrevente",
+    "type": "text",
+    "name": "Escrevente",
+    "rect": {
+     "x": 227,
+     "y": 802,
+     "width": 300,
+     "height": 32
+    },
+    "content": "{cartorio.escrevente}\nESCREVENTE",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "10px",
+     "lineHeight": "12px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "s_qr": {
+    "id": "s_qr",
+    "type": "qr",
+    "name": "QR do selo",
+    "rect": {
+     "x": 600,
+     "y": 858,
+     "width": 84,
+     "height": 84
+    },
+    "content": "{certidoes.selo_url}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000"
+    },
+    "qrProps": {
+     "errorCorrection": "M",
+     "margin": 0
+    },
+    "parentId": "band_folha"
+   },
+   "s_selo": {
+    "id": "s_selo",
+    "type": "text",
+    "name": "Selo eletrônico",
+    "rect": {
+     "x": 40,
+     "y": 858,
+     "width": 300,
+     "height": 84
+    },
+    "content": "**Poder Judiciário do Estado de Goiás**\n**Selo Eletrônico de Fiscalização**\n{certidoes.selo}\nConsulte esse selo em\nhttp://extrajudicial.tjgo.jus.br/selo",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "9px",
+     "lineHeight": "12px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap",
+     "border": "1px solid #000000",
+     "paddingLeft": "3px",
+     "paddingRight": "3px",
+     "paddingTop": "2px"
+    },
+    "parentId": "band_folha"
+   }
+  }
+ },
+ "mockData": {
+  "cartorio": [
+   {
+    "titulo": "Livro de Protocolos",
+    "nome": "1º Tabelionato de Protesto de Títulos",
+    "denominacao": "1º Tabelionato de Protesto de Títulos de Goiânia",
+    "titular": "Carlos Almeida",
+    "estado": "ESTADO DE GOIÁS",
+    "endereco": "Av. Goiás, 1500",
+    "bairro": "Setor Central",
+    "cep": "74000-000",
+    "fone": "(62) 3222-1111",
+    "email": "protesto@cartorioexemplo.com.br",
+    "cidade": "Goiânia",
+    "uf": "GO",
+    "escrevente": "Mariana Lopes",
+    "logo": ""
+   }
+  ],
+  "certidoes": [
+   {
+    "numero_apontamento": "88121",
+    "numero_titulo": "DM-2026/001",
+    "natureza": "Duplicata Mercantil",
+    "apresentante": "Banco Exemplo S/A",
+    "sacador_completo": "Comercial Beta Ltda - CNPJ 11.222.333/0001-44",
+    "data_emissao": "15/09/2026",
+    "data_vencimento": "10/10/2026",
+    "data_apontamento": "20/10/2026",
+    "data_distribuicao": "20/10/2026",
+    "data_impressao": "22/10/2026",
+    "valor_titulo": "R$ 12.500,00",
+    "motivo": "Falta de pagamento",
+    "selo": "ABC12345-6",
+    "selo_url": "https://selo.exemplo.gov.br/consulta/ABC123456",
+    "livro_numero": "45",
+    "folha": "120",
+    "livro_letra": "A",
+    "apresentacao_dia": "20",
+    "apresentacao_mes": "outubro",
+    "apresentacao_ano": "2026",
+    "data_protesto": "24/10/2026",
+    "credor": "Banco Exemplo S/A",
+    "credor_documento": "CNPJ 00.111.222/0001-33",
+    "credor_endereco": "Av. Paulista, 1000 - São Paulo/SP",
+    "local_data": "Goiânia, 22 de outubro de 2026",
+    "devedores": [
+     {
+      "nome": "Empresa Alfa Ltda",
+      "documento": "CNPJ 33.444.555/0001-66",
+      "endereco": "Rua das Acácias, 45 - Goiânia/GO"
+     }
+    ]
+   }
+  ]
+ }
+}

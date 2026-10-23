@@ -1,0 +1,28 @@
+{
+  "passo": 6,
+  "titulo": "Título e texto corrido",
+  "proximo": "Passo 7 — Quadro com os dados do título",
+  "cenas": [
+    {
+      "id": "abertura",
+      "fala": "Agora vamos ao título do documento e ao parágrafo principal, que mistura texto fixo com campos do registro."
+    },
+    {
+      "id": "titulo",
+      "fala": "Crie um texto com INSTRUMENTO DE PROTESTO, tamanho dezesseis, alinhado ao centro, ocupando toda a largura: X zero, Y cento e vinte e oito, largura setecentos e catorze e altura vinte e dois."
+    },
+    {
+      "id": "paragrafo",
+      "fala": "Em um novo texto, digite o parágrafo e, nos pontos variáveis, escreva o campo entre chaves, como dia de apresentação, mês, ano, cartório, apresentante e tipo de protesto. O Weave transforma cada trecho em um campo."
+    },
+    {
+      "id": "ajuste",
+      "fala": "Deixe o tamanho onze, o alinhamento justificado e posicione em X zero, Y cento e cinquenta e oito, com largura setecentos e catorze e altura sessenta e seis."
+    },
+    {
+      "id": "fecho",
+      "fala": "Note que o texto já mostra os dados do primeiro título. No próximo passo, vamos montar o quadro com as informações do título."
+    }
+  ],
+  "id": "b06-titulo-e-texto"
+}

@@ -1,0 +1,131 @@
+@import 'tailwindcss';
+@import '../packages/weave/styles/weave.css';
+
+/* Tokens oficiais — weave/design-weave.md (v1.0). Não usar valores fora destes tokens. */
+@theme {
+  --font-sans: var(--font-inter), Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+
+  /* 2.1 Primárias */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-active: #1e40af;
+  --color-primary-subtle: #eff6ff;
+  --color-primary-border: #bfdbfe;
+  --color-primary-fg: #ffffff;
+
+  /* 2.2 Superfícies */
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f1f5f9;
+  --color-surface-tertiary: #e2e8f0;
+  --color-surface-hover: #f8fafc;
+  --color-surface-selected: #eff6ff;
+
+  /* Palco da galeria: fundo sobre o qual a "folha" do relatório (branca) se destaca */
+  --color-stage: #e2e8f0;
+  --color-stage-brand: #dbeafe;
+
+  /* 2.3 Textos */
+  --color-foreground: #0f172a;
+  --color-fg-secondary: #475569;
+  --color-fg-muted: #64748b;
+  --color-placeholder: #94a3b8;
+  --color-fg-inverse: #ffffff;
+
+  /* 2.4 Bordas e foco */
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  --color-input-border: #cbd5e1;
+  --color-ring: #3b82f6;
+
+  /* 2.5 Semânticas */
+  --color-success: #16a34a;
+  --color-success-subtle: #f0fdf4;
+  --color-warning: #d97706;
+  --color-warning-subtle: #fffbeb;
+  --color-destructive: #dc2626;
+  --color-destructive-subtle: #fef2f2;
+  --color-info: #0284c7;
+  --color-info-subtle: #f0f9ff;
+
+  /* Cores de tags (conteúdo do usuário, estilo Notion): fundo suave + texto escuro com contraste AA */
+  --color-tag-default: #f1f5f9;
+  --color-tag-default-fg: #475569;
+  --color-tag-gray: #e2e8f0;
+  --color-tag-gray-fg: #334155;
+  --color-tag-brown: #eaddd2;
+  --color-tag-brown-fg: #5b3a29;
+  --color-tag-orange: #fde4cc;
+  --color-tag-orange-fg: #9a4a0b;
+  --color-tag-yellow: #fcefb4;
+  --color-tag-yellow-fg: #7a5a00;
+  --color-tag-green: #d5f0dd;
+  --color-tag-green-fg: #1e6b3a;
+  --color-tag-blue: #d3e5f9;
+  --color-tag-blue-fg: #1d4f91;
+  --color-tag-purple: #e6daf5;
+  --color-tag-purple-fg: #5b2c8f;
+  --color-tag-pink: #f8d8e8;
+  --color-tag-pink-fg: #9b2c64;
+  --color-tag-red: #fad4d0;
+  --color-tag-red-fg: #9b2318;
+
+  /* 3.2 Escala tipográfica */
+  --text-xs: 12px;
+  --text-xs--line-height: 16px;
+  --text-sm: 13px;
+  --text-sm--line-height: 20px;
+  --text-base: 14px;
+  --text-base--line-height: 20px;
+  --text-md: 16px;
+  --text-md--line-height: 24px;
+  --text-lg: 18px;
+  --text-lg--line-height: 28px;
+  --text-xl: 20px;
+  --text-xl--line-height: 28px;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 32px;
+  --text-3xl: 30px;
+  --text-3xl--line-height: 36px;
+
+  /* 4.2 Raios */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  /* 4.3 Sombras */
+  --shadow-xs: 0 1px 2px rgb(15 23 42 / 4%);
+  --shadow-sm: 0 1px 3px rgb(15 23 42 / 8%);
+  --shadow-md: 0 4px 12px rgb(15 23 42 / 10%);
+  --shadow-lg: 0 12px 32px rgb(15 23 42 / 14%);
+
+  /* 5.10 Movimento */
+  --ease-weave: cubic-bezier(0, 0, 0.2, 1);
+  --default-transition-duration: 180ms;
+  --default-transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-size: 14px;
+  }
+  body {
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

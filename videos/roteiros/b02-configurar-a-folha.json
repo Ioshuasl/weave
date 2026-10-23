@@ -1,0 +1,28 @@
+{
+  "passo": 2,
+  "titulo": "Configurar a folha",
+  "proximo": "Passo 3 — Criar o bloco do instrumento",
+  "cenas": [
+    {
+      "id": "abertura",
+      "fala": "Neste passo, vamos configurar a folha: o tamanho do papel e as margens."
+    },
+    {
+      "id": "pagina",
+      "fala": "Clique na folha vazia, fora de qualquer elemento. O painel da direita mostra as propriedades da página."
+    },
+    {
+      "id": "tamanho",
+      "fala": "Em Tamanho da folha, escolha A4 retrato, que é o formato do instrumento de protesto."
+    },
+    {
+      "id": "margens",
+      "fala": "Agora, as margens. Vamos deixar meio centímetro nos quatro lados. As linhas tracejadas na folha mostram a área onde o conteúdo cabe."
+    },
+    {
+      "id": "fecho",
+      "fala": "A área útil ficou com setecentos e cinquenta e quatro por mil e oitenta e três pixels. No próximo passo, vamos criar o bloco que se repete para cada título."
+    }
+  ],
+  "id": "b02-configurar-a-folha"
+}

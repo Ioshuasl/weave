@@ -1,0 +1,36 @@
+{
+  "passo": 4,
+  "titulo": "Cabeçalho do cartório",
+  "proximo": "Passo 5 — Caixinhas Tipo, Livro e Página",
+  "cenas": [
+    {
+      "id": "abertura",
+      "fala": "Vamos montar o cabeçalho: o brasão do cartório e o texto com o nome e a cidade."
+    },
+    {
+      "id": "imagem",
+      "fala": "Com o bloco selecionado, clique em Imagem. No painel, em Ou usar uma imagem dos dados, escolha cartório, logo. Assim, cada cartório mostra a sua própria imagem."
+    },
+    {
+      "id": "imagemPos",
+      "fala": "Posicione a imagem: X vinte e oito, Y catorze, largura oitenta e altura oitenta e quatro. Como a logo de exemplo está vazia, o Weave reserva o espaço com Sem imagem."
+    },
+    {
+      "id": "texto",
+      "fala": "Agora, o texto. Com o bloco selecionado, clique em Texto e depois em Editar texto. Digite a primeira linha do cabeçalho: República Federativa do Brasil."
+    },
+    {
+      "id": "campos",
+      "fala": "Para inserir um campo, clique nele na lista à direita, e ele entra na posição do cursor. Insira o estado e a denominação do cartório, e na última linha a cidade e a UF. Também dá para digitar abre-chaves e escolher na lista."
+    },
+    {
+      "id": "textoPos",
+      "fala": "Salve o texto. Em Aparência, deixe o tamanho doze e o alinhamento centralizado. Em Posição, use X cento e dezoito, Y catorze, largura trezentos e sessenta e altura oitenta e quatro."
+    },
+    {
+      "id": "salvar",
+      "fala": "Clique em Salvar. O cabeçalho está pronto e, no próximo passo, vamos criar as caixinhas de tipo, livro e página."
+    }
+  ],
+  "id": "b04-cabecalho"
+}

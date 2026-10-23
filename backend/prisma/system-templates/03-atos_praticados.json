@@ -1,0 +1,1278 @@
+{
+ "order": 3,
+ "name": "Atos Praticados",
+ "description": "Livro de atos do período, por natureza e selo",
+ "tags": [
+  "Notariado",
+  "Relatório"
+ ],
+ "sourceSystem": 2,
+ "sourceFile": "20261006120000_seed_g_config_relatorio_atos_praticados.sql",
+ "report": {
+  "id": "atos_praticados",
+  "name": "Atos Praticados",
+  "pages": [
+   {
+    "id": "page_1",
+    "name": "Atos Praticados (Weave)",
+    "presetId": "a4-portrait",
+    "profile": "document",
+    "width": 794,
+    "height": 1123,
+    "margins": {
+     "top": 20,
+     "right": 20,
+     "bottom": 20,
+     "left": 20
+    },
+    "bands": [
+     "band_cab",
+     "band_bloco",
+     "band_sistema",
+     "band_natureza",
+     "band_ato",
+     "band_selo",
+     "band_total_ato",
+     "band_total_bloco",
+     "band_resumo"
+    ]
+   }
+  ],
+  "bands": {
+   "band_cab": {
+    "id": "band_cab",
+    "type": "pageHeader",
+    "name": "Cabeçalho da página",
+    "height": 116,
+    "bandRect": {
+     "x": 0,
+     "y": 0,
+     "width": 754,
+     "height": 116
+    },
+    "components": [
+     "c_logo",
+     "c2",
+     "c3",
+     "c4",
+     "c5",
+     "c6",
+     "c7",
+     "c8",
+     "c9",
+     "c10",
+     "c11",
+     "c12",
+     "c13",
+     "c14",
+     "c15",
+     "c16",
+     "c17"
+    ]
+   },
+   "band_bloco": {
+    "id": "band_bloco",
+    "type": "masterData",
+    "name": "Bloco por natureza (agrupador, sem altura própria)",
+    "height": 20,
+    "bandRect": {
+     "x": 0,
+     "y": 120,
+     "width": 754,
+     "height": 20
+    },
+    "components": [],
+    "dataSource": "blocos"
+   },
+   "band_sistema": {
+    "id": "band_sistema",
+    "type": "detailData",
+    "name": "Título do sistema (só quando o sistema muda)",
+    "height": 28,
+    "bandRect": {
+     "x": 0,
+     "y": 144,
+     "width": 754,
+     "height": 28
+    },
+    "components": [
+     "c18"
+    ],
+    "dataSource": "blocos",
+    "link": {
+     "parentBandId": "band_bloco",
+     "placement": "above"
+    },
+    "showWhen": {
+     "field": "mostra_sistema",
+     "operator": "eq",
+     "value": "S"
+    }
+   },
+   "band_natureza": {
+    "id": "band_natureza",
+    "type": "detailData",
+    "name": "Natureza do ato",
+    "height": 24,
+    "bandRect": {
+     "x": 0,
+     "y": 176,
+     "width": 754,
+     "height": 24
+    },
+    "components": [
+     "c19"
+    ],
+    "dataSource": "blocos",
+    "autoHeight": true,
+    "link": {
+     "parentBandId": "band_bloco",
+     "placement": "above"
+    }
+   },
+   "band_ato": {
+    "id": "band_ato",
+    "type": "detailData",
+    "name": "Ato (protocolo, data e requerente)",
+    "height": 30,
+    "bandRect": {
+     "x": 0,
+     "y": 204,
+     "width": 754,
+     "height": 30
+    },
+    "components": [
+     "c20",
+     "c21",
+     "c22"
+    ],
+    "dataSource": "atos",
+    "autoHeight": true,
+    "link": {
+     "parentBandId": "band_bloco",
+     "parentField": "bloco_id",
+     "field": "bloco_id",
+     "placement": "below"
+    }
+   },
+   "band_selo": {
+    "id": "band_selo",
+    "type": "detailData",
+    "name": "Selos do ato",
+    "height": 40,
+    "bandRect": {
+     "x": 0,
+     "y": 240,
+     "width": 754,
+     "height": 40
+    },
+    "components": [
+     "c23",
+     "c24",
+     "c25",
+     "c26",
+     "c27",
+     "c28"
+    ],
+    "dataSource": "selos",
+    "autoHeight": true,
+    "link": {
+     "parentBandId": "band_ato",
+     "parentField": "ato_id",
+     "field": "ato_id",
+     "placement": "below"
+    }
+   },
+   "band_total_ato": {
+    "id": "band_total_ato",
+    "type": "detailData",
+    "name": "Total do ato",
+    "height": 20,
+    "bandRect": {
+     "x": 0,
+     "y": 284,
+     "width": 754,
+     "height": 20
+    },
+    "components": [
+     "c29",
+     "c30",
+     "c31",
+     "c32",
+     "c33",
+     "c34"
+    ],
+    "dataSource": "atos",
+    "link": {
+     "parentBandId": "band_ato",
+     "placement": "below"
+    }
+   },
+   "band_total_bloco": {
+    "id": "band_total_bloco",
+    "type": "detailData",
+    "name": "Total do bloco",
+    "height": 24,
+    "bandRect": {
+     "x": 0,
+     "y": 308,
+     "width": 754,
+     "height": 24
+    },
+    "components": [
+     "c35",
+     "c36",
+     "c37",
+     "c38",
+     "c39"
+    ],
+    "dataSource": "blocos",
+    "link": {
+     "parentBandId": "band_bloco",
+     "placement": "below"
+    }
+   },
+   "band_resumo": {
+    "id": "band_resumo",
+    "type": "reportSummary",
+    "name": "Total geral e GRS",
+    "height": 90,
+    "bandRect": {
+     "x": 0,
+     "y": 340,
+     "width": 754,
+     "height": 90
+    },
+    "components": [
+     "c40",
+     "c41",
+     "c42",
+     "c43",
+     "c44",
+     "c45",
+     "c46",
+     "c47",
+     "c48"
+    ]
+   }
+  },
+  "components": {
+   "c_logo": {
+    "id": "c_logo",
+    "type": "image",
+    "name": "Logomarca",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 200,
+     "height": 66
+    },
+    "content": "{cartorio.logo}",
+    "style": {},
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "left",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    }
+   },
+   "c2": {
+    "id": "c2",
+    "type": "text",
+    "name": "c2",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 205,
+     "y": 2,
+     "width": 380,
+     "height": 22
+    },
+    "content": "{cartorio.titulo}",
+    "style": {
+     "fontSize": "17px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "c3": {
+    "id": "c3",
+    "type": "text",
+    "name": "c3",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 205,
+     "y": 28,
+     "width": 380,
+     "height": 16
+    },
+    "content": "{cartorio.periodo}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "center"
+    }
+   },
+   "c4": {
+    "id": "c4",
+    "type": "text",
+    "name": "c4",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 205,
+     "y": 45,
+     "width": 380,
+     "height": 16
+    },
+    "content": "{cartorio.emissao}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "center"
+    }
+   },
+   "c5": {
+    "id": "c5",
+    "type": "text",
+    "name": "c5",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 590,
+     "y": 2,
+     "width": 164,
+     "height": 18
+    },
+    "content": "Livro: {page.livro}",
+    "style": {
+     "fontSize": "13px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "textDecoration": "underline"
+    }
+   },
+   "c6": {
+    "id": "c6",
+    "type": "text",
+    "name": "c6",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 590,
+     "y": 24,
+     "width": 164,
+     "height": 16
+    },
+    "content": "Folha: {page.folha}",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c7": {
+    "id": "c7",
+    "type": "text",
+    "name": "c7",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 0,
+     "y": 72,
+     "width": 754,
+     "height": 42
+    },
+    "content": "",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "backgroundColor": "#e5e7eb",
+     "border": "1px solid #9ca3af"
+    }
+   },
+   "c8": {
+    "id": "c8",
+    "type": "text",
+    "name": "c8",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 4,
+     "y": 76,
+     "width": 70,
+     "height": 16
+    },
+    "content": "TIPO",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold"
+    }
+   },
+   "c9": {
+    "id": "c9",
+    "type": "text",
+    "name": "c9",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 150,
+     "y": 76,
+     "width": 60,
+     "height": 16
+    },
+    "content": "PROTOCOLO",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c10": {
+    "id": "c10",
+    "type": "text",
+    "name": "c10",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 215,
+     "y": 76,
+     "width": 85,
+     "height": 16
+    },
+    "content": "DATA",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold"
+    }
+   },
+   "c11": {
+    "id": "c11",
+    "type": "text",
+    "name": "c11",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 305,
+     "y": 76,
+     "width": 300,
+     "height": 16
+    },
+    "content": "REQUERENTE",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold"
+    }
+   },
+   "c12": {
+    "id": "c12",
+    "type": "text",
+    "name": "c12",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 4,
+     "y": 94,
+     "width": 206,
+     "height": 16
+    },
+    "content": "NATUREZA DO ATO",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold"
+    }
+   },
+   "c13": {
+    "id": "c13",
+    "type": "text",
+    "name": "c13",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 215,
+     "y": 94,
+     "width": 100,
+     "height": 16
+    },
+    "content": "VALOR DO ATO",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c14": {
+    "id": "c14",
+    "type": "text",
+    "name": "c14",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 320,
+     "y": 94,
+     "width": 55,
+     "height": 16
+    },
+    "content": "QUANT.",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "c15": {
+    "id": "c15",
+    "type": "text",
+    "name": "c15",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 380,
+     "y": 94,
+     "width": 120,
+     "height": 16
+    },
+    "content": "EMOLUMENTOS",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c16": {
+    "id": "c16",
+    "type": "text",
+    "name": "c16",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 505,
+     "y": 94,
+     "width": 120,
+     "height": 16
+    },
+    "content": "TAXA JUDI.",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c17": {
+    "id": "c17",
+    "type": "text",
+    "name": "c17",
+    "parentId": "band_cab",
+    "rect": {
+     "x": 630,
+     "y": 94,
+     "width": 124,
+     "height": 16
+    },
+    "content": "FUNDESP",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c18": {
+    "id": "c18",
+    "type": "text",
+    "name": "c18",
+    "parentId": "band_sistema",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 754,
+     "height": 26
+    },
+    "content": "{blocos.sistema_titulo}",
+    "style": {
+     "fontSize": "13px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "border": "1px solid #000",
+     "paddingLeft": "6px",
+     "paddingTop": "4px"
+    }
+   },
+   "c19": {
+    "id": "c19",
+    "type": "text",
+    "name": "c19",
+    "parentId": "band_natureza",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 754,
+     "height": 22
+    },
+    "content": "{blocos.natureza}",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "backgroundColor": "#d1d5db",
+     "border": "1px solid #9ca3af",
+     "paddingLeft": "4px",
+     "paddingTop": "3px"
+    }
+   },
+   "c20": {
+    "id": "c20",
+    "type": "text",
+    "name": "c20",
+    "parentId": "band_ato",
+    "rect": {
+     "x": 150,
+     "y": 4,
+     "width": 60,
+     "height": 16
+    },
+    "content": "{atos.protocolo}",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c21": {
+    "id": "c21",
+    "type": "text",
+    "name": "c21",
+    "parentId": "band_ato",
+    "rect": {
+     "x": 215,
+     "y": 4,
+     "width": 85,
+     "height": 28
+    },
+    "content": "**{atos.data}**\n{atos.hora}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "c22": {
+    "id": "c22",
+    "type": "text",
+    "name": "c22",
+    "parentId": "band_ato",
+    "rect": {
+     "x": 305,
+     "y": 4,
+     "width": 449,
+     "height": 28
+    },
+    "content": "{atos.requerente}",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold"
+    }
+   },
+   "c23": {
+    "id": "c23",
+    "type": "text",
+    "name": "c23",
+    "parentId": "band_selo",
+    "rect": {
+     "x": 4,
+     "y": 0,
+     "width": 206,
+     "height": 38
+    },
+    "content": "{selos.natureza_selo}\n{selos.numero_selo}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15"
+    }
+   },
+   "c24": {
+    "id": "c24",
+    "type": "text",
+    "name": "c24",
+    "parentId": "band_selo",
+    "rect": {
+     "x": 215,
+     "y": 0,
+     "width": 100,
+     "height": 16
+    },
+    "content": "R$ {MOEDA([valor_ato])}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "c25": {
+    "id": "c25",
+    "type": "text",
+    "name": "c25",
+    "parentId": "band_selo",
+    "rect": {
+     "x": 320,
+     "y": 0,
+     "width": 55,
+     "height": 16
+    },
+    "content": "{selos.qtd}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "center"
+    }
+   },
+   "c26": {
+    "id": "c26",
+    "type": "text",
+    "name": "c26",
+    "parentId": "band_selo",
+    "rect": {
+     "x": 380,
+     "y": 0,
+     "width": 120,
+     "height": 16
+    },
+    "content": "R$ {MOEDA([emolumento])}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "c27": {
+    "id": "c27",
+    "type": "text",
+    "name": "c27",
+    "parentId": "band_selo",
+    "rect": {
+     "x": 505,
+     "y": 0,
+     "width": 120,
+     "height": 16
+    },
+    "content": "R$ {MOEDA([taxa])}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "c28": {
+    "id": "c28",
+    "type": "text",
+    "name": "c28",
+    "parentId": "band_selo",
+    "rect": {
+     "x": 630,
+     "y": 0,
+     "width": 124,
+     "height": 16
+    },
+    "content": "R$ {MOEDA(FUNDESP)}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "c29": {
+    "id": "c29",
+    "type": "text",
+    "name": "c29",
+    "parentId": "band_total_ato",
+    "rect": {
+     "x": 100,
+     "y": 2,
+     "width": 110,
+     "height": 16
+    },
+    "content": "Total:",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c30": {
+    "id": "c30",
+    "type": "text",
+    "name": "c30",
+    "parentId": "band_total_ato",
+    "rect": {
+     "x": 215,
+     "y": 0,
+     "width": 100,
+     "height": 18
+    },
+    "content": "R$ {MOEDA([atos.valor_ato])}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right",
+     "fontStyle": "italic",
+     "border": "1px solid #9ca3af",
+     "paddingTop": "2px"
+    }
+   },
+   "c31": {
+    "id": "c31",
+    "type": "text",
+    "name": "c31",
+    "parentId": "band_total_ato",
+    "rect": {
+     "x": 320,
+     "y": 0,
+     "width": 55,
+     "height": 18
+    },
+    "content": "{atos.qtd}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "center",
+     "fontStyle": "italic",
+     "border": "1px solid #9ca3af",
+     "paddingTop": "2px"
+    }
+   },
+   "c32": {
+    "id": "c32",
+    "type": "text",
+    "name": "c32",
+    "parentId": "band_total_ato",
+    "rect": {
+     "x": 380,
+     "y": 0,
+     "width": 120,
+     "height": 18
+    },
+    "content": "R$ {MOEDA([atos.emolumento])}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right",
+     "fontStyle": "italic",
+     "border": "1px solid #9ca3af",
+     "paddingTop": "2px"
+    }
+   },
+   "c33": {
+    "id": "c33",
+    "type": "text",
+    "name": "c33",
+    "parentId": "band_total_ato",
+    "rect": {
+     "x": 505,
+     "y": 0,
+     "width": 120,
+     "height": 18
+    },
+    "content": "R$ {MOEDA([atos.taxa])}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right",
+     "fontStyle": "italic",
+     "border": "1px solid #9ca3af",
+     "paddingTop": "2px"
+    }
+   },
+   "c34": {
+    "id": "c34",
+    "type": "text",
+    "name": "c34",
+    "parentId": "band_total_ato",
+    "rect": {
+     "x": 630,
+     "y": 0,
+     "width": 124,
+     "height": 18
+    },
+    "content": "R$ {MOEDA(FUNDESP)}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right",
+     "fontStyle": "italic",
+     "border": "1px solid #9ca3af",
+     "paddingTop": "2px"
+    }
+   },
+   "c35": {
+    "id": "c35",
+    "type": "text",
+    "name": "c35",
+    "parentId": "band_total_bloco",
+    "rect": {
+     "x": 215,
+     "y": 2,
+     "width": 100,
+     "height": 20
+    },
+    "content": "TOTAL:",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "fontStyle": "italic"
+    }
+   },
+   "c36": {
+    "id": "c36",
+    "type": "text",
+    "name": "c36",
+    "parentId": "band_total_bloco",
+    "rect": {
+     "x": 320,
+     "y": 0,
+     "width": 55,
+     "height": 22
+    },
+    "content": "{blocos.qtd}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "center",
+     "fontStyle": "italic",
+     "border": "1px solid #9ca3af",
+     "paddingTop": "3px"
+    }
+   },
+   "c37": {
+    "id": "c37",
+    "type": "text",
+    "name": "c37",
+    "parentId": "band_total_bloco",
+    "rect": {
+     "x": 380,
+     "y": 0,
+     "width": 120,
+     "height": 22
+    },
+    "content": "R$ {MOEDA([blocos.emolumento])}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "fontStyle": "italic",
+     "border": "1px solid #9ca3af",
+     "paddingTop": "3px"
+    }
+   },
+   "c38": {
+    "id": "c38",
+    "type": "text",
+    "name": "c38",
+    "parentId": "band_total_bloco",
+    "rect": {
+     "x": 505,
+     "y": 0,
+     "width": 120,
+     "height": 22
+    },
+    "content": "R$ {MOEDA([blocos.taxa])}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "fontStyle": "italic",
+     "border": "1px solid #9ca3af",
+     "paddingTop": "3px"
+    }
+   },
+   "c39": {
+    "id": "c39",
+    "type": "text",
+    "name": "c39",
+    "parentId": "band_total_bloco",
+    "rect": {
+     "x": 630,
+     "y": 0,
+     "width": 124,
+     "height": 22
+    },
+    "content": "R$ {MOEDA(FUNDESP)}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right",
+     "fontStyle": "italic",
+     "border": "1px solid #9ca3af",
+     "paddingTop": "3px"
+    }
+   },
+   "c40": {
+    "id": "c40",
+    "type": "text",
+    "name": "c40",
+    "parentId": "band_resumo",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 754,
+     "height": 28
+    },
+    "content": "",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "backgroundColor": "#9ca3af",
+     "border": "1px solid #000"
+    }
+   },
+   "c41": {
+    "id": "c41",
+    "type": "text",
+    "name": "c41",
+    "parentId": "band_resumo",
+    "rect": {
+     "x": 4,
+     "y": 6,
+     "width": 200,
+     "height": 16
+    },
+    "content": "VALOR GRS: R$ {MOEDA(SOMA([atos.taxa]) + ARREDONDAR(SOMA([atos.emolumento]) * 10%; 2))}",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold"
+    }
+   },
+   "c42": {
+    "id": "c42",
+    "type": "text",
+    "name": "c42",
+    "parentId": "band_resumo",
+    "rect": {
+     "x": 215,
+     "y": 6,
+     "width": 100,
+     "height": 16
+    },
+    "content": "TOTAL GERAL",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c43": {
+    "id": "c43",
+    "type": "text",
+    "name": "c43",
+    "parentId": "band_resumo",
+    "rect": {
+     "x": 320,
+     "y": 6,
+     "width": 55,
+     "height": 16
+    },
+    "content": "{SOMA([atos.qtd])}",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "c44": {
+    "id": "c44",
+    "type": "text",
+    "name": "c44",
+    "parentId": "band_resumo",
+    "rect": {
+     "x": 380,
+     "y": 6,
+     "width": 120,
+     "height": 16
+    },
+    "content": "R$ {MOEDA(SOMA([atos.emolumento]))}",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c45": {
+    "id": "c45",
+    "type": "text",
+    "name": "c45",
+    "parentId": "band_resumo",
+    "rect": {
+     "x": 505,
+     "y": 6,
+     "width": 120,
+     "height": 16
+    },
+    "content": "R$ {MOEDA(SOMA([atos.taxa]))}",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c46": {
+    "id": "c46",
+    "type": "text",
+    "name": "c46",
+    "parentId": "band_resumo",
+    "rect": {
+     "x": 630,
+     "y": 6,
+     "width": 124,
+     "height": 16
+    },
+    "content": "R$ {MOEDA(ARREDONDAR(SOMA([atos.emolumento]) * 10%; 2))}",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c47": {
+    "id": "c47",
+    "type": "text",
+    "name": "c47",
+    "parentId": "band_resumo",
+    "rect": {
+     "x": 4,
+     "y": 40,
+     "width": 40,
+     "height": 16
+    },
+    "content": "GRS Nº",
+    "style": {
+     "fontSize": "12px",
+     "lineHeight": "1.15",
+     "fontWeight": "bold"
+    }
+   },
+   "c48": {
+    "id": "c48",
+    "type": "text",
+    "name": "c48",
+    "parentId": "band_resumo",
+    "rect": {
+     "x": 50,
+     "y": 36,
+     "width": 170,
+     "height": 22
+    },
+    "content": "",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "border": "1px dashed #6b7280"
+    }
+   }
+  },
+  "calculos": [
+   {
+    "id": "k1",
+    "nome": "FUNDESP",
+    "formula": "[emolumento] * 10%"
+   }
+  ]
+ },
+ "mockData": {
+  "cartorio": [
+   {
+    "titulo": "Atos Praticados",
+    "emissao": "22/10/2026",
+    "periodo": "01/10/2026 a 31/10/2026",
+    "logo": ""
+   }
+  ],
+  "blocos": [
+   {
+    "bloco_id": 1,
+    "sistema_titulo": "TABELIONATO DE NOTAS",
+    "natureza": "Escrituras",
+    "qtd": 2,
+    "emolumento": 2000.0,
+    "taxa": 160.0
+   },
+   {
+    "bloco_id": 2,
+    "sistema_titulo": "TABELIONATO DE NOTAS",
+    "natureza": "Procurações",
+    "qtd": 1,
+    "emolumento": 180.5,
+    "taxa": 20.1
+   }
+  ],
+  "atos": [
+   {
+    "bloco_id": 1,
+    "ato_id": 11,
+    "data": "20/10/2026",
+    "hora": "09:12",
+    "protocolo": "10231",
+    "requerente": "Maria da Silva",
+    "qtd": 1,
+    "emolumento": 1820.4,
+    "taxa": 140.2,
+    "valor_ato": 1960.6
+   },
+   {
+    "bloco_id": 1,
+    "ato_id": 12,
+    "data": "21/10/2026",
+    "hora": "14:40",
+    "protocolo": "10233",
+    "requerente": "Fernanda Lima",
+    "qtd": 1,
+    "emolumento": 179.6,
+    "taxa": 19.8,
+    "valor_ato": 199.4
+   },
+   {
+    "bloco_id": 2,
+    "ato_id": 21,
+    "data": "20/10/2026",
+    "hora": "10:05",
+    "protocolo": "10232",
+    "requerente": "João Pereira",
+    "qtd": 1,
+    "emolumento": 180.5,
+    "taxa": 20.1,
+    "valor_ato": 200.6
+   }
+  ],
+  "selos": [
+   {
+    "ato_id": 11,
+    "numero_selo": "00311020261234567",
+    "natureza_selo": "Escritura",
+    "qtd": 1
+   },
+   {
+    "ato_id": 12,
+    "numero_selo": "00311020261234568",
+    "natureza_selo": "Escritura",
+    "qtd": 1
+   },
+   {
+    "ato_id": 21,
+    "numero_selo": "00311020261234569",
+    "natureza_selo": "Procuração",
+    "qtd": 1
+   }
+  ]
+ }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "weave-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0 -p 3100",
+    "build": "next build",
+    "start": "next start -H 0.0.0.0 -p 3100",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.6.5",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "postcss": "^8.5.31",
+    "tailwindcss": "^4.3.3",
+    "typescript": "5.9",
+    "vitest": "^5.0.5"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.10.0",
+    "animejs": "^4.5.0",
+    "clsx": "^2.1.1",
+    "csstype": "^3.2.3",
+    "driver.js": "^1.10.2",
+    "framer-motion": "^12.43.0",
+    "html-to-image": "^1.11.13",
+    "lucide-react": "^1.59.0",
+    "next": "^15.5.28",
+    "qrcode": "^1.5.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-draggable": "^4.7.2",
+    "react-hook-form": "^7.90.0",
+    "react-markdown": "^9.1.0",
+    "recharts": "^2.15.4",
+    "remark-gfm": "^4.0.1",
+    "tailwind-merge": "^3.7.0",
+    "uuid": "^14.0.3",
+    "zod": "^3.25.76",
+    "zustand": "^5.0.15"
+  }
+}

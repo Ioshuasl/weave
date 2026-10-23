@@ -1,0 +1,784 @@
+{
+ "order": 1,
+ "name": "Livro de Protocolos",
+ "description": "Tabelionato de Notas — protocolos do dia, pessoas e valores",
+ "tags": [
+  "Notariado",
+  "Livro"
+ ],
+ "sourceSystem": 2,
+ "sourceFile": "20261001180000_fechamento_condicional_g_config_relatorio_livro_protocolos.sql",
+ "report": {
+  "id": "livro_protocolos",
+  "name": "Livro de Protocolos",
+  "pages": [
+   {
+    "id": "page_1",
+    "name": "Livro de Protocolos",
+    "presetId": "a4-landscape",
+    "profile": "document",
+    "width": 1123,
+    "height": 794,
+    "margins": {
+     "top": 45,
+     "right": 23,
+     "bottom": 45,
+     "left": 83
+    },
+    "bands": [
+     "band_cabecalho",
+     "band_dia",
+     "band_protocolo",
+     "band_pessoa",
+     "band_lavratura",
+     "band_fech_com",
+     "band_fech_sem"
+    ]
+   }
+  ],
+  "bands": {
+   "band_cabecalho": {
+    "id": "band_cabecalho",
+    "type": "pageHeader",
+    "name": "Cabeçalho da página (repete em toda folha)",
+    "height": 175,
+    "bandRect": {
+     "x": 0,
+     "y": 0,
+     "width": 1017,
+     "height": 175
+    },
+    "components": [
+     "comp_logo",
+     "comp_titulo",
+     "comp_republica",
+     "comp_info",
+     "comp_livrofolha",
+     "comp_cab_fundo",
+     "comp_cab_prot",
+     "comp_cab_data",
+     "comp_cab_apres",
+     "comp_cab_nat",
+     "comp_cab_pessoas"
+    ]
+   },
+   "band_dia": {
+    "id": "band_dia",
+    "type": "masterData",
+    "name": "Dia do período (agrupador, sem altura própria)",
+    "height": 40,
+    "bandRect": {
+     "x": 0,
+     "y": 180,
+     "width": 1017,
+     "height": 40
+    },
+    "dataSource": "dias",
+    "components": []
+   },
+   "band_protocolo": {
+    "id": "band_protocolo",
+    "type": "detailData",
+    "name": "Protocolos do dia",
+    "height": 16,
+    "bandRect": {
+     "x": 0,
+     "y": 228,
+     "width": 520,
+     "height": 16
+    },
+    "dataSource": "protocolos",
+    "link": {
+     "parentBandId": "band_dia",
+     "parentField": "data_chave",
+     "field": "data_chave",
+     "placement": "above"
+    },
+    "keepTogether": true,
+    "autoHeight": true,
+    "components": [
+     "p_prot",
+     "p_data",
+     "p_apres",
+     "p_nat"
+    ],
+    "lines": {
+     "rows": true,
+     "thickness": "thin",
+     "color": "#a0a0a0"
+    }
+   },
+   "band_pessoa": {
+    "id": "band_pessoa",
+    "type": "detailData",
+    "name": "Pessoas envolvidas",
+    "height": 16,
+    "bandRect": {
+     "x": 524,
+     "y": 252,
+     "width": 493,
+     "height": 16
+    },
+    "dataSource": "pessoas",
+    "link": {
+     "parentBandId": "band_protocolo",
+     "parentField": "ato_id",
+     "field": "ato_id",
+     "placement": "beside"
+    },
+    "autoHeight": true,
+    "components": [
+     "q_cpf",
+     "q_nome",
+     "q_vinc"
+    ],
+    "lines": {
+     "rows": true,
+     "thickness": "thin",
+     "color": "#e1e1e1"
+    }
+   },
+   "band_lavratura": {
+    "id": "band_lavratura",
+    "type": "detailData",
+    "name": "Lavratura e valores",
+    "height": 34,
+    "bandRect": {
+     "x": 0,
+     "y": 276,
+     "width": 1017,
+     "height": 34
+    },
+    "dataSource": "lavratura",
+    "link": {
+     "parentBandId": "band_protocolo",
+     "parentField": "ato_id",
+     "field": "ato_id",
+     "placement": "below"
+    },
+    "components": [
+     "l_esq",
+     "l_dir"
+    ],
+    "lines": {
+     "rows": true,
+     "thickness": "thin",
+     "color": "#808080"
+    }
+   },
+   "band_fech_com": {
+    "id": "band_fech_com",
+    "type": "detailData",
+    "name": "Fechamento do dia: com registro",
+    "height": 34,
+    "bandRect": {
+     "x": 0,
+     "y": 318,
+     "width": 1017,
+     "height": 34
+    },
+    "dataSource": "dias",
+    "autoHeight": true,
+    "link": {
+     "parentBandId": "band_dia",
+     "placement": "below"
+    },
+    "showWhen": {
+     "field": "qtd",
+     "operator": "gt",
+     "value": "0"
+    },
+    "components": [
+     "comp_fech_com"
+    ],
+    "lines": {
+     "rows": true,
+     "thickness": "thin",
+     "color": "#808080"
+    }
+   },
+   "band_fech_sem": {
+    "id": "band_fech_sem",
+    "type": "detailData",
+    "name": "Fechamento do dia: sem registro",
+    "height": 34,
+    "bandRect": {
+     "x": 0,
+     "y": 360,
+     "width": 1017,
+     "height": 34
+    },
+    "dataSource": "dias",
+    "autoHeight": true,
+    "link": {
+     "parentBandId": "band_dia",
+     "placement": "below"
+    },
+    "showWhen": {
+     "field": "qtd",
+     "operator": "eq",
+     "value": "0"
+    },
+    "components": [
+     "comp_fech_sem"
+    ],
+    "lines": {
+     "rows": true,
+     "thickness": "thin",
+     "color": "#808080"
+    }
+   }
+  },
+  "components": {
+   "comp_logo": {
+    "id": "comp_logo",
+    "type": "image",
+    "name": "Logomarca",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 10,
+     "y": 21,
+     "width": 76,
+     "height": 72
+    },
+    "content": "{cartorio.logo}",
+    "style": {},
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "left",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    }
+   },
+   "comp_titulo": {
+    "id": "comp_titulo",
+    "type": "text",
+    "name": "Título do relatório",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 94,
+     "y": 0,
+     "width": 884,
+     "height": 20
+    },
+    "content": "**{cartorio.titulo}**",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "16px",
+     "color": "#000000",
+     "textAlign": "center"
+    }
+   },
+   "comp_republica": {
+    "id": "comp_republica",
+    "type": "text",
+    "name": "República Federativa",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 94,
+     "y": 21,
+     "width": 884,
+     "height": 22
+    },
+    "content": "REPÚBLICA FEDERATIVA DO BRASIL",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "19px",
+     "color": "#000000",
+     "textAlign": "center"
+    }
+   },
+   "comp_info": {
+    "id": "comp_info",
+    "type": "text",
+    "name": "Dados do cartório",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 94,
+     "y": 44,
+     "width": 884,
+     "height": 84
+    },
+    "content": "{cartorio.nome} CNPJ:{cartorio.cnpj} E-mail:{cartorio.email} Telefone:{cartorio.telefone} CNS:{cartorio.cns} {cartorio.endereco} {cartorio.bairro} {cartorio.complemento} {cartorio.cidade} - {cartorio.uf} {cartorio.oficial} - {cartorio.cargo}",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000",
+     "textAlign": "center"
+    }
+   },
+   "comp_livrofolha": {
+    "id": "comp_livrofolha",
+    "type": "text",
+    "name": "Livro / Folha (por página)",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 0,
+     "y": 132,
+     "width": 1017,
+     "height": 19
+    },
+    "content": "**Livro**: **{page.livro}**   **Folha**: **{page.folha}/{page.lado}**",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "16px",
+     "color": "#000000",
+     "backgroundColor": "#e5e5e5",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "comp_cab_fundo": {
+    "id": "comp_cab_fundo",
+    "type": "text",
+    "name": "Fundo dos títulos das colunas",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 0,
+     "y": 155,
+     "width": 1017,
+     "height": 16
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000",
+     "backgroundColor": "#e4e4e4"
+    }
+   },
+   "comp_cab_prot": {
+    "id": "comp_cab_prot",
+    "type": "text",
+    "name": "Título da coluna: Prot.",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 7,
+     "y": 155,
+     "width": 49,
+     "height": 16
+    },
+    "content": "**PROT.**",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000",
+     "textAlign": "center"
+    }
+   },
+   "comp_cab_data": {
+    "id": "comp_cab_data",
+    "type": "text",
+    "name": "Título da coluna: Data",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 66,
+     "y": 155,
+     "width": 72,
+     "height": 16
+    },
+    "content": "**DATA**",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000",
+     "textAlign": "center"
+    }
+   },
+   "comp_cab_apres": {
+    "id": "comp_cab_apres",
+    "type": "text",
+    "name": "Título da coluna: Nome Apresentante",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 141,
+     "y": 155,
+     "width": 200,
+     "height": 16
+    },
+    "content": "**NOME APRESENTANTE**",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000",
+     "textAlign": "center"
+    }
+   },
+   "comp_cab_nat": {
+    "id": "comp_cab_nat",
+    "type": "text",
+    "name": "Título da coluna: Natureza Título",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 347,
+     "y": 155,
+     "width": 166,
+     "height": 16
+    },
+    "content": "**NATUREZA TÍTULO**",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000",
+     "textAlign": "center"
+    }
+   },
+   "comp_cab_pessoas": {
+    "id": "comp_cab_pessoas",
+    "type": "text",
+    "name": "Título da coluna: Pessoas Envolvidas",
+    "parentId": "band_cabecalho",
+    "rect": {
+     "x": 529,
+     "y": 155,
+     "width": 488,
+     "height": 16
+    },
+    "content": "**PESSOAS ENVOLVIDAS**",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000",
+     "textAlign": "center"
+    }
+   },
+   "comp_fech_com": {
+    "id": "comp_fech_com",
+    "type": "text",
+    "name": "Texto: encerramento com lançamentos",
+    "parentId": "band_fech_com",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 1017,
+     "height": 34
+    },
+    "content": "Certifico e dou fé que encerrei o Protocolo, na hora legal, com {dias.qtd} lançamento(s). {cartorio.cidade_uf}, {dias.data_extenso}. {cartorio.oficial} - {cartorio.cargo}.",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000"
+    }
+   },
+   "comp_fech_sem": {
+    "id": "comp_fech_sem",
+    "type": "text",
+    "name": "Texto: dia sem registro",
+    "parentId": "band_fech_sem",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 1017,
+     "height": 34
+    },
+    "content": "Certifico e dou fé que no dia {dias.data_extenso}, não houve registro. {cartorio.cidade_uf}, {dias.data_extenso}. {cartorio.oficial} - {cartorio.cargo}.",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000"
+    }
+   },
+   "p_prot": {
+    "id": "p_prot",
+    "type": "text",
+    "name": "Protocolo",
+    "parentId": "band_protocolo",
+    "rect": {
+     "x": 3,
+     "y": 0,
+     "width": 49,
+     "height": 16
+    },
+    "content": "{protocolos.prot}",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000",
+     "textAlign": "center"
+    }
+   },
+   "p_data": {
+    "id": "p_data",
+    "type": "text",
+    "name": "Data do protocolo",
+    "parentId": "band_protocolo",
+    "rect": {
+     "x": 62,
+     "y": 0,
+     "width": 84,
+     "height": 16
+    },
+    "content": "{protocolos.data}",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000"
+    }
+   },
+   "p_apres": {
+    "id": "p_apres",
+    "type": "text",
+    "name": "Apresentante",
+    "parentId": "band_protocolo",
+    "rect": {
+     "x": 159,
+     "y": 0,
+     "width": 178,
+     "height": 16
+    },
+    "content": "{protocolos.apres}",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000"
+    }
+   },
+   "p_nat": {
+    "id": "p_nat",
+    "type": "text",
+    "name": "Natureza do título",
+    "parentId": "band_protocolo",
+    "rect": {
+     "x": 359,
+     "y": 0,
+     "width": 154,
+     "height": 16
+    },
+    "content": "{protocolos.nat}",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000"
+    }
+   },
+   "q_cpf": {
+    "id": "q_cpf",
+    "type": "text",
+    "name": "Pessoa: CPF",
+    "parentId": "band_pessoa",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 101,
+     "height": 16
+    },
+    "content": "{pessoas.cpf}",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000"
+    }
+   },
+   "q_nome": {
+    "id": "q_nome",
+    "type": "text",
+    "name": "Pessoa: Nome",
+    "parentId": "band_pessoa",
+    "rect": {
+     "x": 104,
+     "y": 0,
+     "width": 230,
+     "height": 16
+    },
+    "content": "{pessoas.nome}",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000"
+    }
+   },
+   "q_vinc": {
+    "id": "q_vinc",
+    "type": "text",
+    "name": "Pessoa: Vínculo",
+    "parentId": "band_pessoa",
+    "rect": {
+     "x": 338,
+     "y": 0,
+     "width": 154,
+     "height": 16
+    },
+    "content": "{pessoas.vinc}",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000"
+    }
+   },
+   "l_esq": {
+    "id": "l_esq",
+    "type": "text",
+    "name": "Dados da lavratura (livro e folhas)",
+    "parentId": "band_lavratura",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 313,
+     "height": 34
+    },
+    "content": "**Dados Lavratura:**\n**Livro: {lavratura.livro}     Folha(s): {lavratura.folha_inicial}/{lavratura.folha_final}**",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "l_dir": {
+    "id": "l_dir",
+    "type": "text",
+    "name": "Valores (documento, emolumentos, taxas)",
+    "parentId": "band_lavratura",
+    "rect": {
+     "x": 313,
+     "y": 0,
+     "width": 704,
+     "height": 34
+    },
+    "content": "**Vlr. Documento : {lavratura.valor_documento}    Vlr. Emolumentos : {lavratura.valor_emolumento}    Vlr. Tx Judiciaria : {lavratura.valor_tx_judiciaria}**\n**Vlr. FUNDESP : {lavratura.valor_fundesp}    Vlr. ISS : {lavratura.valor_iss}    Vlr. Adicional : {lavratura.valor_adicional}    Vlr. Total : {lavratura.valor_total}**",
+    "style": {
+     "fontFamily": "'Courier New', monospace",
+     "fontSize": "12px",
+     "color": "#000000",
+     "whiteSpace": "pre-wrap"
+    }
+   }
+  }
+ },
+ "mockData": {
+  "cartorio": [
+   {
+    "titulo": "Livro de Protocolos",
+    "nome": "Tabelionato de Notas e Protesto de Títulos",
+    "oficial": "Ana Souza",
+    "cargo": "Tabeliã",
+    "cnpj": "12.345.678/0001-90",
+    "cns": "12.345-6",
+    "endereco": "Rua das Flores, 100",
+    "complemento": "Sala 2",
+    "bairro": "Centro",
+    "cidade": "Goiânia",
+    "uf": "GO",
+    "cidade_uf": "Goiânia - GO",
+    "telefone": "(62) 3333-4444",
+    "email": "contato@cartorioexemplo.com.br",
+    "logo": "",
+    "brasao": "",
+    "periodo": "01/10/2026 a 31/10/2026",
+    "emissao": "22/10/2026",
+    "situacao": "Fechado",
+    "rodape": "Documento de apoio gerado pelo sistema."
+   }
+  ],
+  "dias": [
+   {
+    "data_chave": "2026-10-20",
+    "data_extenso": "Terça-feira, 20 de outubro de 2026",
+    "qtd": 2
+   },
+   {
+    "data_chave": "2026-10-21",
+    "data_extenso": "Quarta-feira, 21 de outubro de 2026",
+    "qtd": 1
+   }
+  ],
+  "protocolos": [
+   {
+    "data_chave": "2026-10-20",
+    "ato_id": 1,
+    "prot": "10231",
+    "data": "20/10/2026",
+    "apres": "Maria da Silva",
+    "nat": "Escritura de compra e venda"
+   },
+   {
+    "data_chave": "2026-10-20",
+    "ato_id": 2,
+    "prot": "10232",
+    "data": "20/10/2026",
+    "apres": "João Pereira",
+    "nat": "Procuração pública"
+   },
+   {
+    "data_chave": "2026-10-21",
+    "ato_id": 3,
+    "prot": "10233",
+    "data": "21/10/2026",
+    "apres": "Fernanda Lima",
+    "nat": "Testamento"
+   }
+  ],
+  "pessoas": [
+   {
+    "ato_id": 1,
+    "nome": "Maria da Silva",
+    "cpf": "123.456.789-09",
+    "vinc": "Outorgante"
+   },
+   {
+    "ato_id": 1,
+    "nome": "Paulo Henrique Costa",
+    "cpf": "987.654.321-00",
+    "vinc": "Outorgado"
+   },
+   {
+    "ato_id": 2,
+    "nome": "João Pereira",
+    "cpf": "111.222.333-44",
+    "vinc": "Outorgante"
+   },
+   {
+    "ato_id": 2,
+    "nome": "Luciana Prado",
+    "cpf": "555.666.777-88",
+    "vinc": "Outorgada"
+   },
+   {
+    "ato_id": 3,
+    "nome": "Fernanda Lima",
+    "cpf": "222.333.444-55",
+    "vinc": "Testadora"
+   }
+  ],
+  "lavratura": [
+   {
+    "ato_id": 1,
+    "livro": "45",
+    "folha_inicial": "120",
+    "folha_final": "122",
+    "valor_documento": "R$ 350.000,00",
+    "valor_emolumento": "R$ 1.820,40",
+    "valor_tx_judiciaria": "R$ 140,20",
+    "valor_fundesp": "R$ 182,04",
+    "valor_iss": "R$ 91,02",
+    "valor_adicional": "R$ 0,00",
+    "valor_total": "R$ 2.233,66"
+   },
+   {
+    "ato_id": 2,
+    "livro": "45",
+    "folha_inicial": "123",
+    "folha_final": "123",
+    "valor_documento": "R$ 0,00",
+    "valor_emolumento": "R$ 180,50",
+    "valor_tx_judiciaria": "R$ 20,10",
+    "valor_fundesp": "R$ 18,05",
+    "valor_iss": "R$ 9,03",
+    "valor_adicional": "R$ 0,00",
+    "valor_total": "R$ 227,68"
+   },
+   {
+    "ato_id": 3,
+    "livro": "45",
+    "folha_inicial": "124",
+    "folha_final": "125",
+    "valor_documento": "R$ 0,00",
+    "valor_emolumento": "R$ 420,00",
+    "valor_tx_judiciaria": "R$ 36,50",
+    "valor_fundesp": "R$ 42,00",
+    "valor_iss": "R$ 21,00",
+    "valor_adicional": "R$ 0,00",
+    "valor_total": "R$ 519,50"
+   }
+  ]
+ }
+}

@@ -1,0 +1,31 @@
+{
+  "passo": 10,
+  "titulo": "Informações e assinatura",
+  "proximo": "Passo 11 — Visualizar, ajustar e salvar",
+  "cenas": [
+    {
+      "id": "abertura",
+      "fala": "Para fechar o documento, vamos criar as áreas de informação, a averbação com a assinatura e o aviso legal."
+    },
+    {
+      "id": "informacao",
+      "fala": "Crie a caixa Informação, de tamanho dez, com borda: X zero, Y seiscentos e cinquenta e dois, largura setecentos e catorze e altura sessenta.",
+      "rapido": 2
+    },
+    {
+      "id": "averbacao",
+      "fala": "Em seguida, o rótulo Averbação e, ao lado, o texto da averbação, justificado, com o nome de quem assina vindo do campo assinante.",
+      "rapido": 3
+    },
+    {
+      "id": "aviso",
+      "fala": "Por último, o aviso legal sobre a assinatura digital, em tamanho oito, no pé do documento.",
+      "rapido": 2
+    },
+    {
+      "id": "fecho",
+      "fala": "O documento está completo. No último passo, vamos visualizar, ajustar e salvar."
+    }
+  ],
+  "id": "b10-informacoes"
+}

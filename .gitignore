@@ -1,0 +1,10 @@
+node_modules/
+.next/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+.venv/
+__pycache__/
+.DS_Store
+videos/remotion/public/suporte/video.mp4

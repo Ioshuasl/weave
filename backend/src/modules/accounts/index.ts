@@ -1,0 +1,7 @@
+export type { AccountRepository } from './domain/ports'
+export { RegisterAccountUseCase } from './application/register-account.use-case'
+export { GetAccountUseCase, UpdateAccountUseCase } from './application/get-account.use-case'
+export { PrismaAccountRepository } from './infra/prisma-account.repository'
+export { AccountsController } from './presentation/accounts.controller'
+export { accountsRoutes } from './presentation/accounts.routes'
+export { makeTenantContext } from './presentation/tenant.middleware'

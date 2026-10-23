@@ -1,0 +1,7 @@
+{
+  "name": "weave-capturas",
+  "private": true,
+  "type": "module",
+  "description": "Roteiros Playwright que gravam a tela do Weave para os vídeos de treinamento",
+  "dependencies": { "playwright": "^1.50.0" }
+}

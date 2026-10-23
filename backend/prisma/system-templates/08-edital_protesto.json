@@ -1,0 +1,805 @@
+{
+ "order": 8,
+ "name": "Edital - Protesto",
+ "description": "Edital de intimação por devedor",
+ "tags": [
+  "Protesto",
+  "Intimação/Edital"
+ ],
+ "sourceSystem": 13,
+ "sourceFile": "20261020100000_seed_g_config_relatorio_edital_protesto.sql",
+ "report": {
+  "id": "edital_protesto",
+  "name": "Edital - Protesto",
+  "pages": [
+   {
+    "id": "page_1",
+    "name": "Edital",
+    "presetId": "a4-portrait",
+    "profile": "document",
+    "width": 794,
+    "height": 1123,
+    "margins": {
+     "top": 20,
+     "right": 20,
+     "bottom": 20,
+     "left": 20
+    },
+    "bands": [
+     "band_folha"
+    ]
+   }
+  ],
+  "bands": {
+   "band_folha": {
+    "id": "band_folha",
+    "type": "masterData",
+    "name": "Edital (uma folha por devedor)",
+    "height": 1070,
+    "bandRect": {
+     "x": 0,
+     "y": 0,
+     "width": 754,
+     "height": 1070
+    },
+    "dataSource": "editais",
+    "keepTogether": true,
+    "components": [
+     "c_logo",
+     "c_rep",
+     "c_estado",
+     "c_tabelionato",
+     "c_titular",
+     "c_endereco",
+     "c_email",
+     "c_titulo",
+     "c_existe",
+     "t_box",
+     "t_hlinha",
+     "t_v1",
+     "t_v2",
+     "t_v3",
+     "t_v4",
+     "t_h1",
+     "t_h2",
+     "t_h3",
+     "t_h4",
+     "t_h5",
+     "t_b1",
+     "t_b2",
+     "t_b3",
+     "t_b4",
+     "t_b5",
+     "p_1",
+     "p_2",
+     "p_3",
+     "p_4",
+     "a_linha",
+     "a_nome",
+     "a_cargo",
+     "a_prazo"
+    ]
+   }
+  },
+  "components": {
+   "c_logo": {
+    "id": "c_logo",
+    "type": "image",
+    "name": "Brasão",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 345,
+     "y": 27.7,
+     "width": 102,
+     "height": 104
+    },
+    "content": "{cartorio.logo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000"
+    },
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "center",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    }
+   },
+   "c_rep": {
+    "id": "c_rep",
+    "type": "text",
+    "name": "República",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 47.1,
+     "y": 161.7,
+     "width": 700,
+     "height": 32.4
+    },
+    "content": "REPÚBLICA FEDERATIVA DO BRASIL",
+    "style": {
+     "fontFamily": "'Times New Roman', 'Liberation Serif', serif",
+     "color": "#000000",
+     "fontSize": "27px",
+     "lineHeight": 1.2,
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap",
+     "fontWeight": "700"
+    }
+   },
+   "c_estado": {
+    "id": "c_estado",
+    "type": "text",
+    "name": "Estado e comarca",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 46.5,
+     "y": 194.6,
+     "width": 700,
+     "height": 16.0
+    },
+    "content": "ESTADO DE GOIÁS - {cartorio.denominacao}",
+    "style": {
+     "fontFamily": "'Times New Roman', 'Liberation Serif', serif",
+     "color": "#000000",
+     "fontSize": "13.3px",
+     "lineHeight": 1.203,
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap",
+     "fontWeight": "700"
+    }
+   },
+   "c_tabelionato": {
+    "id": "c_tabelionato",
+    "type": "text",
+    "name": "Tabelionato",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 47.7,
+     "y": 209.5,
+     "width": 700,
+     "height": 16.1
+    },
+    "content": "Tabelionato de Notas, Protesto de Títulos e Contratos Marítimos",
+    "style": {
+     "fontFamily": "'Times New Roman', 'Liberation Serif', serif",
+     "color": "#000000",
+     "fontSize": "13.4px",
+     "lineHeight": 1.2015,
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap",
+     "fontWeight": "700"
+    }
+   },
+   "c_titular": {
+    "id": "c_titular",
+    "type": "text",
+    "name": "Tabelião",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 47.1,
+     "y": 223.3,
+     "width": 700,
+     "height": 16.1
+    },
+    "content": "{cartorio.titular} - Tabelião",
+    "style": {
+     "fontFamily": "'Times New Roman', 'Liberation Serif', serif",
+     "color": "#000000",
+     "fontSize": "13.4px",
+     "lineHeight": 1.2015,
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap",
+     "fontWeight": "700"
+    }
+   },
+   "c_endereco": {
+    "id": "c_endereco",
+    "type": "text",
+    "name": "Endereço do cartório",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 27.1,
+     "y": 238.3,
+     "width": 740,
+     "height": 16.1
+    },
+    "content": "{cartorio.endereco}, {cartorio.bairro}, CEP: {cartorio.cep} - Fone: {cartorio.fone}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "13.4px",
+     "lineHeight": 1.2015,
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_email": {
+    "id": "c_email",
+    "type": "text",
+    "name": "E-mail do cartório",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 47.7,
+     "y": 253.6,
+     "width": 700,
+     "height": 15.8
+    },
+    "content": "Email - {cartorio.email}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "13.2px",
+     "lineHeight": 1.197,
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_titulo": {
+    "id": "c_titulo",
+    "type": "text",
+    "name": "Título do edital",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 165.3,
+     "y": 288.4,
+     "width": 500,
+     "height": 19.3
+    },
+    "content": "EDITAL DE PROTESTO DE TITULOS",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "16.1px",
+     "lineHeight": 1.1988,
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "c_existe": {
+    "id": "c_existe",
+    "type": "text",
+    "name": "Chamada",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 87.8,
+     "y": 337.6,
+     "width": 640,
+     "height": 15.8
+    },
+    "content": "Existe neste Cartório, para ser protestado o Título que segue registrado abaixo:",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "13.2px",
+     "lineHeight": 1.197,
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "t_box": {
+    "id": "t_box",
+    "type": "text",
+    "name": "Quadro da tabela",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 54.0,
+     "y": 407.8,
+     "width": 683.7,
+     "height": 95.1
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "border": "1px solid #000000"
+    }
+   },
+   "t_hlinha": {
+    "id": "t_hlinha",
+    "type": "text",
+    "name": "Linha do cabeçalho",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 54.0,
+     "y": 422.8,
+     "width": 683.7,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    }
+   },
+   "t_v1": {
+    "id": "t_v1",
+    "type": "text",
+    "name": "Divisória 1",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 166.9,
+     "y": 422.8,
+     "width": 2,
+     "height": 79.0
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderLeft": "1px solid #000000"
+    }
+   },
+   "t_v2": {
+    "id": "t_v2",
+    "type": "text",
+    "name": "Divisória 2",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 277.3,
+     "y": 422.8,
+     "width": 2,
+     "height": 79.0
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderLeft": "1px solid #000000"
+    }
+   },
+   "t_v3": {
+    "id": "t_v3",
+    "type": "text",
+    "name": "Divisória 3",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 415.3,
+     "y": 422.8,
+     "width": 2,
+     "height": 79.0
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderLeft": "1px solid #000000"
+    }
+   },
+   "t_v4": {
+    "id": "t_v4",
+    "type": "text",
+    "name": "Divisória 4",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 559.6,
+     "y": 422.8,
+     "width": 2,
+     "height": 79.0
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderLeft": "1px solid #000000"
+    }
+   },
+   "t_h1": {
+    "id": "t_h1",
+    "type": "text",
+    "name": "Cabeçalho Nº apontamento",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 70.3,
+     "y": 410.7,
+     "width": 88,
+     "height": 10.6
+    },
+    "content": "N° Apontamento",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "8.8px",
+     "lineHeight": 1.2045,
+     "textAlign": "left",
+     "whiteSpace": "nowrap",
+     "fontWeight": "700",
+     "letterSpacing": "1.1px"
+    }
+   },
+   "t_h2": {
+    "id": "t_h2",
+    "type": "text",
+    "name": "Cabeçalho Natureza",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 174.4,
+     "y": 410.7,
+     "width": 100,
+     "height": 10.6
+    },
+    "content": "Natureza do Título",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "8.8px",
+     "lineHeight": 1.2045,
+     "textAlign": "left",
+     "whiteSpace": "nowrap",
+     "fontWeight": "700",
+     "letterSpacing": "1.1px"
+    }
+   },
+   "t_h3": {
+    "id": "t_h3",
+    "type": "text",
+    "name": "Cabeçalho Motivo",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 286.1,
+     "y": 410.7,
+     "width": 60,
+     "height": 10.6
+    },
+    "content": "Motivo",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "8.8px",
+     "lineHeight": 1.2045,
+     "textAlign": "left",
+     "whiteSpace": "nowrap",
+     "fontWeight": "700",
+     "letterSpacing": "1.1px"
+    }
+   },
+   "t_h4": {
+    "id": "t_h4",
+    "type": "text",
+    "name": "Cabeçalho Credor",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 440.4,
+     "y": 410.7,
+     "width": 60,
+     "height": 10.6
+    },
+    "content": "Credor",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "8.8px",
+     "lineHeight": 1.2045,
+     "textAlign": "left",
+     "whiteSpace": "nowrap",
+     "fontWeight": "700",
+     "letterSpacing": "1.1px"
+    }
+   },
+   "t_h5": {
+    "id": "t_h5",
+    "type": "text",
+    "name": "Cabeçalho Devedor",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 569.6,
+     "y": 410.7,
+     "width": 60,
+     "height": 10.6
+    },
+    "content": "Devedor",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "8.8px",
+     "lineHeight": 1.2045,
+     "textAlign": "left",
+     "whiteSpace": "nowrap",
+     "fontWeight": "700",
+     "letterSpacing": "1.1px"
+    }
+   },
+   "t_b1": {
+    "id": "t_b1",
+    "type": "text",
+    "name": "Nº do apontamento",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 92.9,
+     "y": 435.4,
+     "width": 60,
+     "height": 11.3
+    },
+    "content": "{editais.numero_apontamento}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "9px",
+     "lineHeight": 1.2556,
+     "textAlign": "left",
+     "whiteSpace": "nowrap"
+    }
+   },
+   "t_b2": {
+    "id": "t_b2",
+    "type": "text",
+    "name": "Natureza do título",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 180.7,
+     "y": 437.9,
+     "width": 88,
+     "height": 79.1
+    },
+    "content": "{editais.natureza}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "9px",
+     "lineHeight": 1.2556,
+     "textAlign": "left",
+     "whiteSpace": "normal"
+    }
+   },
+   "t_b3": {
+    "id": "t_b3",
+    "type": "text",
+    "name": "Motivo",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 283.6,
+     "y": 437.9,
+     "width": 125,
+     "height": 79.1
+    },
+    "content": "{editais.motivo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "9px",
+     "lineHeight": 1.2556,
+     "textAlign": "left",
+     "whiteSpace": "normal"
+    }
+   },
+   "t_b4": {
+    "id": "t_b4",
+    "type": "text",
+    "name": "Credor",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 435.4,
+     "y": 437.9,
+     "width": 119,
+     "height": 79.1
+    },
+    "content": "{editais.credor}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "9px",
+     "lineHeight": 1.2556,
+     "textAlign": "left",
+     "whiteSpace": "normal"
+    }
+   },
+   "t_b5": {
+    "id": "t_b5",
+    "type": "text",
+    "name": "Devedor",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 569.6,
+     "y": 437.9,
+     "width": 162,
+     "height": 79.1
+    },
+    "content": "{editais.devedor}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "9px",
+     "lineHeight": 1.2556,
+     "textAlign": "left",
+     "whiteSpace": "normal"
+    }
+   },
+   "p_1": {
+    "id": "p_1",
+    "type": "text",
+    "name": "Texto (linha 1)",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 81.6,
+     "y": 536.2,
+     "width": 623.5,
+     "height": 15.1
+    },
+    "content": "Por não ter sido possível encontrar nesta cidade o responsável pelo presente, intimo-o para que,",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "13.2px",
+     "lineHeight": 1.1402,
+     "textAlign": "justify",
+     "whiteSpace": "normal",
+     "textIndent": "39px",
+     "textAlignLast": "justify"
+    }
+   },
+   "p_2": {
+    "id": "p_2",
+    "type": "text",
+    "name": "Texto (linha 2)",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 81.6,
+     "y": 551.2,
+     "width": 623.5,
+     "height": 15.1
+    },
+    "content": "no prazo legal, pague a importância do mencionado título ou me apresente a razão pela qual não o faz.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "13.2px",
+     "lineHeight": 1.1402,
+     "textAlign": "justify",
+     "whiteSpace": "normal",
+     "textAlignLast": "justify"
+    }
+   },
+   "p_3": {
+    "id": "p_3",
+    "type": "text",
+    "name": "Texto (linha 3)",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 81.6,
+     "y": 566.3,
+     "width": 623.5,
+     "height": 15.1
+    },
+    "content": "Ao mesmo tempo, na falta de pagamento, notifico-o do competente protesto. Dou fé que esta diligência",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "13.2px",
+     "lineHeight": 1.1402,
+     "textAlign": "justify",
+     "whiteSpace": "normal",
+     "textAlignLast": "justify"
+    }
+   },
+   "p_4": {
+    "id": "p_4",
+    "type": "text",
+    "name": "Texto (linha 4)",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 81.6,
+     "y": 581.4,
+     "width": 623.5,
+     "height": 15.1
+    },
+    "content": "foi realizada em {editais.data_diligencia}.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "13.2px",
+     "lineHeight": 1.1402,
+     "textAlign": "left",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "a_linha": {
+    "id": "a_linha",
+    "type": "text",
+    "name": "Linha da assinatura",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 248.5,
+     "y": 686.3,
+     "width": 336.2,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    }
+   },
+   "a_nome": {
+    "id": "a_nome",
+    "type": "text",
+    "name": "Escrevente",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 252.3,
+     "y": 699.1,
+     "width": 336,
+     "height": 15.6
+    },
+    "content": "{cartorio.escrevente}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "13px",
+     "lineHeight": 1.2,
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "a_cargo": {
+    "id": "a_cargo",
+    "type": "text",
+    "name": "Cargo do escrevente",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 252.3,
+     "y": 712.9,
+     "width": 336,
+     "height": 15.6
+    },
+    "content": "Escrevente Substituto",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "13px",
+     "lineHeight": 1.2,
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   },
+   "a_prazo": {
+    "id": "a_prazo",
+    "type": "text",
+    "name": "Prazo para comparecimento",
+    "parentId": "band_folha",
+    "rect": {
+     "x": 28.3,
+     "y": 741.6,
+     "width": 720,
+     "height": 15.8
+    },
+    "content": "Solicitamos que compareça a este Cartório no prazo de até 3 (três) dias úteis, no horário das 08h às 17h.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "13.2px",
+     "lineHeight": 1.197,
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    }
+   }
+  }
+ },
+ "mockData": {
+  "cartorio": [
+   {
+    "nome": "1º Tabelionato de Protesto de Títulos",
+    "denominacao": "1º Tabelionato de Protesto de Títulos de Goiânia",
+    "titular": "Carlos Almeida",
+    "endereco": "Av. Goiás, 1500",
+    "bairro": "Setor Central",
+    "cep": "74000-000",
+    "fone": "(62) 3222-1111",
+    "email": "protesto@cartorioexemplo.com.br",
+    "escrevente": "Mariana Lopes",
+    "logo": ""
+   }
+  ],
+  "editais": [
+   {
+    "numero_apontamento": "88121",
+    "natureza": "Duplicata Mercantil",
+    "motivo": "Falta de pagamento",
+    "credor": "Banco Exemplo S/A",
+    "devedor": "Empresa Alfa Ltda",
+    "data_diligencia": "21/10/2026"
+   }
+  ]
+ }
+}

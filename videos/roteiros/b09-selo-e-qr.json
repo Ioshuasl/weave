@@ -1,0 +1,30 @@
+{
+  "passo": 9,
+  "titulo": "Selo eletrônico e QR Code",
+  "proximo": "Passo 10 — Informações e assinatura",
+  "cenas": [
+    {
+      "id": "abertura",
+      "fala": "Vamos criar o quadro do selo, com o QR Code que leva à consulta do selo de cada título."
+    },
+    {
+      "id": "moldura",
+      "fala": "Primeiro, o quadro: um texto vazio, com bordas, de X zero, Y quinhentos e sessenta e seis, largura setecentos e catorze e altura oitenta e seis.",
+      "rapido": 2
+    },
+    {
+      "id": "qr",
+      "fala": "Depois, clique em Mais elementos e escolha QR Code. Em Ou usar uma informação dos dados, escolha instrumentos, selo url. Como o QR vem de um campo, cada título gera um código diferente. Posicione em X dezenove, Y quinhentos e setenta e quatro, com largura sessenta e seis e altura setenta."
+    },
+    {
+      "id": "texto",
+      "fala": "Ao lado, o texto do selo, centralizado e com borda: duas linhas em negrito, o número do selo e o endereço de consulta.",
+      "rapido": 3
+    },
+    {
+      "id": "fecho",
+      "fala": "O selo está pronto. No próximo passo, vamos completar as informações e a assinatura."
+    }
+  ],
+  "id": "b09-selo-e-qr"
+}

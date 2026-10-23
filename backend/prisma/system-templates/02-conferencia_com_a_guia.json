@@ -1,0 +1,1511 @@
+{
+ "order": 2,
+ "name": "Conferência com a Guia",
+ "description": "Selos utilizados no período, com fundos e ISS",
+ "tags": [
+  "Notariado",
+  "Relatório"
+ ],
+ "sourceSystem": 2,
+ "sourceFile": "20261005100000_seed_g_config_relatorio_conferencia_guia.sql",
+ "report": {
+  "id": "conferencia_guia",
+  "name": "Conferência com a Guia",
+  "pages": [
+   {
+    "id": "page_1",
+    "name": "Conferência com a Guia",
+    "presetId": "a4-landscape",
+    "profile": "document",
+    "width": 1123,
+    "height": 794,
+    "margins": {
+     "top": 20,
+     "right": 20,
+     "bottom": 20,
+     "left": 20
+    },
+    "bands": [
+     "band_header",
+     "band_rows",
+     "band_summary"
+    ]
+   }
+  ],
+  "bands": {
+   "band_header": {
+    "id": "band_header",
+    "type": "pageHeader",
+    "name": "Cabecalho",
+    "height": 138,
+    "bandRect": {
+     "x": 0,
+     "y": 0,
+     "width": 1083,
+     "height": 138
+    },
+    "components": [
+     "c1",
+     "c2",
+     "c3",
+     "c4",
+     "c5",
+     "c6",
+     "c7",
+     "c8",
+     "c9",
+     "c10",
+     "c11",
+     "c12",
+     "c13",
+     "c14",
+     "c15",
+     "c16",
+     "c17",
+     "c18",
+     "c19"
+    ]
+   },
+   "band_rows": {
+    "id": "band_rows",
+    "type": "masterData",
+    "name": "Selos utilizados",
+    "height": 18,
+    "autoHeight": true,
+    "bandRect": {
+     "x": 0,
+     "y": 138,
+     "width": 1083,
+     "height": 18
+    },
+    "dataSource": "selos",
+    "components": [
+     "c20",
+     "c21",
+     "c22",
+     "c23",
+     "c24",
+     "c25",
+     "c26",
+     "c27",
+     "c28",
+     "c29"
+    ]
+   },
+   "band_summary": {
+    "id": "band_summary",
+    "type": "reportSummary",
+    "name": "Resumo",
+    "height": 252,
+    "bandRect": {
+     "x": 0,
+     "y": 166,
+     "width": 1083,
+     "height": 252
+    },
+    "components": [
+     "c30",
+     "c31",
+     "c32",
+     "c33",
+     "c34",
+     "c35",
+     "c36",
+     "c37",
+     "c38",
+     "c39",
+     "c40",
+     "c41",
+     "c42",
+     "c43",
+     "c44",
+     "c45",
+     "c46",
+     "c47",
+     "c48",
+     "c49",
+     "c50",
+     "c51",
+     "c52",
+     "c53",
+     "c54",
+     "c55",
+     "c56",
+     "c57",
+     "c58",
+     "c59",
+     "c60",
+     "c61",
+     "c62",
+     "c63",
+     "c64",
+     "c65",
+     "c66",
+     "c67",
+     "c68",
+     "c69"
+    ]
+   }
+  },
+  "components": {
+   "c1": {
+    "id": "c1",
+    "type": "image",
+    "name": "c1",
+    "parentId": "band_header",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 64,
+     "height": 64
+    },
+    "content": "{cartorio.logo}",
+    "style": {},
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "left",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    }
+   },
+   "c2": {
+    "id": "c2",
+    "type": "text",
+    "name": "c2",
+    "parentId": "band_header",
+    "rect": {
+     "x": 76,
+     "y": 0,
+     "width": 800,
+     "height": 18
+    },
+    "content": "{cartorio.nome}",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "c3": {
+    "id": "c3",
+    "type": "text",
+    "name": "c3",
+    "parentId": "band_header",
+    "rect": {
+     "x": 76,
+     "y": 26,
+     "width": 800,
+     "height": 22
+    },
+    "content": "{cartorio.titulo}",
+    "style": {
+     "fontSize": "18px",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "c4": {
+    "id": "c4",
+    "type": "text",
+    "name": "c4",
+    "parentId": "band_header",
+    "rect": {
+     "x": 76,
+     "y": 48,
+     "width": 800,
+     "height": 20
+    },
+    "content": "{cartorio.periodo}",
+    "style": {
+     "fontSize": "15px",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "c5": {
+    "id": "c5",
+    "type": "text",
+    "name": "c5",
+    "parentId": "band_header",
+    "rect": {
+     "x": 883,
+     "y": 70,
+     "width": 200,
+     "height": 18
+    },
+    "content": "Página: {sys.pageNumber} de {sys.pageCount}",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c6": {
+    "id": "c6",
+    "type": "text",
+    "name": "c6",
+    "parentId": "band_header",
+    "rect": {
+     "x": 0,
+     "y": 90,
+     "width": 1083,
+     "height": 46
+    },
+    "content": "",
+    "style": {
+     "backgroundColor": "#e5e7eb"
+    }
+   },
+   "c7": {
+    "id": "c7",
+    "type": "text",
+    "name": "c7",
+    "parentId": "band_header",
+    "rect": {
+     "x": 476,
+     "y": 92,
+     "width": 445,
+     "height": 16
+    },
+    "content": "Atos Praticados",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "c8": {
+    "id": "c8",
+    "type": "text",
+    "name": "c8",
+    "parentId": "band_header",
+    "rect": {
+     "x": 921,
+     "y": 92,
+     "width": 162,
+     "height": 16
+    },
+    "content": "Atos Gratuitos",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "c9": {
+    "id": "c9",
+    "type": "text",
+    "name": "c9",
+    "parentId": "band_header",
+    "rect": {
+     "x": 0,
+     "y": 92,
+     "width": 440,
+     "height": 18
+    },
+    "content": "Situação: {cartorio.situacao}",
+    "style": {
+     "fontSize": "13px",
+     "fontWeight": "bold"
+    }
+   },
+   "c10": {
+    "id": "c10",
+    "type": "text",
+    "name": "c10",
+    "parentId": "band_header",
+    "rect": {
+     "x": 0,
+     "y": 116,
+     "width": 76,
+     "height": 18
+    },
+    "content": "Nota Fiscal",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "left"
+    }
+   },
+   "c11": {
+    "id": "c11",
+    "type": "text",
+    "name": "c11",
+    "parentId": "band_header",
+    "rect": {
+     "x": 76,
+     "y": 116,
+     "width": 65,
+     "height": 18
+    },
+    "content": "Cod. Ato",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "left"
+    }
+   },
+   "c12": {
+    "id": "c12",
+    "type": "text",
+    "name": "c12",
+    "parentId": "band_header",
+    "rect": {
+     "x": 141,
+     "y": 116,
+     "width": 336,
+     "height": 18
+    },
+    "content": "Descrição",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "left"
+    }
+   },
+   "c13": {
+    "id": "c13",
+    "type": "text",
+    "name": "c13",
+    "parentId": "band_header",
+    "rect": {
+     "x": 477,
+     "y": 116,
+     "width": 65,
+     "height": 18
+    },
+    "content": "Qtde Atos",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c14": {
+    "id": "c14",
+    "type": "text",
+    "name": "c14",
+    "parentId": "band_header",
+    "rect": {
+     "x": 542,
+     "y": 116,
+     "width": 97,
+     "height": 18
+    },
+    "content": "Total Emol.",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c15": {
+    "id": "c15",
+    "type": "text",
+    "name": "c15",
+    "parentId": "band_header",
+    "rect": {
+     "x": 639,
+     "y": 116,
+     "width": 97,
+     "height": 18
+    },
+    "content": "Total Tx Jud.",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c16": {
+    "id": "c16",
+    "type": "text",
+    "name": "c16",
+    "parentId": "band_header",
+    "rect": {
+     "x": 736,
+     "y": 116,
+     "width": 97,
+     "height": 18
+    },
+    "content": "Total Fundos",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c17": {
+    "id": "c17",
+    "type": "text",
+    "name": "c17",
+    "parentId": "band_header",
+    "rect": {
+     "x": 833,
+     "y": 116,
+     "width": 87,
+     "height": 18
+    },
+    "content": "Taxa ISS",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c18": {
+    "id": "c18",
+    "type": "text",
+    "name": "c18",
+    "parentId": "band_header",
+    "rect": {
+     "x": 920,
+     "y": 116,
+     "width": 65,
+     "height": 18
+    },
+    "content": "Qtde Atos",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c19": {
+    "id": "c19",
+    "type": "text",
+    "name": "c19",
+    "parentId": "band_header",
+    "rect": {
+     "x": 985,
+     "y": 116,
+     "width": 97,
+     "height": 18
+    },
+    "content": "Total Atos",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c20": {
+    "id": "c20",
+    "type": "text",
+    "name": "c20",
+    "parentId": "band_rows",
+    "rect": {
+     "x": 0,
+     "y": 0,
+     "width": 76,
+     "height": 16
+    },
+    "content": "{selos.nota_fiscal}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "left"
+    }
+   },
+   "c21": {
+    "id": "c21",
+    "type": "text",
+    "name": "c21",
+    "parentId": "band_rows",
+    "rect": {
+     "x": 76,
+     "y": 0,
+     "width": 65,
+     "height": 16
+    },
+    "content": "{selos.codigo_ato}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "left"
+    }
+   },
+   "c22": {
+    "id": "c22",
+    "type": "text",
+    "name": "c22",
+    "parentId": "band_rows",
+    "rect": {
+     "x": 141,
+     "y": 0,
+     "width": 336,
+     "height": 16
+    },
+    "content": "{selos.descricao}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "left"
+    }
+   },
+   "c23": {
+    "id": "c23",
+    "type": "text",
+    "name": "c23",
+    "parentId": "band_rows",
+    "rect": {
+     "x": 477,
+     "y": 0,
+     "width": 65,
+     "height": 16
+    },
+    "content": "{selos.quantidade_atos}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "c24": {
+    "id": "c24",
+    "type": "text",
+    "name": "c24",
+    "parentId": "band_rows",
+    "rect": {
+     "x": 542,
+     "y": 0,
+     "width": 97,
+     "height": 16
+    },
+    "content": "{MOEDA([valor_emolumento])}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "c25": {
+    "id": "c25",
+    "type": "text",
+    "name": "c25",
+    "parentId": "band_rows",
+    "rect": {
+     "x": 639,
+     "y": 0,
+     "width": 97,
+     "height": 16
+    },
+    "content": "{MOEDA([valor_taxa_judiciaria])}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "c26": {
+    "id": "c26",
+    "type": "text",
+    "name": "c26",
+    "parentId": "band_rows",
+    "rect": {
+     "x": 736,
+     "y": 0,
+     "width": 97,
+     "height": 16
+    },
+    "content": "{MOEDA(Total de Fundos)}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right",
+     "fontWeight": "bold"
+    }
+   },
+   "c27": {
+    "id": "c27",
+    "type": "text",
+    "name": "c27",
+    "parentId": "band_rows",
+    "rect": {
+     "x": 833,
+     "y": 0,
+     "width": 87,
+     "height": 16
+    },
+    "content": "{MOEDA(ISS)}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "c28": {
+    "id": "c28",
+    "type": "text",
+    "name": "c28",
+    "parentId": "band_rows",
+    "rect": {
+     "x": 920,
+     "y": 0,
+     "width": 65,
+     "height": 16
+    },
+    "content": "{selos.quantidade_gratuitos}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "c29": {
+    "id": "c29",
+    "type": "text",
+    "name": "c29",
+    "parentId": "band_rows",
+    "rect": {
+     "x": 985,
+     "y": 0,
+     "width": 97,
+     "height": 16
+    },
+    "content": "{MOEDA([valor_gratuitos])}",
+    "style": {
+     "fontSize": "11px",
+     "lineHeight": "1.15",
+     "textAlign": "right"
+    }
+   },
+   "c30": {
+    "id": "c30",
+    "type": "text",
+    "name": "c30",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 330,
+     "y": 0,
+     "width": 140,
+     "height": 18
+    },
+    "content": "Totais:",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c31": {
+    "id": "c31",
+    "type": "text",
+    "name": "c31",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 476,
+     "y": 0,
+     "width": 65,
+     "height": 18
+    },
+    "content": "{SOMA([quantidade_atos])}",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c32": {
+    "id": "c32",
+    "type": "text",
+    "name": "c32",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 541,
+     "y": 0,
+     "width": 97,
+     "height": 18
+    },
+    "content": "{MOEDA(SOMA([valor_emolumento]))}",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c33": {
+    "id": "c33",
+    "type": "text",
+    "name": "c33",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 638,
+     "y": 0,
+     "width": 97,
+     "height": 18
+    },
+    "content": "{MOEDA(SOMA([valor_taxa_judiciaria]))}",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c34": {
+    "id": "c34",
+    "type": "text",
+    "name": "c34",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 735,
+     "y": 0,
+     "width": 97,
+     "height": 18
+    },
+    "content": "{MOEDA(SOMA(Total de Fundos))}",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c35": {
+    "id": "c35",
+    "type": "text",
+    "name": "c35",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 832,
+     "y": 0,
+     "width": 89,
+     "height": 18
+    },
+    "content": "{MOEDA(SOMA(ISS))}",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c36": {
+    "id": "c36",
+    "type": "text",
+    "name": "c36",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 921,
+     "y": 0,
+     "width": 65,
+     "height": 18
+    },
+    "content": "{SOMA([quantidade_gratuitos])}",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c37": {
+    "id": "c37",
+    "type": "text",
+    "name": "c37",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 986,
+     "y": 0,
+     "width": 97,
+     "height": 18
+    },
+    "content": "{MOEDA(SOMA([valor_gratuitos]))}",
+    "style": {
+     "fontSize": "11px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c38": {
+    "id": "c38",
+    "type": "text",
+    "name": "c38",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 0,
+     "y": 34,
+     "width": 470,
+     "height": 18
+    },
+    "content": "Totalizador Geral (Base de cálculo)",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold"
+    }
+   },
+   "c39": {
+    "id": "c39",
+    "type": "text",
+    "name": "c39",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 541,
+     "y": 34,
+     "width": 97,
+     "height": 18
+    },
+    "content": "{MOEDA(SOMA([valor_emolumento]))}",
+    "style": {
+     "fontSize": "11px",
+     "textAlign": "right"
+    }
+   },
+   "c40": {
+    "id": "c40",
+    "type": "text",
+    "name": "c40",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 638,
+     "y": 34,
+     "width": 97,
+     "height": 18
+    },
+    "content": "{MOEDA(SOMA([valor_taxa_judiciaria]))}",
+    "style": {
+     "fontSize": "11px",
+     "textAlign": "right"
+    }
+   },
+   "c41": {
+    "id": "c41",
+    "type": "text",
+    "name": "c41",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 0,
+     "y": 62,
+     "width": 540,
+     "height": 22
+    },
+    "content": "",
+    "style": {
+     "backgroundColor": "#e5e7eb"
+    }
+   },
+   "c42": {
+    "id": "c42",
+    "type": "text",
+    "name": "c42",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 0,
+     "y": 64,
+     "width": 540,
+     "height": 18
+    },
+    "content": "RESUMO ESTADUAIS / ISSQN",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "c43": {
+    "id": "c43",
+    "type": "text",
+    "name": "c43",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 543,
+     "y": 62,
+     "width": 540,
+     "height": 22
+    },
+    "content": "",
+    "style": {
+     "backgroundColor": "#e5e7eb"
+    }
+   },
+   "c44": {
+    "id": "c44",
+    "type": "text",
+    "name": "c44",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 543,
+     "y": 64,
+     "width": 540,
+     "height": 18
+    },
+    "content": "GUIA GRS",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   },
+   "c45": {
+    "id": "c45",
+    "type": "text",
+    "name": "c45",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 20,
+     "y": 92,
+     "width": 380,
+     "height": 18
+    },
+    "content": "ISSQN 5%:",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "left"
+    }
+   },
+   "c46": {
+    "id": "c46",
+    "type": "text",
+    "name": "c46",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 400,
+     "y": 92,
+     "width": 130,
+     "height": 18
+    },
+    "content": "{MOEDA(TOTAL(ISS))}",
+    "style": {
+     "fontSize": "12px",
+     "textAlign": "right"
+    }
+   },
+   "c47": {
+    "id": "c47",
+    "type": "text",
+    "name": "c47",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 20,
+     "y": 114,
+     "width": 380,
+     "height": 18
+    },
+    "content": "Fundo Advogados Dativos (2%):",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "left"
+    }
+   },
+   "c48": {
+    "id": "c48",
+    "type": "text",
+    "name": "c48",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 400,
+     "y": 114,
+     "width": 130,
+     "height": 18
+    },
+    "content": "{MOEDA(TOTAL(Advogados Dativos))}",
+    "style": {
+     "fontSize": "12px",
+     "textAlign": "right"
+    }
+   },
+   "c49": {
+    "id": "c49",
+    "type": "text",
+    "name": "c49",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 20,
+     "y": 136,
+     "width": 380,
+     "height": 18
+    },
+    "content": "Fundo Procuradoria - FUNPROGE (2%):",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "left"
+    }
+   },
+   "c50": {
+    "id": "c50",
+    "type": "text",
+    "name": "c50",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 400,
+     "y": 136,
+     "width": 130,
+     "height": 18
+    },
+    "content": "{MOEDA(TOTAL(FUNPROGE))}",
+    "style": {
+     "fontSize": "12px",
+     "textAlign": "right"
+    }
+   },
+   "c51": {
+    "id": "c51",
+    "type": "text",
+    "name": "c51",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 20,
+     "y": 158,
+     "width": 380,
+     "height": 18
+    },
+    "content": "Fundo Defensoria - FUNDEPEG (1,25%):",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "left"
+    }
+   },
+   "c52": {
+    "id": "c52",
+    "type": "text",
+    "name": "c52",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 400,
+     "y": 158,
+     "width": 130,
+     "height": 18
+    },
+    "content": "{MOEDA(TOTAL(FUNDEPEG))}",
+    "style": {
+     "fontSize": "12px",
+     "textAlign": "right"
+    }
+   },
+   "c53": {
+    "id": "c53",
+    "type": "text",
+    "name": "c53",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 20,
+     "y": 180,
+     "width": 380,
+     "height": 18
+    },
+    "content": "Total SEFAZ:",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c54": {
+    "id": "c54",
+    "type": "text",
+    "name": "c54",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 400,
+     "y": 180,
+     "width": 130,
+     "height": 18
+    },
+    "content": "{MOEDA(TOTAL(Total SEFAZ))}",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c55": {
+    "id": "c55",
+    "type": "text",
+    "name": "c55",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 20,
+     "y": 202,
+     "width": 380,
+     "height": 18
+    },
+    "content": "Total SEFAZ/ISSQN:",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c56": {
+    "id": "c56",
+    "type": "text",
+    "name": "c56",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 400,
+     "y": 202,
+     "width": 130,
+     "height": 18
+    },
+    "content": "{MOEDA(TOTAL(Total SEFAZ/ISSQN))}",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c57": {
+    "id": "c57",
+    "type": "text",
+    "name": "c57",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 563,
+     "y": 92,
+     "width": 380,
+     "height": 18
+    },
+    "content": "Taxa Judiciária:",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold"
+    }
+   },
+   "c58": {
+    "id": "c58",
+    "type": "text",
+    "name": "c58",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 943,
+     "y": 92,
+     "width": 130,
+     "height": 18
+    },
+    "content": "{MOEDA(SOMA([valor_taxa_judiciaria]))}",
+    "style": {
+     "fontSize": "12px",
+     "textAlign": "right"
+    }
+   },
+   "c59": {
+    "id": "c59",
+    "type": "text",
+    "name": "c59",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 563,
+     "y": 114,
+     "width": 380,
+     "height": 18
+    },
+    "content": "FUNDESP (10%):",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold"
+    }
+   },
+   "c60": {
+    "id": "c60",
+    "type": "text",
+    "name": "c60",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 943,
+     "y": 114,
+     "width": 130,
+     "height": 18
+    },
+    "content": "{MOEDA(TOTAL(FUNDESP))}",
+    "style": {
+     "fontSize": "12px",
+     "textAlign": "right"
+    }
+   },
+   "c61": {
+    "id": "c61",
+    "type": "text",
+    "name": "c61",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 563,
+     "y": 136,
+     "width": 380,
+     "height": 18
+    },
+    "content": "Fundo Ministério Público - FUNEMP (3%):",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold"
+    }
+   },
+   "c62": {
+    "id": "c62",
+    "type": "text",
+    "name": "c62",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 943,
+     "y": 136,
+     "width": 130,
+     "height": 18
+    },
+    "content": "{MOEDA(TOTAL(FUNEMP))}",
+    "style": {
+     "fontSize": "12px",
+     "textAlign": "right"
+    }
+   },
+   "c63": {
+    "id": "c63",
+    "type": "text",
+    "name": "c63",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 563,
+     "y": 158,
+     "width": 380,
+     "height": 18
+    },
+    "content": "*SINOREG - FUNCOMP (3%):",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold"
+    }
+   },
+   "c64": {
+    "id": "c64",
+    "type": "text",
+    "name": "c64",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 943,
+     "y": 158,
+     "width": 130,
+     "height": 18
+    },
+    "content": "{MOEDA(TOTAL(SINOREG até 23/03))}",
+    "style": {
+     "fontSize": "12px",
+     "textAlign": "right"
+    }
+   },
+   "c65": {
+    "id": "c65",
+    "type": "text",
+    "name": "c65",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 563,
+     "y": 180,
+     "width": 380,
+     "height": 18
+    },
+    "content": "*SINOREG - FUNCOMP (6%):",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold"
+    }
+   },
+   "c66": {
+    "id": "c66",
+    "type": "text",
+    "name": "c66",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 943,
+     "y": 180,
+     "width": 130,
+     "height": 18
+    },
+    "content": "{MOEDA(TOTAL(SINOREG desde 24/03))}",
+    "style": {
+     "fontSize": "12px",
+     "textAlign": "right"
+    }
+   },
+   "c67": {
+    "id": "c67",
+    "type": "text",
+    "name": "c67",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 563,
+     "y": 202,
+     "width": 380,
+     "height": 18
+    },
+    "content": "Total Guia Corregedoria (GRS):",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold"
+    }
+   },
+   "c68": {
+    "id": "c68",
+    "type": "text",
+    "name": "c68",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 943,
+     "y": 202,
+     "width": 130,
+     "height": 18
+    },
+    "content": "{MOEDA(TOTAL(Total Guia GRS))}",
+    "style": {
+     "fontSize": "12px",
+     "fontWeight": "bold",
+     "textAlign": "right"
+    }
+   },
+   "c69": {
+    "id": "c69",
+    "type": "text",
+    "name": "c69",
+    "parentId": "band_summary",
+    "rect": {
+     "x": 543,
+     "y": 232,
+     "width": 540,
+     "height": 16
+    },
+    "content": "*Após 24/03/2025 o fundo SINOREG passa de 3% para 6%",
+    "style": {
+     "fontSize": "10px",
+     "fontWeight": "bold",
+     "textAlign": "center"
+    }
+   }
+  },
+  "calculos": [
+   {
+    "id": "k1",
+    "nome": "Advogados Dativos",
+    "formula": "[valor_emolumento] * 2%"
+   },
+   {
+    "id": "k2",
+    "nome": "FUNPROGE",
+    "formula": "[valor_emolumento] * 2%"
+   },
+   {
+    "id": "k3",
+    "nome": "FUNDEPEG",
+    "formula": "[valor_emolumento] * 1,25%"
+   },
+   {
+    "id": "k4",
+    "nome": "FUNDESP",
+    "formula": "[valor_emolumento] * 10%"
+   },
+   {
+    "id": "k5",
+    "nome": "FUNEMP",
+    "formula": "[valor_emolumento] * 3%"
+   },
+   {
+    "id": "k6",
+    "nome": "SINOREG até 23/03",
+    "formula": "[emolumento_sinoreg_3] * 3%"
+   },
+   {
+    "id": "k7",
+    "nome": "SINOREG desde 24/03",
+    "formula": "[emolumento_sinoreg_6] * 6%"
+   },
+   {
+    "id": "k8",
+    "nome": "ISS",
+    "formula": "[valor_emolumento] * 5%"
+   },
+   {
+    "id": "k9",
+    "nome": "Total de Fundos",
+    "formula": "Advogados Dativos + FUNPROGE + FUNDEPEG + FUNDESP + FUNEMP + SINOREG até 23/03 + SINOREG desde 24/03"
+   },
+   {
+    "id": "k10",
+    "nome": "Total SEFAZ",
+    "formula": "Advogados Dativos + FUNPROGE + FUNDEPEG",
+    "somenteNoFinal": true
+   },
+   {
+    "id": "k11",
+    "nome": "Total SEFAZ/ISSQN",
+    "formula": "ISS + Total SEFAZ",
+    "somenteNoFinal": true
+   },
+   {
+    "id": "k12",
+    "nome": "Total Guia GRS",
+    "formula": "[valor_taxa_judiciaria] + FUNDESP + FUNEMP + SINOREG até 23/03 + SINOREG desde 24/03",
+    "somenteNoFinal": true
+   }
+  ]
+ },
+ "mockData": {
+  "cartorio": [
+   {
+    "titulo": "Conferência com a Guia",
+    "nome": "Tabelionato de Notas e Protesto de Títulos",
+    "logo": "",
+    "situacao": "Fechado",
+    "periodo": "01/10/2026 a 31/10/2026"
+   }
+  ],
+  "selos": [
+   {
+    "codigo_ato": "101",
+    "descricao": "Escritura sem valor declarado",
+    "nota_fiscal": "1021",
+    "quantidade_atos": 12,
+    "quantidade_gratuitos": 1,
+    "valor_emolumento": 2160.0,
+    "valor_gratuitos": 180.0,
+    "valor_taxa_judiciaria": 240.0,
+    "emolumento_sinoreg_3": 0,
+    "emolumento_sinoreg_6": 2160.0
+   },
+   {
+    "codigo_ato": "102",
+    "descricao": "Escritura com valor declarado",
+    "nota_fiscal": "1021",
+    "quantidade_atos": 8,
+    "quantidade_gratuitos": 0,
+    "valor_emolumento": 6480.5,
+    "valor_gratuitos": 0.0,
+    "valor_taxa_judiciaria": 720.0,
+    "emolumento_sinoreg_3": 0,
+    "emolumento_sinoreg_6": 6480.5
+   },
+   {
+    "codigo_ato": "201",
+    "descricao": "Procuração pública",
+    "nota_fiscal": "1022",
+    "quantidade_atos": 25,
+    "quantidade_gratuitos": 2,
+    "valor_emolumento": 4500.0,
+    "valor_gratuitos": 360.0,
+    "valor_taxa_judiciaria": 500.0,
+    "emolumento_sinoreg_3": 0,
+    "emolumento_sinoreg_6": 4500.0
+   },
+   {
+    "codigo_ato": "301",
+    "descricao": "Reconhecimento de firma",
+    "nota_fiscal": "1022",
+    "quantidade_atos": 140,
+    "quantidade_gratuitos": 5,
+    "valor_emolumento": 1960.0,
+    "valor_gratuitos": 70.0,
+    "valor_taxa_judiciaria": 210.0,
+    "emolumento_sinoreg_3": 0,
+    "emolumento_sinoreg_6": 1960.0
+   },
+   {
+    "codigo_ato": "302",
+    "descricao": "Autenticação de cópia",
+    "nota_fiscal": "1023",
+    "quantidade_atos": 210,
+    "quantidade_gratuitos": 0,
+    "valor_emolumento": 1050.0,
+    "valor_gratuitos": 0.0,
+    "valor_taxa_judiciaria": 130.0,
+    "emolumento_sinoreg_3": 0,
+    "emolumento_sinoreg_6": 1050.0
+   }
+  ]
+ }
+}

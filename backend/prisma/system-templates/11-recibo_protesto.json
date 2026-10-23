@@ -1,0 +1,366 @@
+{
+ "order": 11,
+ "name": "Recibo - Protesto",
+ "description": "Recibo do título protestado (meia folha)",
+ "tags": [
+  "Protesto",
+  "Recibo"
+ ],
+ "sourceSystem": 13,
+ "sourceFile": "20261022100000_seed_g_config_relatorio_recibo_protesto.sql",
+ "report": {
+  "id": "recibo_protesto",
+  "name": "Recibo - Protesto",
+  "pages": [
+   {
+    "id": "page_1",
+    "name": "Recibo",
+    "presetId": "a4-portrait",
+    "profile": "document",
+    "width": 794,
+    "height": 1123,
+    "margins": {
+     "top": 20,
+     "right": 20,
+     "bottom": 20,
+     "left": 20
+    },
+    "bands": [
+     "band_folha"
+    ]
+   }
+  ],
+  "bands": {
+   "band_folha": {
+    "id": "band_folha",
+    "type": "masterData",
+    "name": "Recibo de protesto (dois por folha)",
+    "height": 530,
+    "dataSource": "recibos",
+    "components": [
+     "c_logo",
+     "c_nome",
+     "c_assinante",
+     "c_linha",
+     "t_recibo",
+     "t_valor",
+     "t_corpo",
+     "t_local",
+     "t_ass_linha",
+     "t_ass",
+     "r_linha",
+     "r_texto",
+     "r_corte"
+    ],
+    "keepTogether": true,
+    "bandRect": {
+     "x": 0,
+     "y": 0,
+     "width": 754,
+     "height": 530
+    }
+   }
+  },
+  "components": {
+   "c_logo": {
+    "id": "c_logo",
+    "type": "image",
+    "name": "Brasão",
+    "rect": {
+     "x": 327,
+     "y": 0,
+     "width": 100,
+     "height": 100
+    },
+    "content": "{cartorio.logo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000"
+    },
+    "imageProps": {
+     "sizeMode": "contain",
+     "alignX": "center",
+     "alignY": "middle",
+     "lockAspectRatio": true
+    },
+    "parentId": "band_folha"
+   },
+   "c_nome": {
+    "id": "c_nome",
+    "type": "text",
+    "name": "Cartório",
+    "rect": {
+     "x": 0,
+     "y": 106,
+     "width": 754,
+     "height": 34
+    },
+    "content": "{cartorio.denominacao}",
+    "style": {
+     "fontFamily": "'Times New Roman', 'Liberation Serif', serif",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "15px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap",
+     "fontWeight": "700"
+    },
+    "parentId": "band_folha"
+   },
+   "c_assinante": {
+    "id": "c_assinante",
+    "type": "text",
+    "name": "Assinante",
+    "rect": {
+     "x": 0,
+     "y": 146,
+     "width": 754,
+     "height": 30
+    },
+    "content": "**{recibos.assinante}**\n{recibos.assinante_cargo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "9px",
+     "lineHeight": "12px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "c_linha": {
+    "id": "c_linha",
+    "type": "text",
+    "name": "Linha do cabeçalho",
+    "rect": {
+     "x": 0,
+     "y": 186,
+     "width": 754,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    },
+    "parentId": "band_folha"
+   },
+   "t_recibo": {
+    "id": "t_recibo",
+    "type": "text",
+    "name": "Título",
+    "rect": {
+     "x": 0,
+     "y": 196,
+     "width": 754,
+     "height": 22
+    },
+    "content": "RECIBO",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "16px",
+     "lineHeight": "20px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap",
+     "fontWeight": "700"
+    },
+    "parentId": "band_folha"
+   },
+   "t_valor": {
+    "id": "t_valor",
+    "type": "text",
+    "name": "Valor do recibo",
+    "rect": {
+     "x": 0,
+     "y": 226,
+     "width": 754,
+     "height": 18
+    },
+    "content": "R$ {recibos.valor_recibo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "12px",
+     "lineHeight": "15px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap",
+     "fontWeight": "700"
+    },
+    "parentId": "band_folha"
+   },
+   "t_corpo": {
+    "id": "t_corpo",
+    "type": "text",
+    "name": "Corpo do recibo",
+    "rect": {
+     "x": 0,
+     "y": 262,
+     "width": 754,
+     "height": 110
+    },
+    "content": "Recebi do(a) {recibos.apresentante} a quantia de R$ {recibos.valor_recibo} ({recibos.valor_recibo_extenso}) provenientes de Emolumentos, Averbação, Intimação, Taxa Judiciária, Fundos Estaduais e Tarifa postal, referente ao Apontamento e Protesto do seguinte Título: {recibos.natureza_sigla} n. {recibos.numero_titulo}, emitida em {recibos.data_emissao}, vencida em {recibos.data_vencimento}, no valor de R$ {recibos.valor_titulo} ({recibos.valor_titulo_extenso}), sacada por {recibos.devedores_nomes}, a favor de {recibos.credor}.",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "16px",
+     "textAlign": "justify",
+     "whiteSpace": "pre-wrap",
+     "textIndent": "36px"
+    },
+    "parentId": "band_folha"
+   },
+   "t_local": {
+    "id": "t_local",
+    "type": "text",
+    "name": "Local e data",
+    "rect": {
+     "x": 0,
+     "y": 392,
+     "width": 754,
+     "height": 16
+    },
+    "content": "{recibos.local_data_protesto}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "14px",
+     "textAlign": "right",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "t_ass_linha": {
+    "id": "t_ass_linha",
+    "type": "text",
+    "name": "Linha da assinatura",
+    "rect": {
+     "x": 420,
+     "y": 446,
+     "width": 334,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    },
+    "parentId": "band_folha"
+   },
+   "t_ass": {
+    "id": "t_ass",
+    "type": "text",
+    "name": "Assinatura",
+    "rect": {
+     "x": 420,
+     "y": 452,
+     "width": 334,
+     "height": 32
+    },
+    "content": "{recibos.assinante}\n{recibos.assinante_cargo}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "11px",
+     "lineHeight": "15px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "r_linha": {
+    "id": "r_linha",
+    "type": "text",
+    "name": "Linha do rodapé",
+    "rect": {
+     "x": 100,
+     "y": 496,
+     "width": 554,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px solid #000000"
+    },
+    "parentId": "band_folha"
+   },
+   "r_texto": {
+    "id": "r_texto",
+    "type": "text",
+    "name": "Rodapé",
+    "rect": {
+     "x": 100,
+     "y": 500,
+     "width": 554,
+     "height": 24
+    },
+    "content": "{cartorio.denominacao} {cartorio.endereco}, {cartorio.bairro}, {cartorio.cidade}-{cartorio.uf}. {cartorio.fone}. {cartorio.email}",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "fontSize": "8px",
+     "lineHeight": "10px",
+     "textAlign": "center",
+     "whiteSpace": "pre-wrap"
+    },
+    "parentId": "band_folha"
+   },
+   "r_corte": {
+    "id": "r_corte",
+    "type": "text",
+    "name": "Linha de corte",
+    "rect": {
+     "x": 0,
+     "y": 527,
+     "width": 754,
+     "height": 2
+    },
+    "content": "",
+    "style": {
+     "fontFamily": "Arial, 'Liberation Sans', sans-serif",
+     "color": "#000000",
+     "borderTop": "1px dashed #000000"
+    },
+    "parentId": "band_folha"
+   }
+  }
+ },
+ "mockData": {
+  "cartorio": [
+   {
+    "denominacao": "1º Tabelionato de Protesto de Títulos de Goiânia",
+    "endereco": "Av. Goiás, 1500",
+    "bairro": "Setor Central",
+    "cidade": "Goiânia",
+    "uf": "GO",
+    "fone": "(62) 3222-1111",
+    "email": "protesto@cartorioexemplo.com.br",
+    "logo": ""
+   }
+  ],
+  "recibos": [
+   {
+    "apresentante": "Banco Exemplo S/A",
+    "credor": "Banco Exemplo S/A",
+    "devedores_nomes": "Empresa Alfa Ltda",
+    "numero_titulo": "DM-2026/001",
+    "natureza_sigla": "DMI",
+    "data_emissao": "15/09/2026",
+    "data_vencimento": "10/10/2026",
+    "valor_titulo": "R$ 12.500,00",
+    "valor_titulo_extenso": "doze mil e quinhentos reais",
+    "valor_recibo": "R$ 319,00",
+    "valor_recibo_extenso": "trezentos e dezenove reais",
+    "local_data_protesto": "Goiânia, 22 de outubro de 2026",
+    "assinante": "Mariana Lopes",
+    "assinante_cargo": "Escrevente"
+   }
+  ]
+ }
+}
