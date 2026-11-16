@@ -48,6 +48,17 @@ function wrapLines(text: string, open: string, close: string = open): string {
     .join('\n');
 }
 
+/** Filhos em sequência: <div>/<p> começam em linha nova (o Chrome deixa a 1ª linha solta e põe as demais em <div>). */
+function serializeChildren(nodes: ArrayLike<Node>): string {
+  let out = '';
+  for (const child of Array.from(nodes)) {
+    const tag = child.nodeType === Node.ELEMENT_NODE ? (child as HTMLElement).tagName.toLowerCase() : '';
+    if ((tag === 'div' || tag === 'p') && out && !out.endsWith('\n')) out += '\n';
+    out += serializeNode(child);
+  }
+  return out;
+}
+
 function serializeNode(node: Node): string {
   if (node.nodeType === Node.TEXT_NODE) {
     return (node.textContent ?? '').replace(/\u00a0/g, ' ');
@@ -70,7 +81,7 @@ function serializeNode(node: Node): string {
     return wrappedField;
   }
 
-  const inner = Array.from(el.childNodes).map(serializeNode).join('');
+  const inner = serializeChildren(el.childNodes);
 
   switch (tag) {
     case 'strong':
@@ -99,7 +110,9 @@ function serializeNode(node: Node): string {
       }
       if (textDecoration.includes('underline')) wrapped = wrapLines(wrapped, '++');
       if (textDecoration.includes('line-through')) wrapped = wrapLines(wrapped, '~~');
-      return serializeSpanInlineStyles(el, wrapped);
+      // quebras finais (de um <div> interno) ficam fora de [size]/[color]; no fim do texto são aparadas
+      const trailing = /\n+$/.exec(wrapped)?.[0] ?? '';
+      return serializeSpanInlineStyles(el, wrapped.slice(0, wrapped.length - trailing.length)) + trailing;
     }
     default:
       return inner;
@@ -108,10 +121,7 @@ function serializeNode(node: Node): string {
 
 /** HTML do contenteditable → markdown canônico */
 export function editorHtmlToMarkdown(root: HTMLElement): string {
-  const raw = Array.from(root.childNodes)
-    .map(serializeNode)
-    .join('')
-    .replace(/\n+$/, '');
+  const raw = serializeChildren(root.childNodes).replace(/\n+$/, '');
 
   if (!raw || raw === '\n') return '';
   return canonicalizeMarkdownMarkers(raw);

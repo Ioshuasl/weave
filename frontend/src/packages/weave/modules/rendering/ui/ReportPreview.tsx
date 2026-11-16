@@ -360,7 +360,7 @@ export const ReportPreview = ({
             ? 'fixed inset-0 bg-weave-surface flex flex-col'
             : 'fixed inset-0 bg-neutral-900/20 flex items-center justify-center p-8 backdrop-blur-sm'
       )}
-      style={isEmbedded ? undefined : { zIndex: DESIGNER_MODAL_OVERLAY_Z }}
+      style={isEmbedded ? undefined : { zIndex: DESIGNER_MODAL_OVERLAY_Z, pointerEvents: 'auto' }}
     >
       {panel}
 

@@ -83,7 +83,7 @@ export function TextStyleSection({
           label="Tamanho"
           suffix="px"
           min={6}
-          max={72}
+          max={28}
           value={parseFloat(String(style.fontSize ?? '')) || DEFAULT_FONT_SIZE}
           onChange={(size) => onPatchStyle({ fontSize: `${size}px` })}
         />

@@ -180,7 +180,7 @@ export function PropertyNumberInput({
       setDraft(String(value));
       return;
     }
-    const parsed = Number(trimmed);
+    const parsed = Number(trimmed.replace(',', '.'));
     if (Number.isNaN(parsed)) {
       setDraft(String(value));
       return;

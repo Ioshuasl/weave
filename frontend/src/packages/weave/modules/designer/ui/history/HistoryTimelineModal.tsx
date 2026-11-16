@@ -151,7 +151,7 @@ export const HistoryTimelineModal: React.FC<HistoryTimelineModalProps> = ({ onCl
   return (
     <div
       className="fixed inset-0 bg-neutral-900/30 flex items-center justify-center p-6 backdrop-blur-sm"
-      style={{ zIndex: DESIGNER_MODAL_OVERLAY_Z }}
+      style={{ zIndex: DESIGNER_MODAL_OVERLAY_Z, pointerEvents: 'auto' }}
       onClick={onClose}
     >
       <div

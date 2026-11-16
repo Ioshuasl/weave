@@ -77,7 +77,11 @@ function rangeFromCharacterOffset(
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_ALL, {
     acceptNode(node) {
       if (node === root) return NodeFilter.FILTER_SKIP;
-      if (node.nodeType === Node.TEXT_NODE) return NodeFilter.FILTER_ACCEPT;
+      if (node.nodeType === Node.TEXT_NODE) {
+        return (node.parentElement as HTMLElement | null)?.dataset.field
+          ? NodeFilter.FILTER_REJECT
+          : NodeFilter.FILTER_ACCEPT;
+      }
       if (node.nodeType === Node.ELEMENT_NODE) {
         const el = node as HTMLElement;
         if (el.dataset.field) return NodeFilter.FILTER_ACCEPT;

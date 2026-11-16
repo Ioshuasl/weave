@@ -177,14 +177,34 @@ export function applyInlineFontSizeToSelection(root: HTMLElement, fontSize: stri
     }
   });
 
+  // restos vazios deixados pelo corte da seleção (<strong></strong>, <span></span>) não vão para o conteúdo
+  root.querySelectorAll<HTMLElement>('span,strong,b,em,i,u,s').forEach((node) => {
+    if (node === span || node.contains(span) || node.textContent || node.querySelector('[data-field],br')) return;
+    node.remove();
+  });
+
+  // mesma seleção re-dimensionada: atualiza o span pai em vez de aninhar outro dentro dele
+  let target = span;
+  const parent = span.parentElement;
+  if (parent && parent !== root && parent.dataset.inlineSize &&
+    Array.from(parent.childNodes).every((n) => n === span || (n.nodeType === Node.TEXT_NODE && !n.textContent))
+  ) {
+    parent.style.fontSize = normalized;
+    parent.dataset.inlineSize = normalized;
+    while (span.firstChild) parent.insertBefore(span.firstChild, span);
+    span.remove();
+    target = parent;
+  }
+
   selection.removeAllRanges();
   const next = document.createRange();
-  next.selectNodeContents(span);
+  next.selectNodeContents(target);
   selection.addRange(next);
   return true;
 }
 
 export function serializeSpanInlineStyles(el: HTMLElement, inner: string): string {
+  if (!inner) return inner; // trecho vazio não gera [size]/[color]
   let wrapped = inner;
   const color = readElementInlineColor(el);
   const fontSize = readElementInlineFontSize(el);
@@ -200,6 +220,10 @@ export function serializeSpanInlineStyles(el: HTMLElement, inner: string): strin
 }
 
 export const FONT_SIZE_PRESETS = [
+  '6px',
+  '7px',
+  '8px',
+  '9px',
   '10px',
   '11px',
   '12px',

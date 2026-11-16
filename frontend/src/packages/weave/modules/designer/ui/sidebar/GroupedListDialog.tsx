@@ -108,7 +108,7 @@ export function GroupedListDialog({ onClose }: { onClose: () => void }) {
       data-weave-overlay
       data-weave-theme
       className="fixed inset-0 flex items-center justify-center bg-neutral-900/30 p-4 backdrop-blur-sm"
-      style={{ zIndex: DESIGNER_MODAL_OVERLAY_Z }}
+      style={{ zIndex: DESIGNER_MODAL_OVERLAY_Z, pointerEvents: 'auto' }}
       role="presentation"
       onClick={(event) => event.target === event.currentTarget && onClose()}
       onKeyDown={(event) => event.key === 'Escape' && onClose()}

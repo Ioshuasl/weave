@@ -1,5 +1,5 @@
 /** Altura de linha padrão dos textos — a mesma no editor, na impressão e no cálculo da altura automática */
-export const DEFAULT_TEXT_LINE_HEIGHT = 1.15;
+export const DEFAULT_TEXT_LINE_HEIGHT = 1;
 
 export function getTextLineHeight(lineHeight: unknown): number {
   const parsed = Number(lineHeight);

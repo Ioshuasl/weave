@@ -71,7 +71,7 @@ export function ExpressionAutocomplete({
       role="listbox"
       aria-label="Campos disponíveis"
       className="fixed w-[280px] max-h-64 overflow-y-auto rounded-lg border border-neutral-200 bg-weave-surface shadow-lg"
-      style={{ top: position.top, left: position.left, zIndex: DESIGNER_MODAL_POPUP_Z }}
+      style={{ top: position.top, left: position.left, zIndex: DESIGNER_MODAL_POPUP_Z, pointerEvents: 'auto' }}
     >
       {groups.length === 0 ? (
         <p className="px-3 py-2 text-[12px] text-neutral-400">

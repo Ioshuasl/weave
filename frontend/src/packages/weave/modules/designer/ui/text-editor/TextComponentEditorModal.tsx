@@ -121,7 +121,7 @@ export function TextComponentEditorModal() {
       data-weave-overlay
       data-weave-theme
       className="fixed inset-0 bg-neutral-900/30 flex items-center justify-center p-4 sm:p-6 backdrop-blur-sm select-none"
-      style={{ zIndex: DESIGNER_MODAL_OVERLAY_Z }}
+      style={{ zIndex: DESIGNER_MODAL_OVERLAY_Z, pointerEvents: 'auto' }}
       onMouseDown={handleOverlayPointerDown}
       onClick={handleOverlayClick}
     >

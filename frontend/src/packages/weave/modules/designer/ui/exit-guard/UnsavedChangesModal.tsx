@@ -39,7 +39,7 @@ export const UnsavedChangesModal: React.FC<UnsavedChangesModalProps> = ({
   return (
     <div
       className="fixed inset-0 bg-neutral-900/30 flex items-center justify-center p-6 backdrop-blur-sm"
-      style={{ zIndex: DESIGNER_MODAL_OVERLAY_Z }}
+      style={{ zIndex: DESIGNER_MODAL_OVERLAY_Z, pointerEvents: 'auto' }}
       onClick={isSaving ? undefined : onCancel}
     >
       <div
