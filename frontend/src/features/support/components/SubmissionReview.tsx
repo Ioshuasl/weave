@@ -33,7 +33,7 @@ export const SubmissionReview = ({ id }: { id: string }) => {
   if (user && !isSupport) return <div className="mx-auto max-w-4xl px-4 py-8"><Alert>Acesso restrito à equipe de suporte.</Alert></div>
 
   return (
-    <div className="flex h-[calc(100dvh-3.5rem)] flex-col">
+    <div className="flex h-[calc(100dvh-3.5rem)] flex-col lg:h-dvh">
       <div className="flex shrink-0 items-center gap-3 border-b border-border bg-surface px-4 py-2 text-sm">
         <Link href="/suporte" className="inline-flex items-center gap-1 text-fg-secondary hover:text-foreground"><ArrowLeft className="size-4" aria-hidden />Painel do suporte</Link>
         {snapshot && <span className="text-fg-muted">Revisando “{snapshot.name}” · versão {snapshot.versionNumber} enviada por {snapshot.submittedBy.name}</span>}

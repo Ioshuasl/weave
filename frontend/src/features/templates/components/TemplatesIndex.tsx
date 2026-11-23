@@ -88,7 +88,7 @@ export const TemplatesIndex = ({ scope }: { scope: TemplatesScope }) => {
 
         <LayoutGroup>
           <div className="mt-6 grid gap-6 md:grid-cols-[208px_minmax(0,1fr)]">
-            <nav aria-label="Tags" className="flex gap-1 overflow-x-auto md:sticky md:top-20 md:max-h-[calc(100dvh-6rem)] md:flex-col md:self-start md:overflow-y-auto">
+            <nav aria-label="Tags" className="flex gap-1 overflow-x-auto md:sticky md:top-20 lg:top-6 md:max-h-[calc(100dvh-6rem)] lg:max-h-[calc(100dvh-3rem)] md:flex-col md:self-start md:overflow-y-auto">
               {[{ id: 'ALL', node: <span className="text-sm font-medium">Todos</span>, count: t.total }, ...t.tagOptions.map(({ tag, count }) => ({ id: tag.id, node: <TagBadge name={tag.name} color={tag.color} />, count }))].map((opt) => {
                 const active = t.tagFilter === opt.id
                 return (

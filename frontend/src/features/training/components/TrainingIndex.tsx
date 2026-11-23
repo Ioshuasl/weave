@@ -28,7 +28,7 @@ export const TrainingIndex = () => {
       <h1 className="text-2xl font-semibold">Treinamento</h1>
       <p className="text-base text-fg-secondary">Aprenda a criar, editar e publicar seus relatórios no Weave.</p>
       {t.errorMessage && <div className="mt-4"><Alert>{t.errorMessage}</Alert></div>}
-      <div className="mt-6 space-y-6">
+      <div className="stagger-in mt-6 space-y-6">
         {t.isLoading ? (
           <TrainingSkeleton />
         ) : t.tracks.length === 0 ? (
